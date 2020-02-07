@@ -46,6 +46,7 @@
                   $('#cable').change(function() {
                     var cableValue = $(this).val();
                     
+                    
                     $.ajaxSetup({
                       headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -53,14 +54,13 @@
                     });
 
                     $.ajax({
-                      url: '',
-                      type: 'GET'
-                      data: cableValue,
+                      url: `/user/billtype/${cableValue}`,
+                      type: 'GET',
                       success(res) {
-                        
+                        console.log(res)
                       },
                       error(err) {
-                        
+
                       }
 
                     })

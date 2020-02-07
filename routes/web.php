@@ -88,6 +88,11 @@ Route::group(['prefix'=> 'user'], function() {
    ]);
 
     
+   Route::get('/billtype/{bill_id}', [
+       'uses'=> 'DashboardController@getbilltype',
+       'as'=> 'billtype'
+   ]);
+    
 
 });
 

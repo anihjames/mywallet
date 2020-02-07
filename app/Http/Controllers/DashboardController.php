@@ -25,7 +25,7 @@ class DashboardController extends Controller
 
     public function getbilltype($bill_id)
     {
-        $bills_type = DB::table('bill_types')->where('bill_id', $bill_id)->get();
-        dd($bills_type);
+        $bills_type = DB::table('bill_types')->where('bill_id', $bill_id)->select('id','bill_id', 'bill_amount', 'bill_description')->get();
+        return response()->json($bills_type);
     }
 }
