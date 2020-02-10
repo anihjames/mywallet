@@ -128,24 +128,86 @@ class DashboardController extends Controller
 
     public function eedcPayment(eedcformRequest $request)
     {
-        $data['responses'] = $request->all();
+        $data = $request->all();
         $user_id = Auth::user()->id;
-        $data['pid'] = $this->generate_pid();
+        $pid = $this->generate_pid();
+        $msg = '';
+        $status = '';
 
-        $wallet_id = User::find($user_id)->wallet;
-        $data['wallet'] = $wallet_id;
+        $wallet = User::find($user_id)->wallet;
+        //$wallet = $wallet->wallet_key;
 
-        $pay = $this->BillPayment($data);
-        
-        
-    }
+        if($data['amount'] > $wallet->wallet_balance) {
+            $msg = 'Insufficient Fund';
+            $status = 'failed';
+            $paybill = Bill_payment::create([
+                'payment_pid' => $pid,
+                'wallet_key'=> $wallet->wallet_key,
+                'bills_type'=> 'EEDC'. '-' . $data['state'] ,
+                'bills_amount'=> $data['amount'],
+                'type_code'=> $data['meter_number'],
+                'status'=> $status,
+                'bill_type_id'=> $data['bill_type_id']
+            ]);
 
-    private function BillPayment($data)
-    {
-        if(isset($data['bill_type_id'])) {
-            $bill_type = 'EEDC'. $data['state'];
+            $transaction = Transaction::create([
+                'trans_type'=> 'debit',
+                'wallet_key'=> $wallet_id->wallet_key,
+                'trans_status'=> $paybill->status,
+                'trans_name'=> $paybill->bills_type,
+                'trans_amount'=> $paybill->bills_amount,
+                'balance'=> $wallet_id->wallet_balance,
+            ]);
+    
+            $changewallet = Wallet::where('wallet_key', $wallet_id->wallet_key)->first();
+            $changewallet->wallet_balance = $wallet->wallet_balance;
+            $changewallet->save();
+    
+        }else {
+            $newbalance = $wallet->wallet_balance - $data['amount']; // substract bill amount from the wallet amount
+            $msg = 'Transaction made successfully';
+            $status = 'successfull';
+            $paybill = Bill_payment::create([
+                'payment_pid' => $pid,
+                'wallet_key'=> $wallet_id->wallet_key,
+                'bills_type'=> 'EEDC'. '-' . $data['state'] ,
+                'bills_amount'=> $data['amount'],
+                'type_code'=> $data['meter_number'],
+                'status'=> $status,
+                'bill_type_id'=> $data['bill_type_id']
+            ]);
+    
+            $transaction = Transaction::create([
+                'trans_type'=> 'debit',
+                'wallet_key'=> $wallet_id->wallet_key,
+                'trans_status'=> $paybill->status,
+                'trans_name'=> $paybill->bills_type,
+                'trans_amount'=> $paybill->bills_amount,
+                'balance'=> $newbalance,
+            ]);
+    
+            $changewallet = Wallet::where('wallet_key', $wallet_id->wallet_key)->first();
+            $changewallet->wallet_balance = $newbalance;
+            $changewallet->save();
+    
+            //send a mail to the user
+    
+            return response()->json(['message'=> $msg]);
         }
+
+
+
+        //$pay = $this->BillPayment($data);
+        
+        
     }
+
+    public function getBill() 
+    {
+        $bills = Bill_payment::all();
+    }
+
+    
 
     private function generate_pid() {
         $pin=mt_rand(100000,999999);
