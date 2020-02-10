@@ -152,7 +152,7 @@ class DashboardController extends Controller
 
             $transaction = Transaction::create([
                 'trans_type'=> 'debit',
-                'wallet_key'=> $wallet_id->wallet_key,
+                'wallet_key'=> $wallet->wallet_key,
                 'trans_status'=> $paybill->status,
                 'trans_name'=> $paybill->bills_type,
                 'trans_amount'=> $paybill->bills_amount,
@@ -169,7 +169,7 @@ class DashboardController extends Controller
             $status = 'successfull';
             $paybill = Bill_payment::create([
                 'payment_pid' => $pid,
-                'wallet_key'=> $wallet_id->wallet_key,
+                'wallet_key'=> $wallet->wallet_key,
                 'bills_type'=> 'EEDC'. '-' . $data['state'] ,
                 'bills_amount'=> $data['amount'],
                 'type_code'=> $data['meter_number'],
@@ -179,7 +179,7 @@ class DashboardController extends Controller
     
             $transaction = Transaction::create([
                 'trans_type'=> 'debit',
-                'wallet_key'=> $wallet_id->wallet_key,
+                'wallet_key'=> $wallet->wallet_key,
                 'trans_status'=> $paybill->status,
                 'trans_name'=> $paybill->bills_type,
                 'trans_amount'=> $paybill->bills_amount,

@@ -97,6 +97,7 @@ $(document).ready(function() {
 
     $('.close').on('click', function() {
         $('#payform')[0].reset();
+        $('#eedcPay')[0].reset();
         $('#succMsg').css('display', 'none');
         $('#succMsg').html('');
         $(".print-error-msg").find("ul").html('');
