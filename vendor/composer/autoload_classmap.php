@@ -39,7 +39,7 @@ return array(
     'App\\Models\\Take_loan' => $baseDir . '/app/Models/Take_loan.php',
     'App\\Models\\Transaction' => $baseDir . '/app/Models/Transaction.php',
     'App\\Models\\VerifyUser' => $baseDir . '/app/Models/VerifyUser.php',
-    'App\\Models\\Wallet_detail' => $baseDir . '/app/Models/Wallet_detail.php',
+    'App\\Models\\Wallet' => $baseDir . '/app/Models/Wallet.php',
     'App\\Notifications\\userRegistered' => $baseDir . '/app/Notifications/userRegistered.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\Providers\\AuthServiceProvider' => $baseDir . '/app/Providers/AuthServiceProvider.php',

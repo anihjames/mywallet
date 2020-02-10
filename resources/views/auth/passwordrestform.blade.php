@@ -7,7 +7,7 @@
 <div class="page login-page">
     <div class="container">
       <div class="form-outer text-center d-flex align-items-center">
-        <div class="form-inner">
+        <div class="form-inner" style="padding:40px 90px;">
           @if (session('danger'))
               <div class="alert alert-danger">
                 {{ session('danger') }}  

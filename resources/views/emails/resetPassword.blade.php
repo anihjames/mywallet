@@ -13,6 +13,6 @@
     <h4>Welcome to myWallet</h4>
      Please click on the below button to Reset Password
     <br>
-    <a href="{{url('user/resetPassword', $user->token)}}" class="btn btn-info">Reset Password</a>
+    <a href="{{url('/auth/resetPassword', $user->token)}}" class="btn btn-info">Reset Password</a>
 </body>
 </html>

@@ -9,6 +9,7 @@ use App\Http\Requests\registerFormRequest as RegisterFormRequest;
 use App\Http\Requests\LoginRequest as LoginFormRequest;
 use App\Http\Requests\resetPasswordRequest as ResetPasswordrequest;
 use App\User;
+use App\Models\Wallet;
 use App\Models\VerifyUser;
 use App\Notifications\userRegistered;
 use Illuminate\Support\Facades\Cache;
@@ -45,6 +46,14 @@ class UserController extends Controller
         return view('auth.passwordrestform');
     }
 
+    public function getref_code() {
+        $characters='ABCDEFHJKLMNPQRSTUVWXYZ';  
+       $pin=mt_rand(100000,999999).mt_rand(100000,999999).$characters[rand(0,strlen($characters)-3)];
+       $ref_no=str_shuffle($pin);
+ 
+       return $ref_no;
+     }
+
     public function Login(LoginFormRequest $request)
     {
         
@@ -59,6 +68,7 @@ class UserController extends Controller
 
     public function Register(RegisterFormRequest $request)
     {
+        $wallet_key = $this->getref_code();
        $user = User::create([
            'fname'=> $request['first_name'],
            'lname'=> $request['last_name'],
@@ -66,7 +76,13 @@ class UserController extends Controller
            'email'=> $request['email'],
            'password'=> Hash::make($request['password']),
        ]);
+
+       $wallet = Wallet::create([
+            'user_id'=> $user->id,
+            'wallet_key'=> sha1(time()),
+       ]);
        
+
 
        $verifyUser = VerifyUser::create([
         'user_id' => $user->id,

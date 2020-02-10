@@ -15,6 +15,12 @@ class CreatePayLoanTakensTable extends Migration
     {
         Schema::create('pay_loan_takens', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('wallet_key');
+            $table->integer('loan_pid');
+            $table->string('payment_method');
+            $table->bigInteger('amount_paid');
+            $table->bigInteger('amount_left');
+            $table->boolean('verified')->default(false);
             $table->timestamps();
         });
     }

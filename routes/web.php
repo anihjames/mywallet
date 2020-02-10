@@ -44,7 +44,7 @@ Route::group(['prefix'=> 'auth'], function() {
         'as'=> 'passwordresetform'
     ]);
     Route::get('/verify/{token}', 'UserController@verifyUser');
-    Route::get('user/resetPassword/{token}','UserController@resetPassword');
+    Route::get('/resetPassword/{token}','UserController@resetPassword');
     
     Route::get('/resend', [
         'uses'=>'UserController@resendcode',
@@ -92,7 +92,16 @@ Route::group(['prefix'=> 'user'], function() {
        'uses'=> 'DashboardController@getbilltype',
        'as'=> 'billtype'
    ]);
+
+   Route::post('/paybills', [
+    'uses'=> 'DashboardController@PayBills',
+    'as'=> 'paybills'
+   ]);
     
+   Route::post('/eedcpay', [
+    'uses'=> 'DashboardController@eedcPayment',
+    'as'=> 'eedcpay',
+   ]);
 
 });
 

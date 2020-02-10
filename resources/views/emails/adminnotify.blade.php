@@ -8,7 +8,7 @@
 </head>
 <body>
     Hello Admin
-    <h4> <p><B>{{$user['first_name']}} {{$user['last_name']}}</B> with email {{$user['email']}} just registered into the {{config('app.name')}}</p> </h4>
+    <h4> <p><B>{{$user->fname}} {{$user->lname}}</B> with email {{$user['email']}} just registered into the {{config('app.name')}}</p> </h4>
 
     <br>
     <br>

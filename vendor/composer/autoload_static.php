@@ -470,7 +470,7 @@ class ComposerStaticInit623cfcbb4d11f17ea4ae9060ca5f33c6
         'App\\Models\\Take_loan' => __DIR__ . '/../..' . '/app/Models/Take_loan.php',
         'App\\Models\\Transaction' => __DIR__ . '/../..' . '/app/Models/Transaction.php',
         'App\\Models\\VerifyUser' => __DIR__ . '/../..' . '/app/Models/VerifyUser.php',
-        'App\\Models\\Wallet_detail' => __DIR__ . '/../..' . '/app/Models/Wallet_detail.php',
+        'App\\Models\\Wallet' => __DIR__ . '/../..' . '/app/Models/Wallet.php',
         'App\\Notifications\\userRegistered' => __DIR__ . '/../..' . '/app/Notifications/userRegistered.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',

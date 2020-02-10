@@ -55,7 +55,7 @@
                         </div>
 
 
-                        <div class="col-lg-3">
+                        {{-- <div class="col-lg-3">
                             <div class="card">
                                     <div class="card-body">
                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#TravelModal" style="text-decoration:none;">
@@ -69,7 +69,7 @@
                                     </div>
                                
                             </div>
-                        </div>
+                        </div> --}}
 
 
                     </div>

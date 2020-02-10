@@ -15,6 +15,12 @@ class CreateBillPaymentsTable extends Migration
     {
         Schema::create('bill_payments', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('payment_pid')->unique();
+            $table->string('wallet_key');
+            $table->string('bills_type');
+            $table->biginteger('bills_amount')->default(0.00);
+            $table->string('type_code');
+            $table->string('status');
             $table->timestamps();
         });
     }

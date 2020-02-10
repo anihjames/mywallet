@@ -15,6 +15,9 @@ class CreateBillTypesTable extends Migration
     {
         Schema::create('bill_types', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('user_id');
+            $table->string('name');
+            $table->bigInteger('bill_amount');
             $table->timestamps();
         });
     }

@@ -8,12 +8,12 @@
     <title>myWallet</title>
 </head>
 <body>
-    <h2>Hi {{$user['first_name']}}</h2>
+    <h2>Hi {{$user->fname}}</h2>
     <br/>
     <h4>Welcome to myWallet</h4>
     <br/>
-    Your registered email-id is {{$user['email']}}, Please click on the below button to verify your email account
+    Your registered email-id is {{$user->email}}, Please click on the below button to verify your email account
     <br>
-    <a href="{{url('user/verify', $user->verifyUser->token)}}" class="btn btn-info">Verify Email</a>
+    <a href="{{url('auth/verify', $user->verifyUser->token)}}" class="btn btn-info">Verify Email</a>
 </body>
 </html>

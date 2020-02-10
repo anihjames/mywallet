@@ -41,4 +41,9 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Models\VerifyUser');
     }
+
+    public function wallet()
+    {
+        return $this->hasOne('App\Models\Wallet');
+    }
 }

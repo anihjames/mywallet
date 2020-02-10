@@ -8,7 +8,7 @@
 <div class="page login-page">
     <div class="container">
       <div class="form-outer text-center d-flex align-items-center">
-        <div class="form-inner">
+        <div class="form-inner" style="padding:40px 90px;">
           <div class="logo text-uppercase"><span>Reset</span><strong class="text-primary">Password</strong></div>
           <form method="post" action="{{route('resetlink')}}" class="text-left form-validate">
             <div class="form-group-material">
