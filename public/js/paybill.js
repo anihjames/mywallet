@@ -1,5 +1,11 @@
 $(document).ready(function() {
     $('#starTime').hide();
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
     $('#cable').change(function() {
       var cableValue = $(this).val();
       var output = '<option value>'+ 'Select Package... '  +'</option>';
@@ -21,11 +27,7 @@ $(document).ready(function() {
 
 
       if( cableValue != ''){
-        $.ajaxSetup({
-            headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-          });
+        
     
           $.ajax({
             url: `/user/billtype/${cableValue}`,
@@ -50,11 +52,7 @@ $(document).ready(function() {
         console.log(values)
 
         if(values != '') {
-            $.ajaxSetup({
-                headers: {
-                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-              });
+            
         
               $.ajax({
                 url: action,
@@ -96,11 +94,14 @@ $(document).ready(function() {
     }
 
     $('.close').on('click', function() {
-        $('#payform')[0].reset();
-        $('#succMsg').css('display', 'none');
-        $('#succMsg').html('');
-        $(".print-error-msg").find("ul").html('');
-        $(".print-error-msg").css('display','none');
+      $('#payform')[0].reset();
+      $('#eedcPay')[0].reset();
+      $('#succMsg').css('display', 'none');
+      $('#succMsg').html('');
+      $('#succMsg2').css('display', 'none');
+      $('#succMsg2').html('');
+      $(".print-error-msg").find("ul").html('');
+      $(".print-error-msg").css('display','none');
     })
 
     $('#eedcPay').on('submit', function(e) {
@@ -108,18 +109,19 @@ $(document).ready(function() {
         var values = $('#eedcPay').serialize();
         var action = $('#eedcPay').attr('action');
 
-        $.ajaxSetup({
-            headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-          });
+        
 
           $.ajax({
             url: action,
             type: 'POST',
             data: values,
             success(res) {
-                console.log(res)
+              $(".print-error-msg").find("ul").html('');
+              $(".print-error-msg").css('display','none');
+              
+              $('#succMsg2').css('display', 'block');
+              $('#succMsg2').html(res.message);
+              $('#eedcpay')[0].reset();
             },
             error(err) {
                 if(err.status === 422 ){

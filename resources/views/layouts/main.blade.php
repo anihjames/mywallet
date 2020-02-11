@@ -11,6 +11,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Bootstrap CSS-->
     <link rel="stylesheet" href="{{asset('vendor/bootstrap/css/bootstrap.min.css')}}">
+    @stack('styles')
     <!-- Font Awesome CSS-->
     <link rel="stylesheet" href="{{asset('vendor/font-awesome/css/font-awesome.min.css')}}">
     <!-- Fontastic Custom icon font-->
@@ -30,12 +31,13 @@
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+        <style>
+          .is-invalid {
+            color:red;
+          }
+        </style>
   </head>
-  <style>
-    .is-invalid {
-      color:red;
-    }
-  </style>
+  
   <body>
 
     @yield('content')

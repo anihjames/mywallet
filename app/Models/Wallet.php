@@ -23,4 +23,9 @@ class Wallet extends Model
         return $this->hasMany('App\Models\Transaction');
     }
 
+    public function topups()
+    {
+        return $this->hasMany('App\Mobels\MobileTopup');
+    }
+
 }

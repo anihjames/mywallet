@@ -10,6 +10,6 @@ class Transaction extends Model
 
     public function wallet()
     {
-        return $this->belongTo('App\Models\Wallet', 'wallet_key');
+        return $this->belongTo('App\Models\Wallet', 'wallet_key', 'wallet_key');
     }
 }

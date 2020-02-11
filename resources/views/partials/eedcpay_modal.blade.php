@@ -13,7 +13,7 @@
                 <div class="alert alert-danger print-error-msg" style="display:none;">
                   <ul></ul>
                 </div>
-                <p class="alert alert-success" id="succMsg" style="display:none;">
+                <p class="alert alert-success" id="succMsg2" style="display:none;">
                   <div class="form-group">
                     <label>State</label>
                     <select name="state" class="form-control">
@@ -33,7 +33,7 @@
                   
               </div>
               <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                <button type="button" data-dismiss="modal" class="btn btn-secondary close">Close</button>
                 <button type="submit" class="btn btn-primary">Pay</button>
               </div>
             </form>

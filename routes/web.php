@@ -93,6 +93,11 @@ Route::group(['prefix'=> 'user'], function() {
        'as'=> 'billtype'
    ]);
 
+   Route::get('/mobiletopup', [
+        'uses'=> 'DashboardController@viewmobile_topup',
+        'as'=> 'getmobile_topup'
+   ]);
+
    Route::post('/paybills', [
     'uses'=> 'DashboardController@PayBills',
     'as'=> 'paybills'
@@ -103,6 +108,18 @@ Route::group(['prefix'=> 'user'], function() {
     'as'=> 'eedcpay',
    ]);
 
+   Route::post('/topup', [
+        'uses'=> 'DashboardController@TopUp',
+        'as'=> 'topup'
+   ]);
+
+});
+
+Route::group(['prefix'=> 'datatable'], function() {
+    Route::get('/recentTopups', [
+        'uses'=> 'DatatablesController@getrecentTopups',
+        'as'=> 'recenttopups'
+    ]);
 });
 
 
