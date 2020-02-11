@@ -158,7 +158,6 @@ class DashboardController extends Controller
         $pid = $this->generate_pid();
         $msg = '';
         $status = '';
-<<<<<<< HEAD
 
         $wallet = User::find($user_id)->wallet;
         
@@ -227,73 +226,6 @@ class DashboardController extends Controller
             //send a mail to the user
     
             return response()->json(['message'=> 'EEDC Bill Paid Successfully']);
-=======
-
-        $wallet = User::find($user_id)->wallet;
-        //$wallet = $wallet->wallet_key;
-
-        if($data['amount'] > $wallet->wallet_balance) {
-            $msg = 'Insufficient Fund';
-            $status = 'failed';
-            $paybill = Bill_payment::create([
-                'payment_pid' => $pid,
-                'wallet_key'=> $wallet->wallet_key,
-                'bills_type'=> 'EEDC'. '-' . $data['state'] ,
-                'bills_amount'=> $data['amount'],
-                'type_code'=> $data['meter_number'],
-                'status'=> $status,
-                'bill_type_id'=> $data['bill_type_id']
-            ]);
-
-            $transaction = Transaction::create([
-                'trans_type'=> 'debit',
-                'wallet_key'=> $wallet->wallet_key,
-                'trans_status'=> $paybill->status,
-                'trans_name'=> $paybill->bills_type,
-                'trans_amount'=> $paybill->bills_amount,
-                'balance'=> $wallet_id->wallet_balance,
-            ]);
-    
-            $changewallet = Wallet::where('wallet_key', $wallet_id->wallet_key)->first();
-            $changewallet->wallet_balance = $wallet->wallet_balance;
-            $changewallet->save();
-    
-        }else {
-            $newbalance = $wallet->wallet_balance - $data['amount']; // substract bill amount from the wallet amount
-            $msg = 'Transaction made successfully';
-            $status = 'successfull';
-            $paybill = Bill_payment::create([
-                'payment_pid' => $pid,
-                'wallet_key'=> $wallet->wallet_key,
-                'bills_type'=> 'EEDC'. '-' . $data['state'] ,
-                'bills_amount'=> $data['amount'],
-                'type_code'=> $data['meter_number'],
-                'status'=> $status,
-                'bill_type_id'=> $data['bill_type_id']
-            ]);
-    
-            $transaction = Transaction::create([
-                'trans_type'=> 'debit',
-                'wallet_key'=> $wallet->wallet_key,
-                'trans_status'=> $paybill->status,
-                'trans_name'=> $paybill->bills_type,
-                'trans_amount'=> $paybill->bills_amount,
-                'balance'=> $newbalance,
-            ]);
-    
-            $changewallet = Wallet::where('wallet_key', $wallet_id->wallet_key)->first();
-            $changewallet->wallet_balance = $newbalance;
-            $changewallet->save();
-    
-            //send a mail to the user
-    
-            return response()->json(['message'=> $msg]);
-        }
-
-
-
-        //$pay = $this->BillPayment($data);
->>>>>>> 8786a971c01e334e52e94095e71c1ea56abcba74
         
         
     }
@@ -334,7 +266,6 @@ public function Topup(TopupRequest $request)
         $msg = 'Mobile Top-up successful';
         $status = 'successfully';
 
-<<<<<<< HEAD
     }
 
     $topup = MobileTopup::create([
@@ -375,13 +306,6 @@ public function Topup(TopupRequest $request)
 
 
 
-=======
-    public function getBill() 
-    {
-        $bills = Bill_payment::all();
-    }
-
->>>>>>> 8786a971c01e334e52e94095e71c1ea56abcba74
     
 
     private function generate_pid() {

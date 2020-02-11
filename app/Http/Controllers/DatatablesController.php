@@ -13,4 +13,9 @@ class DatatablesController extends Controller
     {
         return Datatables::of(MobileTopup::query())->make(true);
     }
+
+    public function getTransaction()
+    {
+        return view('dashboard.transaction');
+    }
 }

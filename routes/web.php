@@ -87,7 +87,7 @@ Route::group(['prefix'=> 'user'], function() {
     'as'=> 'paybills'
    ]);
 
-    
+   
    Route::get('/billtype/{bill_id}', [
        'uses'=> 'DashboardController@getbilltype',
        'as'=> 'billtype'
@@ -119,6 +119,11 @@ Route::group(['prefix'=> 'datatable'], function() {
     Route::get('/recentTopups', [
         'uses'=> 'DatatablesController@getrecentTopups',
         'as'=> 'recenttopups'
+    ]);
+
+    Route::get('/transactions', [
+        'uses'=> 'DatatablesController@getTransaction',
+        'as'=> 'transaction',
     ]);
 });
 

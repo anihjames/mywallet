@@ -94,7 +94,6 @@ $(document).ready(function() {
     }
 
     $('.close').on('click', function() {
-<<<<<<< HEAD
       $('#payform')[0].reset();
       $('#eedcPay')[0].reset();
       $('#succMsg').css('display', 'none');
@@ -103,14 +102,6 @@ $(document).ready(function() {
       $('#succMsg2').html('');
       $(".print-error-msg").find("ul").html('');
       $(".print-error-msg").css('display','none');
-=======
-        $('#payform')[0].reset();
-        $('#eedcPay')[0].reset();
-        $('#succMsg').css('display', 'none');
-        $('#succMsg').html('');
-        $(".print-error-msg").find("ul").html('');
-        $(".print-error-msg").css('display','none');
->>>>>>> 8786a971c01e334e52e94095e71c1ea56abcba74
     })
 
     $('#eedcPay').on('submit', function(e) {

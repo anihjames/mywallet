@@ -24,7 +24,7 @@
           <li class=" {{ request()->segment(2) == 'paybills' ? 'active': ''}}"> <a href="{{route('paybills')}}"> <i class="icon-form"></i>Pay Bills</a></li>
           <li class="{{ request()->segment(2) == 'mobiletopup' ? 'active': ''}}"> <a href="{{route('getmobile_topup')}}"> <i class="fa fa-mobile" aria-hidden="true" style="font-size:20px;"></i>Mobile Top-up</a></li>
           <li><a href=""> <i class="fa fa-money"></i>Take Loans</a></li>
-          <li><a href=""> <i class="icon-grid"></i>Transactions</a></li>
+          <li class="{{ request()->segment(2) == 'transactions'}}"><a href="{{route('transaction')}}"> <i class="icon-grid"></i>Transactions</a></li>
           <li> <a href="#"> <i class="fa fa-cog" aria-hidden="true"></i>Settings</a></li>
         </ul>
       </div>
