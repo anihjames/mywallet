@@ -77,7 +77,7 @@ Route::group(['prefix'=> 'auth'], function() {
 Route::get('/home', [
     'uses'=> 'DashboardController@index',
     'as'=> 'home',
-    'middleware'=> ['auth', 'verifyaccount']
+    // 'middleware'=> ['auth', 'verifyaccount']
 ]);
 
 Route::group(['prefix'=> 'user'], function() {
@@ -86,6 +86,10 @@ Route::group(['prefix'=> 'user'], function() {
     'uses'=> 'DashboardController@viewbills',
     'as'=> 'paybills'
    ]);
+
+   Route::get('/takeloan', function() {
+        return view('dashboard.loan');
+   })->name('takeloan');
 
    
    Route::get('/billtype/{bill_id}', [
@@ -113,6 +117,11 @@ Route::group(['prefix'=> 'user'], function() {
         'as'=> 'topup'
    ]);
 
+   Route::post('/applyforloan', [
+       'uses'=> 'DashboardController@ApplyforLoan',
+       'as'=> 'applyforloan'
+   ]);
+
 });
 
 Route::group(['prefix'=> 'datatable'], function() {
@@ -125,6 +134,12 @@ Route::group(['prefix'=> 'datatable'], function() {
         'uses'=> 'DatatablesController@getTransaction',
         'as'=> 'transaction',
     ]);
+
+    Route::get('/trans', 'DatatablesController@gettrans');
+
+    Route::get('/bills', 'DatatablesController@Bill');
+
+    Route::get('/loantaken', 'DatatablesController@Loans');
 });
 
 

@@ -16,13 +16,13 @@ class CreateTakeLoansTable extends Migration
         Schema::create('take_loans', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('loan_pid');
-            $table->integer('user_id');
+            // $table->integer('user_id');
             $table->bigInteger('loan_amount');
-            $table->dateTime('loan_taken_date');
-            $table->dateTime('payment_date');
+            $table->dateTime('loan_app_date');
+            // $table->dateTime('payment_date');
             $table->string('loan_length');
             $table->string('wallet_key');
-            $table->boolean('verified')->default(false);
+            $table->string('verified');
             $table->timestamps();
         });
     }

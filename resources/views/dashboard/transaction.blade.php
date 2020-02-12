@@ -36,12 +36,14 @@
                                         <table class="table" id="tran-datatable">
                                             <thead>
                                                 <tr>
-                                                    <th>#</th>
+                                                    {{-- <th>Id</th> --}}
                                                     <th>Type</th>
                                                     <th>Name</th>
-                                                    <th>Account</th>
-                                                    <th>Status</th>
+                                                    <th>Amount</th>
                                                     <th>Balance</th>
+                                                    {{-- <th>Status</th> --}}
+                                                    <th>Date/Time</th>
+                                                    <th>Status</th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -63,12 +65,13 @@
     </div>
 @endsection
 
-@push('styles')
+{{-- @push('styles')
 <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
-@endpush
+@endpush --}}
 
 @push('scripts')
 <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+<script src="{{asset('js/tran.js')}}"></script>
 @endpush
 
 

@@ -87,35 +87,18 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table">
+                                            <table class="table"  id="billpay">
                                                 <thead>
                                                     <tr>
-                                                        <th>#</th>
-                                                        <th>First Name</th>
-                                                        <th>Last Name</th>
-                                                        <th>Username</th>
+                                                        <th>Payment Id</th>
+                                                        <th>Type</th>
+                                                        <th>Amount</th>
+                                                        <th>Card/Meter Number</th>
+                                                        <th>Date/Time</th>
+                                                        <th>Status</th> 
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-                                                    <tr>
-                                                      <th scope="row">1</th>
-                                                      <td>Mark</td>
-                                                      <td>Otto</td>
-                                                      <td>@mdo</td>
-                                                    </tr>
-                                                    <tr>
-                                                      <th scope="row">2</th>
-                                                      <td>Jacob</td>
-                                                      <td>Thornton</td>
-                                                      <td>@fat</td>
-                                                    </tr>
-                                                    <tr>
-                                                      <th scope="row">3</th>
-                                                      <td>Larry</td>
-                                                      <td>the Bird</td>
-                                                      <td>@twitter</td>
-                                                    </tr>
-                                                  </tbody>
+                                                
 
                                             </table>
 
@@ -139,3 +122,10 @@
     </div>
     
 @endsection
+
+
+
+@push('scripts')
+<script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+<script src="{{asset('js/tran.js')}}"></script>
+@endpush

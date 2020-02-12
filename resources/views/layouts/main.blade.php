@@ -11,7 +11,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Bootstrap CSS-->
     <link rel="stylesheet" href="{{asset('vendor/bootstrap/css/bootstrap.min.css')}}">
-    @stack('styles')
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
     <!-- Font Awesome CSS-->
     <link rel="stylesheet" href="{{asset('vendor/font-awesome/css/font-awesome.min.css')}}">
     <!-- Fontastic Custom icon font-->
@@ -35,7 +35,9 @@
           .is-invalid {
             color:red;
           }
+          @stack('styles');
         </style>
+       
   </head>
   
   <body>

@@ -12,19 +12,33 @@ use App\Models\Bill_type;
 use App\Models\Wallet;
 use App\Models\Transaction;
 use App\Models\MobileTopup;
+use App\Models\Take_loan;
 use App\Http\Requests\BillFormRequest as BillRequest;
+use App\Http\Requests\ApplyLoanRequest as ApplyLoan;
 use App\Mail\walletNotify;
 use App\Http\Requests\eedcFormRequest as eedcformRequest;
 use App\Http\Requests\MobileTopUpRequest as TopupRequest;
+use Illuminate\Support\Facades\Session;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
     
+    public function __construct() 
+    {
+        $this->middleware(['auth', 'verifyaccount']);
+        
+        
+    }
     public function index()
     {
         $id = Auth::user()->id;
         $wallet = User::find($id)->wallet;
-        Cache::put('wallet', $wallet);
+        Cache::put('wallet',$wallet);
+        $is_owing = DB::table('pay_loan_takens')->where('wallet_key', $wallet->wallet_key)->select('still_owing')->get(); 
+        //dd($wallet->wallet_key);
+        Session::put('balance', $wallet->wallet_balance);
+         Session::put('still_owing', $is_owing);
         return view('dashboard.home');
     }
 
@@ -301,6 +315,50 @@ public function Topup(TopupRequest $request)
         return response()->json(['message'=> $msg]);
 
     
+    
+}
+
+public function ApplyforLoan(ApplyLoan $request)
+{
+    $key = '';
+    if(Cache::has('wallet')) {
+     $wallet = Cache::get('wallet');   
+    }else {
+        $id = Auth::user()->id;
+        $wallet = User::find($id)->wallet;
+        $key = $wallet->wallet_key;
+    }
+    $loan_pid = $this->generate_pid();
+    $dt = carbon::now();
+    $status = '';
+    
+
+    $takeloan = Take_loan::create([
+        'wallet_key'=> $wallet->wallet_key,
+        'loan_pid'=> $load_pid,
+        'loan_amount'=> $request['amount'],
+        'loan_app_date'=> $dt->toDateTimeString(),
+        'loan_length'=> $request['loan_tenure'] .''.$request['months'],
+        'verified'=> 1,
+    ]);
+
+    if($takeloan->verified == 1){
+        $status = 'awaiting approval';
+    }elseif($takeloan->verified == 2){
+        $status = 'Approved';
+    }else{
+        $status = 'failed';
+    }
+    $transaction = Transaction::create([
+        'trans_type'=> 'debit',
+        'wallet_key'=> $wallet->wallet_key,
+        'trans_status'=> $status,
+        'trans_name'=> 'Applied For Loan',
+        'trans_amount'=> $loan_amount->loan_amount,
+        'balance'=> $wallet->wallet_balance,
+    ]);
+
+
     
 }
 

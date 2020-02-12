@@ -26,15 +26,15 @@ $(document).ready(function() {
             type:'POST',
             data: values,
             success(res) {
-                console.log(res)
+                //console.log(res)
                 $(".print-error-msg").find("ul").html('');
                 $(".print-error-msg").css('display','none');
                     
                 $('#succMsg').css('display', 'block');
                 $('#succMsg').html(res.message);
-                $('#mobile-topup')[0].reset();
-
-                location.reload()
+                $('#mobile-topup')[0].reset();  
+                $('#topup-datatable').DataTable().ajax.reload();
+                //location.reload()
             },
             error(err) {
                 if(err.status === 422 ){
@@ -63,12 +63,15 @@ $(document).ready(function() {
               type: 'GET',
           },
           columns: [
-              {data: 'id', name: 'id', 'visiable': false},
+            //   {data: 'id', name: 'id', 'visiable': false},
               {data: 'mobile_number', name:'mobile number'},
               {data: 'network_provider', name:'Network'},
               {data:'amount',name: 'Amount'},
-              {data: 'status', name:'Status'},
+              {data: 'action', name:'Status'},
+            //   {data: 'edit', name: 'Edit'},
+            //   {data: 'delete', name:'Delete'},
               {data: 'created_at', name:'Date'}
+              
           ],
           order: [[0, 'desc']]
       })

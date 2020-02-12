@@ -18,9 +18,9 @@ class Wallet extends Model
         return $this->hasMany('App\Models\Bill_payment');
     }
 
-    public function transaction()
+    public function transactions()
     {
-        return $this->hasMany('App\Models\Transaction');
+        return $this->hasMany('App\Models\Transaction', 'wallet_key');
     }
 
     public function topups()

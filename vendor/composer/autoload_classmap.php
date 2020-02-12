@@ -27,6 +27,7 @@ return array(
     'App\\Http\\Middleware\\TrimStrings' => $baseDir . '/app/Http/Middleware/TrimStrings.php',
     'App\\Http\\Middleware\\TrustProxies' => $baseDir . '/app/Http/Middleware/TrustProxies.php',
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
+    'App\\Http\\Requests\\ApplyLoanRequest' => $baseDir . '/app/Http/Requests/ApplyLoanRequest.php',
     'App\\Http\\Requests\\BillFormRequest' => $baseDir . '/app/Http/Requests/BillFormRequest.php',
     'App\\Http\\Requests\\LoginRequest' => $baseDir . '/app/Http/Requests/LoginRequest.php',
     'App\\Http\\Requests\\MobileTopUpRequest' => $baseDir . '/app/Http/Requests/MobileTopUpRequest.php',

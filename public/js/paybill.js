@@ -49,7 +49,7 @@ $(document).ready(function() {
         e.preventDefault();
         var values = $('#payform').serialize();
         var action = $('#payform').attr('action');
-        console.log(values)
+        //console.log(values)
 
         if(values != '') {
             
@@ -65,6 +65,8 @@ $(document).ready(function() {
                     $('#succMsg').css('display', 'block');
                     $('#succMsg').html(res.message);
                     $('#payform')[0].reset();
+                    $('#billpay').DataTable().ajax.reload();
+                    //location.reload();
                 },
                 error(err) {
                     if(err.status === 422 ){
@@ -121,7 +123,8 @@ $(document).ready(function() {
               
               $('#succMsg2').css('display', 'block');
               $('#succMsg2').html(res.message);
-              $('#eedcpay')[0].reset();
+              $('#eedcPay')[0].reset();
+              $('#billpay').DataTable().ajax.reload();
             },
             error(err) {
                 if(err.status === 422 ){
@@ -133,4 +136,19 @@ $(document).ready(function() {
     
           })
     });
+
+    $('#billpay').DataTable({
+      processing: true,
+      serverside:true,
+      ajax: "/datatable/bills",
+      columns: [
+          {data:'payment_pid', name:'Payment ID'},
+          {data: 'bills_type', name: 'Bill Type'},
+          {data: 'bills_amount', name:'Amount'},
+          {data:'type_code', name:'Code'},
+          {data:'created_at', name: 'Date/Time'},
+          {data:'action', name: 'Status', orderable: false,}
+      ],
+      order: [[0,'desc']],
+  })
 })
