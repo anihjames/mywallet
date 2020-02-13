@@ -318,49 +318,6 @@ public function Topup(TopupRequest $request)
     
 }
 
-public function ApplyforLoan(ApplyLoan $request)
-{
-    $key = '';
-    if(Cache::has('wallet')) {
-     $wallet = Cache::get('wallet');   
-    }else {
-        $id = Auth::user()->id;
-        $wallet = User::find($id)->wallet;
-        $key = $wallet->wallet_key;
-    }
-    $loan_pid = $this->generate_pid();
-    $dt = carbon::now();
-    $status = '';
-    
-
-    $takeloan = Take_loan::create([
-        'wallet_key'=> $wallet->wallet_key,
-        'loan_pid'=> $load_pid,
-        'loan_amount'=> $request['amount'],
-        'loan_app_date'=> $dt->toDateTimeString(),
-        'loan_length'=> $request['loan_tenure'] .''.$request['months'],
-        'verified'=> 1,
-    ]);
-
-    if($takeloan->verified == 1){
-        $status = 'awaiting approval';
-    }elseif($takeloan->verified == 2){
-        $status = 'Approved';
-    }else{
-        $status = 'failed';
-    }
-    $transaction = Transaction::create([
-        'trans_type'=> 'debit',
-        'wallet_key'=> $wallet->wallet_key,
-        'trans_status'=> $status,
-        'trans_name'=> 'Applied For Loan',
-        'trans_amount'=> $loan_amount->loan_amount,
-        'balance'=> $wallet->wallet_balance,
-    ]);
-
-
-    
-}
 
 
 

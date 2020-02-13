@@ -35,6 +35,9 @@
           .is-invalid {
             color:red;
           }
+          .errormsg {
+            list-style-type: none;
+          }
           @stack('styles');
         </style>
        
@@ -53,6 +56,9 @@
     <script src="{{asset('vendor/jquery-validation/jquery.validate.min.js')}}"></script>
     <script src="{{asset('vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js')}}"></script>
     <script src="{{asset('js/charts-home.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    
     <!-- Main File-->
     <script src="{{asset('js/front.js')}}"></script>
     {{-- <script src="{{asset('js/auth.js')}}"></script> --}}

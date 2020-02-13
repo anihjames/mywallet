@@ -39,10 +39,11 @@
                                                         <th>Loan Amount</th>
                                                         <th>Loan tenure</th>
                                                         <th>Date Applied</th>
+                                                    
+                                                        {{-- <th>#</th> --}}
                                                         <th>Status</th>
-                                                        <th>Edit</th>
-                                                        <th>Delete</th>
-                                                        <th>Date</th>
+                                                        <th>Action</th>
+                                                       
                                                         
                                                     </tr>
                                                 </thead>
@@ -63,7 +64,56 @@
                   </div>
             </div> 
 
+            <div class="modal fade" id="loan_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog"  id="loan_modal_body">
+                 
+                </div>
+            </div>
+           
           </section>
 
     </div>
 @endsection
+@push('scripts')
+    <script>
+       $(function() {
+        $("#loan-datatable").on("click", "a.editloan", function () {
+                
+            $("#loan_modal_body").load("/user/editloan/" + $(this).data("edit-id"),function(responseTxt, statusTxt, xh)
+                {
+                     $("#loan_modal").modal({
+                                    backdrop: 'static',
+                                    keyboard: true
+                                }, "show");
+                               // bindForm(this);
+                });
+            return false;
+            });
+
+            $('#loan-datatable').on('click', 'a.deleteloan', function() {
+
+                
+                // Swal.fire({
+                //     title: 'Are you sure?',
+                //     text: "You won't be able to revert this!",
+                //     icon: 'warning',
+                //     showCancelButton: true,
+                //     confirmButtonColor: '#3085d6',
+                //     cancelButtonColor: '#d33',
+                //     confirmButtonText: 'Yes, delete it!'
+                //     }).then((result) => {
+                //     if (result.value) {
+                //         Swal.fire(
+                //         'Deleted!',
+                //         'Your file has been deleted.',
+                //         'success'
+                //         )
+                //     }
+                //     })
+            })
+
+           
+
+       })
+    </script>
+@endpush

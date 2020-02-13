@@ -25,7 +25,7 @@
                 <label for="Mobile_number">Loan</label>
                 <div class="input-group">
                     <input type="number"class="form-control col-sm-6"  name="loan_tenure" placeholder="7">
-                    <input type="text" readonly class="col-sm-2 form-control" value="months" name="months">
+                    <input type="text" readonly class="col-sm-3 form-control" value="months" name="months">
                     
                 </div>
                 

@@ -19,8 +19,10 @@
           <div class="row">
             <div class="container">
               @if (Session::has('still_owing'))
-                @if (Session::get('stil_owing') != 0)
+                @if (Session::get('stil_owing') == 0)
                 <a href="" class="btn btn-primary"> Pay Loan</a>
+                @else
+                <a href="" class="btn btn-primary"> Wallet top-up</a>
                 @endif
                   
               @endif

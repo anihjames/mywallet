@@ -15,6 +15,7 @@ $(document).ready(function() {
             type: 'POST',
             data: values,
             success(res) {
+                console.log(values)
                 $(".loan-error-msg").find("ul").html('');
                 $(".loan-error-msg").css('display','none');
                 
@@ -42,17 +43,20 @@ $(document).ready(function() {
               {data: 'loan_amount', name:'Loan Amount'},
               {data: 'loan_length', name:'Loan Tenure'},
               {data:'loan_app_date',name: 'Date Applied'},
-              {data: 'edit', name:'Edit'},
-              {data: 'delete', name:'Deleted'},
-              {data: 'action', name:'Status'},
+              {data: 'status', name:'Status'},
+            //   {data: 'delete', name:'Deleted'},
+              {data: 'action', name:'Action'},
+              
               
               
           ],
-          order: [[0, 'desc']]
+           order: [[1, 'desc']]
       })
 
 
+
       $('.close').on('click', function() {
+          //alert('something')
           $('#loanpay')[0].reset();
           $('.loan-error-msg').find('ul').html('');
           $('.loan-error-msg').css('display', 'none');

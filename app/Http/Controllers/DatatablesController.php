@@ -9,6 +9,7 @@ use App\Models\Bill_payment;
 use App\Models\Transaction;
 use App\User;
 use App\Models\Wallet;
+use App\Models\Take_loan;
 use Auth;
 use DB;
 use Carbon\Carbon;
@@ -28,11 +29,13 @@ class DatatablesController extends Controller
                 //     return '<a href="#more-'.$tran->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i>more details</a>';
                 // })
                 ->addColumn('action', function($topup) {
-                   if($topup->status == 'successfull'){
-                    return '<a href="javascript:void(0)" class="btn btn-xs btn-primary">'.$topup->status.'</a>';
-                   }else {
-                    return '<a href="javascript:void(0)" class="btn btn-xs btn-danger">'.$topup->status.'</a>';
-                   }
+                    if($topup->status == '2'){
+                        return '<a href="javascript:void(0)" class="btn btn-xs btn-primary">'.'successfull'.'</a>';
+                       }elseif($topup->status = '1') {
+                        return '<a href="javascript:void(0)" class="btn btn-xs btn-info">'.'awaiting confirmation'.'</a>';
+                       }else {
+                        return '<a href="javascript:void(0)" class="btn btn-xs btn-danger">'.'failed'.'</a>';
+                       }
                 })
                 // ->editColumn('id', 'ID: {{$id}}')
                 ->make(true);
@@ -57,10 +60,12 @@ class DatatablesController extends Controller
                 //     return '<a href="#more-'.$tran->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i>more details</a>';
                 // })
                 ->addColumn('action', function($tran) {
-                   if($tran->trans_status == 'successfull'){
-                    return '<a href="javascript:void(0)" class="btn btn-xs btn-primary">'.$tran->trans_status.'</a>';
+                   if($tran->trans_status == '2'){
+                    return '<a href="javascript:void(0)" class="btn btn-xs btn-primary">'.'successfull'.'</a>';
+                   }elseif($tran->trans_status = '1') {
+                    return '<a href="javascript:void(0)" class="btn btn-xs btn-info">'.'awaiting approval'.'</a>';
                    }else {
-                    return '<a href="javascript:void(0)" class="btn btn-xs btn-danger">'.$tran->trans_status.'</a>';
+                    return '<a href="javascript:void(0)" class="btn btn-xs btn-danger">'.'failed'.'</a>';
                    }
                 })
                 // ->editColumn('id', 'ID: {{$id}}')
@@ -81,11 +86,13 @@ class DatatablesController extends Controller
                 //     return '<a href="#more-'.$tran->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i>more details</a>';
                 // })
                 ->addColumn('action', function($bill) {
-                   if($bill->status == 'successfull'){
-                    return '<a href="javascript:void(0)" class="btn btn-xs btn-primary">'.$bill->status.'</a>';
-                   }else {
-                    return '<a href="javascript:void(0)" class="btn btn-xs btn-danger">'.$bill->status.'</a>';
-                   }
+                    if($bill->status == '2'){
+                        return '<a href="javascript:void(0)" class="btn btn-xs btn-primary">'.'successfull'.'</a>';
+                       }elseif($tran->trans_status = '1') {
+                        return '<a href="javascript:void(0)" class="btn btn-xs info">'.'awaiting approval   '.'</a>';
+                       }else {
+                        return '<a href="javascript:void(0)" class="btn btn-xs btn-danger">'.'failed'.'</a>';
+                       }
                 })
                 // ->editColumn('id', 'ID: {{$id}}')
                 ->make(true);
@@ -95,33 +102,43 @@ class DatatablesController extends Controller
     {
         $id = Auth::user()->id;
         $wallet = User::find($id)->wallet;
-        $loans = DB::table('take_loans')
-                        ->select(['loan_amount','loan_app_date', 'loan_length', 'verified', 'created_at']);
+        $loans = Take_loan::where('wallet_key', $wallet->wallet_key)
+                        ->select(['id','loan_amount','loan_app_date', 'loan_length', 'verified', 'created_at']);
 
         return Datatables::of($loans)
                     ->editColumn('created_at', function($loan) {
-                        return  $loan->created_at->diffForHumans();
+                        return $loan->created_at->diffForHumans();
+                        //return  $dt->diffForHumans;
                     })
-                    ->addColumn('action', function($loan) {
+                    ->addColumn('status', function($loan) {
                         if($loan->verified == '2'){
                             //2 approved
-                            return '<a href="javascript:void(0)" class="btn btn-xs btn-primary">'.'Approved'.'</a>';
+                            return '<button class="btn btn-xs btn-primary">'.'Approved'.'</button>';
                         }elseif($loan->verified == '1') {
-                            //1 awaiting approval
-                            return '<a href="javascript:void(0)" class="btn btn-xs btn-info">'.'Awaiting Approval'.'</a>';
+                            //0 awaiting approval
+                            return '<button class="btn btn-xs btn-info">'.'Awaiting Approval'.'</button>';
                         }elseif($loan->verified == '0') {
-                            //0 not approved
-                            return '<a href="javascript:void(0)" class="btn btn-xs btn-danger">'.'Disapproved'.'</a>';
+                            //1 not approved
+                            return '<button class="btn btn-xs btn-danger">'.'Disapproved'.'</button>';
                         }
                     })
-                    ->editColumn('edit', function($loan) {
-                        return '<a href="#more-'.$loan->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i>edit</a>';
+                    ->editColumn('action', function($loan) {
+                        $buttons= '';
+                        if($loan->verified == '2'){
+                            $buttons = '<a href="#" class="btn btn-xs btn-primary viewloan"> <i class="fa fa-eye"></i></a>';
+                        }else{
+                            $buttons = '<a href="#" class="btn btn-xs btn-primary editloan" id="editloan" data-edit-id="'.$loan->id.'" data-toggle="modal"><i class="fa fa-edit"></i></a>';
+                        $buttons .= '&nbsp;&nbsp;<a href="#" class="btn btn-xs btn-danger deleteloan"  data-edit-id="'.$loan->id.'" data-toggle="modal"><i class="fa fa-trash"></i></a>';
+                        }
+                        
+                        //return '<a href="javascript:void(0)" class="btn btn-xs btn-primary editloan" id="editloan" data-edit-id="'.$loan->id.'" data-toggle="modal"><i class="fa fa-edit"></i></a>';
+                        return $buttons;
                     })
-                    ->editColumn('delete', function ($loan) {
-                        return '<a href="#more-'.$loan->id.'" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-danger"></i>cancel loan</a>';
-                    })
+                    // ->editColumn('delete', function ($loan) {
+                    //     return '<a href="javascript:void(0)" class="btn btn-xs btn-danger" deleteloan><i class="fa fa-trash"></i></a>';
+                    // })
                     
-                    ->rawColumns(['edit'=>'edit','delete' => 'delete','action' => 'action'])
+                    ->rawColumns(['status'=>'status','action' => 'action'])
                     ->make(true);
     }
 }

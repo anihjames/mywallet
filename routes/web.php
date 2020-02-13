@@ -118,9 +118,16 @@ Route::group(['prefix'=> 'user'], function() {
    ]);
 
    Route::post('/applyforloan', [
-       'uses'=> 'DashboardController@ApplyforLoan',
+       'uses'=> 'LoanController@ApplyforLoan',
        'as'=> 'applyforloan'
    ]);
+
+   Route::get('/editloan/{id}', 'LoanController@editloan');
+
+   Route::post('/editloan', [
+       'uses'=> 'LoanController@updateloan',
+       'as'=> 'updateloan',
+       ]);
 
 });
 
@@ -140,6 +147,8 @@ Route::group(['prefix'=> 'datatable'], function() {
     Route::get('/bills', 'DatatablesController@Bill');
 
     Route::get('/loantaken', 'DatatablesController@Loans');
+
+    
 });
 
 
