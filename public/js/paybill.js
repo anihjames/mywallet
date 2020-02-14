@@ -142,6 +142,7 @@ $(document).ready(function() {
       serverside:true,
       ajax: "/datatable/bills",
       columns: [
+          {data:'id', name:'Id'},
           {data:'payment_pid', name:'Payment ID'},
           {data: 'bills_type', name: 'Bill Type'},
           {data: 'bills_amount', name:'Amount'},
@@ -149,6 +150,6 @@ $(document).ready(function() {
           {data:'created_at', name: 'Date/Time'},
           {data:'action', name: 'Status', orderable: false,}
       ],
-      order: [[0,'desc']],
+      //order: [[1,'desc']],
   })
 })

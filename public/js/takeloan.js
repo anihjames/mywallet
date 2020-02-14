@@ -33,13 +33,16 @@ $(document).ready(function() {
         })
       })
 
+      
+
+
 
       $('#loan-datatable').DataTable({
           processing: true,
           serverside: true,
           ajax: '/datatable/loantaken',
           columns: [
-            //   {data: 'id', name: 'id', 'visiable': false},
+               {data: 'id', name: 'id', 'visiable': false},
               {data: 'loan_amount', name:'Loan Amount'},
               {data: 'loan_length', name:'Loan Tenure'},
               {data:'loan_app_date',name: 'Date Applied'},
@@ -50,7 +53,7 @@ $(document).ready(function() {
               
               
           ],
-           order: [[1, 'desc']]
+           //order: [[1, 'desc']]
       })
 
 

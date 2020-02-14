@@ -21,13 +21,11 @@ class DatatablesController extends Controller
         $id = Auth::user()->id;
         $wallet = User::find($id)->wallet;
         $topups = DB::table('mobile_topups')->where('wallet_key', $wallet->wallet_key)->select([ 'id','toptype', 'mobile_number', 'network_provider', 'amount', 'status', 'created_at', 'updated_at']);
-        //dd($trans);
+       
         
         return Datatables::of($topups)
                 ->editColumn('created_at', '{!! $created_at !!}')
-                // ->addColumn('action', function($tran) { 
-                //     return '<a href="#more-'.$tran->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i>more details</a>';
-                // })
+                
                 ->addColumn('action', function($topup) {
                     if($topup->status == '2'){
                         return '<a href="javascript:void(0)" class="btn btn-xs btn-primary">'.'successfull'.'</a>';
@@ -37,7 +35,7 @@ class DatatablesController extends Controller
                         return '<a href="javascript:void(0)" class="btn btn-xs btn-danger">'.'failed'.'</a>';
                        }
                 })
-                // ->editColumn('id', 'ID: {{$id}}')
+               
                 ->make(true);
     }
 
@@ -56,9 +54,7 @@ class DatatablesController extends Controller
         
         return Datatables::of($trans)
                 ->editColumn('created_at', '{!! $created_at !!}')
-                // ->addColumn('action', function($tran) { 
-                //     return '<a href="#more-'.$tran->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i>more details</a>';
-                // })
+               
                 ->addColumn('action', function($tran) {
                    if($tran->trans_status == '2'){
                     return '<a href="javascript:void(0)" class="btn btn-xs btn-primary">'.'successfull'.'</a>';
@@ -68,7 +64,7 @@ class DatatablesController extends Controller
                     return '<a href="javascript:void(0)" class="btn btn-xs btn-danger">'.'failed'.'</a>';
                    }
                 })
-                // ->editColumn('id', 'ID: {{$id}}')
+                
                 ->make(true);
     }
 
@@ -77,24 +73,22 @@ class DatatablesController extends Controller
         $id = Auth::user()->id;
         $wallet = User::find($id)->wallet;
         $bills = Bill_payment::where('wallet_key', $wallet->wallet_key)
-                    ->select(['payment_pid','bills_type', 'bills_amount', 'type_code', 'status', 'created_at', 'bill_type_id']);
+                    ->select(['id','payment_pid','bills_type', 'bills_amount', 'type_code', 'status', 'created_at', 'bill_type_id']);
                     
 
         return Datatables::of($bills)
                 ->editColumn('created_at', '{!! $created_at !!}')
-                // ->addColumn('action', function($tran) { 
-                //     return '<a href="#more-'.$tran->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i>more details</a>';
-                // })
+                
                 ->addColumn('action', function($bill) {
                     if($bill->status == '2'){
                         return '<a href="javascript:void(0)" class="btn btn-xs btn-primary">'.'successfull'.'</a>';
-                       }elseif($tran->trans_status = '1') {
-                        return '<a href="javascript:void(0)" class="btn btn-xs info">'.'awaiting approval   '.'</a>';
+                       }elseif($bill->trans_status = '1') {
+                        return '<a href="javascript:void(0)" class="btn btn-xs btn-info">'.'awaiting approval   '.'</a>';
                        }else {
                         return '<a href="javascript:void(0)" class="btn btn-xs btn-danger">'.'failed'.'</a>';
                        }
                 })
-                // ->editColumn('id', 'ID: {{$id}}')
+                
                 ->make(true);
     }
 
@@ -103,12 +97,13 @@ class DatatablesController extends Controller
         $id = Auth::user()->id;
         $wallet = User::find($id)->wallet;
         $loans = Take_loan::where('wallet_key', $wallet->wallet_key)
-                        ->select(['id','loan_amount','loan_app_date', 'loan_length', 'verified', 'created_at']);
+                        ->select(['id','loan_pid','loan_amount','loan_app_date', 'loan_length', 'verified', 'created_at']);
+                        
 
         return Datatables::of($loans)
                     ->editColumn('created_at', function($loan) {
                         return $loan->created_at->diffForHumans();
-                        //return  $dt->diffForHumans;
+                        
                     })
                     ->addColumn('status', function($loan) {
                         if($loan->verified == '2'){
@@ -131,12 +126,9 @@ class DatatablesController extends Controller
                         $buttons .= '&nbsp;&nbsp;<a href="#" class="btn btn-xs btn-danger deleteloan"  data-edit-id="'.$loan->id.'" data-toggle="modal"><i class="fa fa-trash"></i></a>';
                         }
                         
-                        //return '<a href="javascript:void(0)" class="btn btn-xs btn-primary editloan" id="editloan" data-edit-id="'.$loan->id.'" data-toggle="modal"><i class="fa fa-edit"></i></a>';
                         return $buttons;
                     })
-                    // ->editColumn('delete', function ($loan) {
-                    //     return '<a href="javascript:void(0)" class="btn btn-xs btn-danger" deleteloan><i class="fa fa-trash"></i></a>';
-                    // })
+                   
                     
                     ->rawColumns(['status'=>'status','action' => 'action'])
                     ->make(true);

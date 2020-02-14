@@ -4,20 +4,22 @@ namespace App\Traits;
 
 
 use Mail;
-use App\Models\User;
+use App\User;
 trait sendingMails{
     
     //public $data;
-    public function notifyadmin($newfirstname, $newlastname , $newemail, $admin)
+    public function notifyadmin($data)
     {
-        $data['first_name'] = $newfirstname;
-        $data['last_name'] = $newlastname;
-        $data['email'] = $newemail;
-        //dd($this->data, $admin);
+        //dd($data);
+        $admin = User::where('role', 'admin')->first();
+        $admin_email = $admin->email;
+        //dd($admin_email);
+        //$data = $loandetails;
    
-        Mail::send(['emails.adminnotify'], $data, function($message) use($admin) {
-            $message->to($admin, 'admin');
-            $message->from('myWallet@gmail.com','myWallet');
+        Mail::send('emails.loan_notify_admin', $data, function($message) use($admin_email) {
+            $message->to($admin_email)
+                    ->from('myWallet@gmail.com')
+                        ->subject('Applied Loan Notification');
         });
         return true;
     }

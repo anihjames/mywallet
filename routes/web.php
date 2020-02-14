@@ -80,7 +80,7 @@ Route::get('/home', [
     // 'middleware'=> ['auth', 'verifyaccount']
 ]);
 
-Route::group(['prefix'=> 'user'], function() {
+Route::group(['prefix'=> 'user', 'middleware'=> 'auth'], function() {
 
    Route::get('/paybills', [
     'uses'=> 'DashboardController@viewbills',
@@ -124,14 +124,17 @@ Route::group(['prefix'=> 'user'], function() {
 
    Route::get('/editloan/{id}', 'LoanController@editloan');
 
-   Route::post('/editloan', [
+    Route::post('/editloan', [
        'uses'=> 'LoanController@updateloan',
        'as'=> 'updateloan',
        ]);
 
+
+       
+
 });
 
-Route::group(['prefix'=> 'datatable'], function() {
+Route::group(['prefix'=> 'datatable', 'middleware'=> 'auth'], function() {
     Route::get('/recentTopups', [
         'uses'=> 'DatatablesController@getrecentTopups',
         'as'=> 'recenttopups'
@@ -149,6 +152,17 @@ Route::group(['prefix'=> 'datatable'], function() {
     Route::get('/loantaken', 'DatatablesController@Loans');
 
     
+});
+
+Route::group(['prefix'=> 'setting', 'middleware'=> 'auth'], function() {
+
+    Route::get('/profile', [
+        'uses'=> 'DashboardController@editprofile',
+        'as'=> 'profile'
+   ]);
+
+
+
 });
 
 

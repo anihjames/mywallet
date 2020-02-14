@@ -20,10 +20,12 @@ use App\Http\Requests\eedcFormRequest as eedcformRequest;
 use App\Http\Requests\MobileTopUpRequest as TopupRequest;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
+use App\Traits\sendingMails;
 
 class DashboardController extends Controller
 {
-    
+    use sendingMails;
+
     public function __construct() 
     {
         $this->middleware(['auth', 'verifyaccount']);
@@ -94,7 +96,7 @@ class DashboardController extends Controller
         
         if($bill_amount > $wallet_id->wallet_balance){
             $msg = 'Insufficient Fund';
-            $status = 'failed';
+            $status = 0;
             $paybill = Bill_payment::create([
                 'payment_pid' => $pid,
                 'wallet_key'=> $wallet_id->wallet_key,
@@ -130,7 +132,7 @@ class DashboardController extends Controller
         } else {
             $newbalance = $wallet_id->wallet_balance - $bill_amount; // substract bill amount from the wallet amount
             $msg = 'Transaction made successfully';
-            $status = 'successfull';
+            $status = 1;
             $paybill = Bill_payment::create([
                 'payment_pid' => $pid,
                 'wallet_key'=> $wallet_id->wallet_key,
@@ -178,7 +180,7 @@ class DashboardController extends Controller
 
         if($data['amount'] > $wallet->wallet_balance) {
             $msg = 'Insufficient Fund';
-            $status = 'failed';
+            $status = 0;
             $paybill = Bill_payment::create([
                 'payment_pid' => $pid,
                 'wallet_key'=> $wallet->wallet_key,
@@ -210,7 +212,7 @@ class DashboardController extends Controller
         }else {
             $newbalance = $wallet->wallet_balance - $data['amount']; // substract bill amount from the wallet amount
             $msg = 'Transaction made successfully';
-            $status = 'successfull';
+            $status = 1;
             $paybill = Bill_payment::create([
                 'payment_pid' => $pid,
                 'wallet_key'=> $wallet->wallet_key,
@@ -258,7 +260,7 @@ public function Topup(TopupRequest $request)
     $balance = '';
     $msg = '';
     $status = '';
-    //dd($mobile_pid);
+    
 
     if($request['dataplan'] != '') {
         $data = explode('-', $request['dataplan']);
@@ -274,11 +276,11 @@ public function Topup(TopupRequest $request)
     if($amount > $wallet->wallet_balance){
         $balance = $wallet->wallet_balance;
         $msg = 'Insufficient Fund for Topup';
-        $status = 'failed';
+        $status = 0;
     }else{
         $balance = $wallet->wallet_balance - $amount;
         $msg = 'Mobile Top-up successful';
-        $status = 'successfully';
+        $status = 2;
 
     }
 
@@ -320,7 +322,11 @@ public function Topup(TopupRequest $request)
 
 
 
-
+public function editprofile()
+{   
+    $user = Auth::user();
+    return view('dashboard.profile')->with('user', $user);
+}
     
 
     private function generate_pid() {

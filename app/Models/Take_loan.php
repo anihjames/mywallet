@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Take_loan extends Model 
 {
-    protected $fillable = ['loan_pid', 'loan_amount', 'loan_app_date', 'loan_length', 'wallet_key', 'created_at', 'updated_at'];
+    protected $fillable = ['loan_pid', 'loan_amount', 'loan_app_date', 'loan_length', 'wallet_key', 'created_at', 'updated_at', 'verified'];
 
     protected $dates = [
         'created_at',

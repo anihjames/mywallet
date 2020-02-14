@@ -20,7 +20,7 @@
           <section>
               <div class="container-fluid">
                 <header class="container"> 
-                    <h1 class="h3 display">Transactions Made</h1>
+                    {{-- <h1 class="h3 display">Transactions Made</h1> --}}
                   </header>
 
                 <div class="row d-flex">
@@ -28,7 +28,7 @@
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4></h4>
+                                    <h4>All Transactions</h4>
                                 </div>
 
                                 <div class="card-body">

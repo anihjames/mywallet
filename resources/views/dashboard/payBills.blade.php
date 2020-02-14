@@ -55,21 +55,7 @@
                         </div>
 
 
-                        {{-- <div class="col-lg-3">
-                            <div class="card">
-                                    <div class="card-body">
-                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#TravelModal" style="text-decoration:none;">
-                                            <div>
-                                                <h4 class="card-title">Travel</h4>
-                                                <p class="card-text">Travels and Tours </p>
-                                            </div>
-                                        </a>
-
-                                        @include('partials.travel_modal')
-                                    </div>
-                               
-                            </div>
-                        </div> --}}
+         
 
 
                     </div>
@@ -83,7 +69,7 @@
                               <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        
+                                        <h4>All Transactions</h4>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
@@ -91,6 +77,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>Payment Id</th>
+                                                        <th>Transaction ID</th>
                                                         <th>Type</th>
                                                         <th>Amount</th>
                                                         <th>Card/Meter Number</th>

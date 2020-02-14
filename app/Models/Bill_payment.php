@@ -12,4 +12,6 @@ class Bill_payment extends Model
     {
         return $this->belongTo('App\Models\Wallet', 'wallet_key', 'wallet_key');
     }
+
+   
 }

@@ -46,7 +46,14 @@
           <li class="{{ request()->segment(2) == 'mobiletopup' ? 'active': ''}}"> <a href="{{route('getmobile_topup')}}"> <i class="fa fa-mobile" aria-hidden="true" style="font-size:20px;"></i>Mobile Top-up</a></li>
           <li class="{{ request()->segment(2) == 'takeloan' ? 'active' : ''}}"><a href="{{route('takeloan')}}"> <i class="fa fa-money"></i>Take Loans</a></li>
           <li class="{{ request()->segment(2) == 'transactions' ? 'active': ''}}"><a href="{{route('transaction')}}"> <i class="icon-grid"></i>Transactions</a></li>
-          <li> <a href="#"> <i class="fa fa-cog" aria-hidden="true"></i>Settings</a></li>
+          {{-- <li > <a href="{{route('setting')}}"> <i class="fa fa-cog" aria-hidden="true"></i>Settings</a></li> --}}
+          <li class="{{ request()->segment(1) == 'setting' ? 'active': ''}}"><a href="#settingdropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-cog" aria-hidden="true"></i>Settings</a>
+            <ul id="settingdropdown" class="collapse list-unstyled ">
+              <li class=""><a href="{{route('profile')}}">Edit Profile</a></li>
+              <li><a href="#">Change password</a></li>
+              <li><a href="#">Delete Account</a></li>
+            </ul>
+          </li>
         </ul>
       </div>
       

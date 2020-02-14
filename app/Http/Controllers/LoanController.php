@@ -11,9 +11,13 @@ use App\User;
 use App\Models\Transaction;
 use App\Mobels\Wallet;
 use DB;
+use App\Traits\sendingMails;
+
 
 class LoanController extends Controller
 {
+    use sendingMails;
+
     public function editloan($id)
     {
         $loan = Take_loan::find($id);
@@ -22,20 +26,12 @@ class LoanController extends Controller
 
     public function ApplyforLoan(ApplyLoan $request)
 {
-    //dd($request->all());
-    // $key = '';
-    // if(Cache::has('wallet')) {
-    //  $wallet = Cache::get('wallet');   
-    // }else {
         $id = Auth::user()->id;
         $wallet = User::find($id)->wallet;
         $key = $wallet->wallet_key;
-    //}
-    $loan_pid = $this->generate_pid();
-    $dt = carbon::now();
-    //$status = '';
+        $loan_pid = $this->generate_pid();
+        $dt = carbon::now();
     
-
     $takeloan = Take_loan::create([
         'wallet_key'=> $wallet->wallet_key,
         'loan_pid'=> $loan_pid,
@@ -45,15 +41,6 @@ class LoanController extends Controller
         'verified'=> 1,
     ]);
 
-    // if($takeloan->verified == 0){
-    //     $status = 'awaiting approval';
-    // }elseif($takeloan->verified == 2){
-    //     $status = 'Approved';
-    // }else{
-    //     $status = 'failed';
-    // }
-    $newbalance = $wallet->wallet_balance + $request['amount'];
-    //$oldcredit = $wallet->credit_total;
     $newcredit = $wallet->credit_total + $request['amount'];    
     $transaction = Transaction::create([
         'trans_type'=> 'credit',
@@ -61,13 +48,20 @@ class LoanController extends Controller
         'trans_status'=> $takeloan->verified,
         'trans_name'=> 'Applied For Loan',
         'trans_amount'=> $takeloan->loan_amount,
-        'balance'=> $newbalance,
+        'balance'=> $wallet->wallet_balance,
     ]);
+    $loan['key'] = $takeloan->wallet_key;
+    $loan['pid'] = $takeloan->loan_pid;
+    $loan['amount'] = $takeloan->loan_amount;
+    $loan['date'] = $takeloan->loan_app_date;
+    $loan['length'] = $takeloan->loan_length;
 
-    $wallet = DB::table('wallets')->where('wallet_key',$wallet->wallet_key)->update([
-        'wallet_balance'=> $newbalance,
-        'credit_total'=> $newcredit
-    ]);
+    $notifyadmin = $this->notifyadmin($loan);
+
+    // $wallet = DB::table('wallets')->where('wallet_key',$wallet->wallet_key)->update([
+    //     'wallet_balance'=> $newbalance,
+    //     'credit_total'=> $newcredit
+    // ]);
 
     return response()->json(['message'=>'Loan as be Placed' ]);
 
@@ -82,11 +76,13 @@ class LoanController extends Controller
         $key = $wallet->wallet_key;
         $db = Carbon::now();
 
-        $update = DB::table('take_loans')->update([
-            'loan_amount'=> $request['amount'],
+        $update = DB::table('take_loans')->where('loan_pid', $request['loan_pid'])->update([
+            'loan_amount'=> $request['loan_amount'],
             'loan_length'=> $request['loan_tenure'],
-            'updated_at'=> $db->date,
+            'updated_at'=> $db,
         ]);
+
+        return redirect()->back()->with('message', 'Update maked successfully');
     }
 
     private function generate_pid() {

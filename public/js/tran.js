@@ -12,7 +12,7 @@ $(document).ready(function() {
             {data:'created_at', name:'Date/Time'},
             {data:'action', name:'Action',orderable: false, searchable: false}
         ],
-        order: [[0 , 'created_at']],
+        //order: [[1 , 'desc']],
         
     })
 

@@ -5,10 +5,10 @@
       </div>
       <form action="{{route('updateloan')}}" method="post" id="editloan">
         <div class="modal-body">
-            <div class="alert alert-danger loan-error-msg" style="display:none;">
-                <ul class="errormsg"></ul>
-              </div>
-              <p class="alert alert-success" id="loanMsg" style="display:none;">
+            <input type="hidden" name="loan_pid" value="{{$loan->loan_pid}}">
+            @if (session('message'))
+                <p class="aler alert-success">{{session('message')}}</p>
+            @endif
             <div class="form-group">
                 <label for="loan_amount">Loan Amount</label>
                 <input type="number"class="form-control col-sm-12"  name="loan_amount" value="{{$loan->loan_amount}}" placeholder="100000" required>        

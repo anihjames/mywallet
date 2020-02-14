@@ -35,7 +35,7 @@
                                             <table class="table" id="loan-datatable">
                                                 <thead>
                                                     <tr>
-                                                        {{-- <th>#</th> --}}
+                                                        <th>#</th>
                                                         <th>Loan Amount</th>
                                                         <th>Loan tenure</th>
                                                         <th>Date Applied</th>
@@ -77,6 +77,11 @@
 @push('scripts')
     <script>
        $(function() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
         $("#loan-datatable").on("click", "a.editloan", function () {
                 
             $("#loan_modal_body").load("/user/editloan/" + $(this).data("edit-id"),function(responseTxt, statusTxt, xh)
@@ -92,26 +97,39 @@
 
             $('#loan-datatable').on('click', 'a.deleteloan', function() {
 
-                
-                // Swal.fire({
-                //     title: 'Are you sure?',
-                //     text: "You won't be able to revert this!",
-                //     icon: 'warning',
-                //     showCancelButton: true,
-                //     confirmButtonColor: '#3085d6',
-                //     cancelButtonColor: '#d33',
-                //     confirmButtonText: 'Yes, delete it!'
-                //     }).then((result) => {
-                //     if (result.value) {
-                //         Swal.fire(
-                //         'Deleted!',
-                //         'Your file has been deleted.',
-                //         'success'
-                //         )
-                //     }
-                //     })
+                var id = $(this).data('edit-id');
+               
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            url:action,
+                            type: 'POST',
+                            data: values,
+                            success(res) {
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Your file has been deleted.',
+                                    'success'
+                        )
+                            },
+                            error(err) {
+                                
+                            }
+                        })
+                        
+                    }
+                    })
             })
 
+            
            
 
        })
