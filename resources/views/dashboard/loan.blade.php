@@ -35,7 +35,7 @@
                                             <table class="table" id="loan-datatable">
                                                 <thead>
                                                     <tr>
-                                                        <th>#</th>
+                                                        <th>Loan ID</th>
                                                         <th>Loan Amount</th>
                                                         <th>Loan tenure</th>
                                                         <th>Date Applied</th>

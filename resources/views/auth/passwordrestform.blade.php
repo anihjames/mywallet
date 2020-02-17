@@ -14,7 +14,7 @@
               </div>
           @endif
           <div class="logo text-uppercase"><span>Reset</span><strong class="text-primary">Password</strong></div>
-          <form method="post" action="{{route('changepassword')}}" class="text-left form-validate">
+          <form method="post" action="{{route('newpassword')}}" class="text-left form-validate">
             <div class="form-group-material">
               <input id="login-username" type="email" name="email" required data-msg="Please enter your Email" class="input-material">
               <label for="login-username" class="label-material">Email</label>

@@ -63,8 +63,10 @@ $(document).ready(function() {
               type: 'GET',
           },
           columns: [
-            //   {data: 'id', name: 'id', 'visiable': false},
+            {data: 'mobile_pid', name: 'id'},
+            {data: 'toptype', name:'type type'},
               {data: 'mobile_number', name:'mobile number'},
+              
               {data: 'network_provider', name:'Network'},
               {data:'amount',name: 'Amount'},
               {data: 'action', name:'Status'},

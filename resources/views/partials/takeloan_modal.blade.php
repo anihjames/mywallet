@@ -14,7 +14,7 @@
               <p class="alert alert-success" id="loanMsg" style="display:none;">
             <div class="form-group ">
                 <label for="" id="label">Loan amount</label>
-                <input type="number" name="loan_amount" class="form-control" placeholder="270 000" >
+                <input type="number" name="loan_amount" class="form-control col-sm-9" placeholder="270 000" >
             </div>
 
             {{-- <div class="form-group">

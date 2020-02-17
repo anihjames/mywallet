@@ -42,7 +42,7 @@ $(document).ready(function() {
           serverside: true,
           ajax: '/datatable/loantaken',
           columns: [
-               {data: 'id', name: 'id', 'visiable': false},
+               {data: 'loan_pid', name: 'id'},
               {data: 'loan_amount', name:'Loan Amount'},
               {data: 'loan_length', name:'Loan Tenure'},
               {data:'loan_app_date',name: 'Date Applied'},

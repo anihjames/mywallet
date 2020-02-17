@@ -104,6 +104,23 @@ class UserController extends Controller
          
     }
 
+    public function Update(Request $request)
+    {
+        $id = Auth::user()->id;
+        $user = User::find($id);
+        $user->fname = $request['first_name'];
+        $user->lname = $request['last_name'];
+        $user->email = $request['email'];
+        $user->phone = $request['mobile_number'];
+        $user->state = $request['state'];
+        $user->country = $request['country'];
+        $user->address = $request['address'];
+
+        $user->save();
+
+        return redirect()->back()->with('status', 'Profile Updated Successfully');
+    }
+
     public function verifyUser($token)
     {
         $verifyUser = VerifyUser::where('token', $token)->first();

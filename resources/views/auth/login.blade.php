@@ -9,6 +9,19 @@
     <div class="container">
       <div class="form-outer text-center d-flex align-items-center">
           <div class="form-inner">
+
+            @if ($errors->any())
+              <div class="alert alert-danger">
+                  <ul style="list-style: none;">
+                      @foreach ($errors->all() as $error)
+                          <li>{{ $error }}</li>
+                      @endforeach
+                  </ul>
+              </div>
+            @endif
+
+            
+
             @if (session('status'))
             <div class="alert alert-success">
               {{ session('status') }}

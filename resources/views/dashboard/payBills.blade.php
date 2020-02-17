@@ -76,7 +76,7 @@
                                             <table class="table"  id="billpay">
                                                 <thead>
                                                     <tr>
-                                                        <th>Payment Id</th>
+                                                        {{-- <th>Payment Id</th> --}}
                                                         <th>Transaction ID</th>
                                                         <th>Type</th>
                                                         <th>Amount</th>

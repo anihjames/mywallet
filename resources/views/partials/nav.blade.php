@@ -18,11 +18,12 @@
           </div>
           <div class="row">
             <div class="container">
-              @if (Session::has('still_owing'))
-                @if (Session::get('stil_owing') == 0)
-                <a href="" class="btn btn-primary"> Pay Loan</a>
-                @else
+              @if (Session::has('owing'))
+                
+                @if (Session::get('owing') == 0)
                 <a href="" class="btn btn-primary"> Wallet top-up</a>
+                @else
+                <a href="{{route('get_pay_loan')}}" class="btn btn-primary"> Pay Loan</a>
                 @endif
                   
               @endif
@@ -50,8 +51,8 @@
           <li class="{{ request()->segment(1) == 'setting' ? 'active': ''}}"><a href="#settingdropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-cog" aria-hidden="true"></i>Settings</a>
             <ul id="settingdropdown" class="collapse list-unstyled ">
               <li class=""><a href="{{route('profile')}}">Edit Profile</a></li>
-              <li><a href="#">Change password</a></li>
-              <li><a href="#">Delete Account</a></li>
+              <li><a href="{{route('changepassword')}}">Change password</a></li>
+              <li><a href="{{route('deleteAccount')}}">Delete Account</a></li>
             </ul>
           </li>
         </ul>

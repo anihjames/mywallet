@@ -41,7 +41,9 @@ class LoanController extends Controller
         'verified'=> 1,
     ]);
 
-    $newcredit = $wallet->credit_total + $request['amount'];    
+    $newcredit = $wallet->credit_total + $request['loan_amount'];    
+    $newbalance = $wallet->wallet_balance + $request['loan_amount'];
+    //dd($newcredit);
     $transaction = Transaction::create([
         'trans_type'=> 'credit',
         'wallet_key'=> $wallet->wallet_key,
@@ -55,13 +57,17 @@ class LoanController extends Controller
     $loan['amount'] = $takeloan->loan_amount;
     $loan['date'] = $takeloan->loan_app_date;
     $loan['length'] = $takeloan->loan_length;
+    
+    $wallet = DB::table('wallets')->where('wallet_key',$wallet->wallet_key)->update([
+        'wallet_balance'=> $newbalance,
+        'credit_total'=> $newcredit,
+        'owing'=> 1,
+        'loan_token_amount'=> $request['loan_amount'],
+    ]);
 
     $notifyadmin = $this->notifyadmin($loan);
 
-    // $wallet = DB::table('wallets')->where('wallet_key',$wallet->wallet_key)->update([
-    //     'wallet_balance'=> $newbalance,
-    //     'credit_total'=> $newcredit
-    // ]);
+   
 
     return response()->json(['message'=>'Loan as be Placed' ]);
 
@@ -83,6 +89,11 @@ class LoanController extends Controller
         ]);
 
         return redirect()->back()->with('message', 'Update maked successfully');
+    }
+
+    public function get_pay_loan()
+    {
+        return view('dashboard.pay_loan');
     }
 
     private function generate_pid() {

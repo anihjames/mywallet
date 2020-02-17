@@ -39,6 +39,12 @@ Route::group(['prefix'=> 'auth'], function() {
         'as'=> 'signup',
     ]);
 
+
+    Route::post('/update', [
+        'uses'=> 'UserController@Update',
+        'as'=> 'update'
+    ]);
+
     Route::get('/resetform', [
         'uses'=> 'UserController@passwordresetForm',
         'as'=> 'passwordresetform'
@@ -56,9 +62,9 @@ Route::group(['prefix'=> 'auth'], function() {
         'as'=> 'resetlink',
     ]);
     
-    Route::post('/changepassword', [
+    Route::post('/passwordreset', [
         'uses'=> 'UserController@changePassword',
-        'as'=> 'changepassword'
+        'as'=> 'newpassword'
     ]);
     
     Route::get('/resetpassword', [
@@ -129,6 +135,13 @@ Route::group(['prefix'=> 'user', 'middleware'=> 'auth'], function() {
        'as'=> 'updateloan',
        ]);
 
+    
+       Route::get('/pay_loan', [
+        'uses'=> 'LoanController@get_pay_loan',
+        'as'=> 'get_pay_loan'
+       ]);
+    
+    
 
        
 
@@ -161,6 +174,26 @@ Route::group(['prefix'=> 'setting', 'middleware'=> 'auth'], function() {
         'as'=> 'profile'
    ]);
 
+
+   Route::get('/changepassword', [
+        'uses'=> 'DashboardController@getchangepassword',
+        'as'=> 'changepassword'
+   ]);
+
+   Route::get('/deleteaccount', [
+        'uses'=> 'DashboardController@DeleteAccount',
+        'as'=> 'deleteAccount'
+   ]);
+
+   Route::post('/passwordchange', [
+    'uses'=> 'DashboardController@changePassword',
+    'as'=> 'passwordchange'
+   ]);
+
+   Route::post('/accountdelete', [
+    'uses'=> 'DashboardController@Destory',
+    'as'=> 'destory'
+   ]);
 
 
 });

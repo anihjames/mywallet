@@ -13,8 +13,10 @@ use App\Models\Wallet;
 use App\Models\Transaction;
 use App\Models\MobileTopup;
 use App\Models\Take_loan;
+use App\Models\Pay_loan_taken;
 use App\Http\Requests\BillFormRequest as BillRequest;
 use App\Http\Requests\ApplyLoanRequest as ApplyLoan;
+use App\Http\Requests\changePasswordRequest as changePassword;
 use App\Mail\walletNotify;
 use App\Http\Requests\eedcFormRequest as eedcformRequest;
 use App\Http\Requests\MobileTopUpRequest as TopupRequest;
@@ -37,10 +39,8 @@ class DashboardController extends Controller
         $id = Auth::user()->id;
         $wallet = User::find($id)->wallet;
         Cache::put('wallet',$wallet);
-        $is_owing = DB::table('pay_loan_takens')->where('wallet_key', $wallet->wallet_key)->select('still_owing')->get(); 
-        //dd($wallet->wallet_key);
         Session::put('balance', $wallet->wallet_balance);
-         Session::put('still_owing', $is_owing);
+         Session::put('owing', $wallet->owing);
         return view('dashboard.home');
     }
 
@@ -90,10 +90,10 @@ class DashboardController extends Controller
        
         $wallet_id = User::find($user_id)->wallet;
         
-        $bill_type = Bill_type::find($data['package'])->first();
+        $bill_type = Bill_type::find($data['package']);
         
-        $bill_amount = $bill_type->bill_amount; //get bill amount
-        
+        $bill_amount = $bill_type['bill_amount']; //get bill amount
+        //dd($bill_amount);
         if($bill_amount > $wallet_id->wallet_balance){
             $msg = 'Insufficient Fund';
             $status = 0;
@@ -116,12 +116,12 @@ class DashboardController extends Controller
                 'balance'=> $wallet_id->wallet_balance,
             ]);
     
-            // $changewallet = Wallet::where('wallet_key', $wallet_id->wallet_key)->first();
-            // $changewallet->wallet_balance = $wallet_id->wallet_balance;
-            // $olddebitTotal = $changewallet->debit_total;
-            // $newdebitTotal = $olddebitTotal + $bill_amount;
-            // $changewallet->debit_total = $newdebitTotal;
-            // $changewallet->save();
+            $changewallet = Wallet::where('wallet_key', $wallet_id->wallet_key)->first();
+            $changewallet->wallet_balance = $wallet_id->wallet_balance;
+            $olddebitTotal = $changewallet->debit_total;
+            $newdebitTotal = $olddebitTotal + $bill_amount;
+            $changewallet->debit_total = $newdebitTotal;
+            $changewallet->save();
 
             
     
@@ -132,7 +132,7 @@ class DashboardController extends Controller
         } else {
             $newbalance = $wallet_id->wallet_balance - $bill_amount; // substract bill amount from the wallet amount
             $msg = 'Transaction made successfully';
-            $status = 1;
+            $status = 2;
             $paybill = Bill_payment::create([
                 'payment_pid' => $pid,
                 'wallet_key'=> $wallet_id->wallet_key,
@@ -200,12 +200,12 @@ class DashboardController extends Controller
                 'balance'=> $wallet->wallet_balance,
             ]);
     
-            // $changewallet = Wallet::where('wallet_key', $wallet->wallet_key)->first();
-            // $changewallet->wallet_balance = $wallet->wallet_balance;
-            // $olddebitTotal = $changewallet->debit_total;
-            // $newdebitTotal = $olddebitTotal + $data['amount'];
-            // $changewallet->debit_total = $newdebitTotal;
-            // $changewallet->save();
+            $changewallet = Wallet::where('wallet_key', $wallet->wallet_key)->first();
+            //$changewallet->wallet_balance = $wallet->wallet_balance;
+            $olddebitTotal = $changewallet->debit_total;
+            $newdebitTotal = $olddebitTotal + $data['amount'];
+            $changewallet->debit_total = $newdebitTotal;
+            $changewallet->save();
 
             return response()->json(['message'=> $msg]);
     
@@ -325,13 +325,80 @@ public function Topup(TopupRequest $request)
 public function editprofile()
 {   
     $user = Auth::user();
-    return view('dashboard.profile')->with('user', $user);
+    $wallet = User::find($user->id)->wallet;
+    $data = [
+        'user'=> $user,
+        'wallet_key'=> $wallet->wallet_key,
+    ];
+    return view('dashboard.profile')->with($data);
+}
+
+public function getchangePassword()
+{
+    return view('dashboard.changePassword');
 }
     
+public function DeleteAccount()
+{
+    return view('dashboard.deleteaccount');
+}
 
-    private function generate_pid() {
-        $pin=mt_rand(100000,999999);
-        $user_no=str_shuffle($pin);
-        return $user_no;
-     }
+public function changePassword(changePassword $request)
+{
+    $user = Auth::user();
+
+    $input_oldpass = $request['old_password'];
+    $newpass = $request['password'];
+    
+    $credentials = [
+        'email'=> $user->email,
+        'password'=> $input_oldpass
+    ];
+
+    if(auth()->attempt($credentials)) {
+        $user->password = bcrypt($newpass);
+        $user->save();
+
+        Auth::logout();
+        return redirect('/auth/login');
+    }else {
+        return redirect()->back()->withErrors("Old password doesn't match.")->withInput();
+    }
+}
+
+public function Destory(Request $request)
+{
+    $this->validate($request,[
+        'email'=>'email|required',
+        'wallet_key'=> 'required|max:40'
+    ]);
+    
+    $user = User::where('email', $request['email'])->exists();
+    $wallet = Wallet::where('wallet_key', $request['wallet_key'])->exists();
+    //dd($email);
+    if($user && $wallet){
+        $user_trans = Transaction::where('wallet_key', $request['wallet_key'])->delete();
+        $user_bills = Bill_payment::where('wallet_key', $request['wallet_key'])->delete();
+        $user_loans = Take_loan::where('wallet_key', $request['wallet_key'])->delete();
+        $user_paylaons = Pay_loan_taken::where('wallet_key', $request['wallet_key'])->delete();
+        $user_mobiletopup = MobileTopup::where('wallet_key', $request['wallet_key'])->delete();
+        $deleteuser = User::where('email', $request['email'])->delete();
+        $deletewallet = Wallet::where('wallet_key', $request['wallet_key'])->delete();
+
+        Auth::logout();
+        return redirect('/auth/login');
+
+    }else {
+        return redirect()->back()->withErrors('Invaild Input Values')->withInput();
+    }
+
+}
+
+
+
+private function generate_pid() {
+    $pin=mt_rand(100000,999999);
+    $user_no=str_shuffle($pin);
+    return $user_no;
+}
 }

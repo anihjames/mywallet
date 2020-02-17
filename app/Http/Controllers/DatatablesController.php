@@ -20,20 +20,21 @@ class DatatablesController extends Controller
     {
         $id = Auth::user()->id;
         $wallet = User::find($id)->wallet;
-        $topups = DB::table('mobile_topups')->where('wallet_key', $wallet->wallet_key)->select([ 'id','toptype', 'mobile_number', 'network_provider', 'amount', 'status', 'created_at', 'updated_at']);
+        $topups = DB::table('mobile_topups')->where('wallet_key', $wallet->wallet_key)->select([ 'id', 'mobile_pid','toptype', 'mobile_number', 'network_provider', 'amount', 'status', 'created_at', 'updated_at']);
        
         
         return Datatables::of($topups)
                 ->editColumn('created_at', '{!! $created_at !!}')
                 
                 ->addColumn('action', function($topup) {
-                    if($topup->status == '2'){
-                        return '<a href="javascript:void(0)" class="btn btn-xs btn-primary">'.'successfull'.'</a>';
-                       }elseif($topup->status = '1') {
-                        return '<a href="javascript:void(0)" class="btn btn-xs btn-info">'.'awaiting confirmation'.'</a>';
-                       }else {
+                    if($topup->status == '0') {
                         return '<a href="javascript:void(0)" class="btn btn-xs btn-danger">'.'failed'.'</a>';
-                       }
+                    }elseif($topup->status == '1') {
+                        return '<a href="javascript:void(0)" class="btn btn-xs btn-info">'.'awaiting confirmation'.'</a>'; 
+                    }elseif($topup->status == '2') {
+                        return '<a href="javascript:void(0)" class="btn btn-xs btn-primary">'.'successfull'.'</a>';
+                    }
+                    
                 })
                
                 ->make(true);
@@ -50,19 +51,20 @@ class DatatablesController extends Controller
         $id = Auth::user()->id;
         $wallet = User::find($id)->wallet;
         $trans = DB::table('transactions')->where('wallet_key', $wallet->wallet_key)->select([ 'id', 'trans_type', 'trans_status', 'trans_name', 'trans_amount', 'balance', 'created_at', 'updated_at']);
-        //dd($trans);
+        //dd($trans->get());
         
         return Datatables::of($trans)
                 ->editColumn('created_at', '{!! $created_at !!}')
                
                 ->addColumn('action', function($tran) {
-                   if($tran->trans_status == '2'){
-                    return '<a href="javascript:void(0)" class="btn btn-xs btn-primary">'.'successfull'.'</a>';
-                   }elseif($tran->trans_status = '1') {
-                    return '<a href="javascript:void(0)" class="btn btn-xs btn-info">'.'awaiting approval'.'</a>';
-                   }else {
-                    return '<a href="javascript:void(0)" class="btn btn-xs btn-danger">'.'failed'.'</a>';
-                   }
+                    if($tran->trans_status == '0') {
+                        return '<a href="javascript:void(0)" class="btn btn-xs btn-danger">'.'failed'.'</a>';
+                    }elseif($tran->trans_status == '1') {
+                        return '<a href="javascript:void(0)" class="btn btn-xs btn-info">'.'awaiting approval'.'</a>';
+                    }elseif($tran->trans_status == '2') {
+                        return '<a href="javascript:void(0)" class="btn btn-xs btn-primary">'.'successfull'.'</a>';
+                    }
+                
                 })
                 
                 ->make(true);
@@ -82,8 +84,6 @@ class DatatablesController extends Controller
                 ->addColumn('action', function($bill) {
                     if($bill->status == '2'){
                         return '<a href="javascript:void(0)" class="btn btn-xs btn-primary">'.'successfull'.'</a>';
-                       }elseif($bill->trans_status = '1') {
-                        return '<a href="javascript:void(0)" class="btn btn-xs btn-info">'.'awaiting approval   '.'</a>';
                        }else {
                         return '<a href="javascript:void(0)" class="btn btn-xs btn-danger">'.'failed'.'</a>';
                        }
