@@ -67,6 +67,6 @@
     </div>
 @endsection
 
-@push('styles')
+{{-- @push('styles')
 <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
-@endpush
+@endpush --}}

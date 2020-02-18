@@ -36,6 +36,9 @@ class DatatablesController extends Controller
                     }
                     
                 })
+                ->addColumn('number', function($topup) {
+                    return '0'.$topup->mobile_number;
+                })
                
                 ->make(true);
     }
@@ -110,11 +113,11 @@ class DatatablesController extends Controller
                             //2 approved
                             return '<button class="btn btn-xs btn-primary">'.'Approved'.'</button>';
                         }elseif($loan->verified == '1') {
-                            //0 awaiting approval
-                            return '<button class="btn btn-xs btn-info">'.'Awaiting Approval'.'</button>';
+                            //1 awaiting approval
+                            return '<button class="btn btn-xs btn-info">'.'Pending'.'</button>';
                         }elseif($loan->verified == '0') {
-                            //1 not approved
-                            return '<button class="btn btn-xs btn-danger">'.'Disapproved'.'</button>';
+                            //0 not approved
+                            return '<button class="btn btn-xs btn-danger">'.'Rejected'.'</button>';
                         }
                     })
                     ->editColumn('action', function($loan) {

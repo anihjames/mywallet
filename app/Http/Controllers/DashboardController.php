@@ -30,7 +30,7 @@ class DashboardController extends Controller
 
     public function __construct() 
     {
-        $this->middleware(['auth', 'verifyaccount']);
+        $this->middleware(['auth', 'verifyaccount' ]);
         
         
     }
@@ -114,6 +114,7 @@ class DashboardController extends Controller
                 'trans_name'=> $paybill->bills_type,
                 'trans_amount'=> $paybill->bills_amount,
                 'balance'=> $wallet_id->wallet_balance,
+                'trans_pid'=> $paybill->payment_pid,
             ]);
     
             $changewallet = Wallet::where('wallet_key', $wallet_id->wallet_key)->first();
@@ -150,6 +151,7 @@ class DashboardController extends Controller
                 'trans_name'=> $paybill->bills_type,
                 'trans_amount'=> $paybill->bills_amount,
                 'balance'=> $newbalance,
+                'trans_pid'=> $paybill->payment_pid,
             ]);
     
             $changewallet = Wallet::where('wallet_key', $wallet_id->wallet_key)->first();
@@ -198,6 +200,7 @@ class DashboardController extends Controller
                 'trans_name'=> $paybill->bills_type,
                 'trans_amount'=> $paybill->bills_amount,
                 'balance'=> $wallet->wallet_balance,
+                'trans_pid'=> $paybill->payment_pid,
             ]);
     
             $changewallet = Wallet::where('wallet_key', $wallet->wallet_key)->first();
@@ -230,6 +233,7 @@ class DashboardController extends Controller
                 'trans_name'=> $paybill->bills_type,
                 'trans_amount'=> $paybill->bills_amount,
                 'balance'=> $newbalance,
+                'trans_pid'=> $paybill->payment_pid
             ]);
     
             $changewallet = Wallet::where('wallet_key', $wallet->wallet_key)->first();
@@ -265,7 +269,7 @@ public function Topup(TopupRequest $request)
     if($request['dataplan'] != '') {
         $data = explode('-', $request['dataplan']);
         $amount = $data[2];
-        $dataplan = $data[0].''. $data[1];
+        $dataplan = $data[0].'-'. $data[1];
         $type = 'Data Top up';
     }else {
         $amount = $request['amount'];
@@ -304,6 +308,7 @@ public function Topup(TopupRequest $request)
         'trans_name'=> 'Mobile Topup',
         'trans_amount'=> $topup->amount,
         'balance'=> $balance,
+        'trans_pid'=> $topup->mobile_pid,
     ]);
 
         //send a mail to the user

@@ -65,7 +65,7 @@ $(document).ready(function() {
           columns: [
             {data: 'mobile_pid', name: 'id'},
             {data: 'toptype', name:'type type'},
-              {data: 'mobile_number', name:'mobile number'},
+              {data: 'number', name:'mobile number'},
               
               {data: 'network_provider', name:'Network'},
               {data:'amount',name: 'Amount'},
@@ -75,7 +75,7 @@ $(document).ready(function() {
               {data: 'created_at', name:'Date'}
               
           ],
-          order: [[0, 'desc']]
+          order: [[1, 'desc']]
       })
 
       function printErrorMsg (msg) {

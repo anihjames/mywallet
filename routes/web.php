@@ -83,14 +83,14 @@ Route::group(['prefix'=> 'auth'], function() {
 Route::get('/home', [
     'uses'=> 'DashboardController@index',
     'as'=> 'home',
-    // 'middleware'=> ['auth', 'verifyaccount']
+    'middleware'=> 'adminroutes',
 ]);
 
-Route::group(['prefix'=> 'user', 'middleware'=> 'auth'], function() {
+Route::group(['prefix'=> 'user', 'middleware'=> ['auth', 'adminroutes']], function() {
 
    Route::get('/paybills', [
     'uses'=> 'DashboardController@viewbills',
-    'as'=> 'paybills'
+    'as'=> 'paybills',
    ]);
 
    Route::get('/takeloan', function() {

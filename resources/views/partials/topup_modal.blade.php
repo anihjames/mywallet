@@ -52,9 +52,9 @@
                         <label for="">Choose a plan...</label>
                         <select name="dataplan" class="form-control">
                             <option value="">Choose Plan</option>
-                            <option value="30-1.5GB-1000">30days 1.5G N1000</option>
-                            <option value="30-2GB-1200">30days 2GB N1200</option>
-                            <option value="30-3GB-1500">30days 3GB N1500</option>
+                            <option value="30days-1.5GB-1000">30days 1.5G N1000</option>
+                            <option value="30days-2GB-1200">30days 2GB N1200</option>
+                            <option value="30days-3GB-1500">30days 3GB N1500</option>
                         </select>
 
                     </div>
