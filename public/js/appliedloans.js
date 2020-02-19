@@ -19,4 +19,96 @@ $(document).ready(function() {
           ],
           order: [[1, 'desc']]
       })
+
+
+      $('#loans').on('click', 'a.viewloan', function() {
+
+        $('#loan_modal_body').load('/admin/viewloans/' + $(this).data("edit-id"), function(responseTxt, statusTxt, xh) {
+           $('#loan_modal').modal({
+             backdrop: 'static',
+             keyboard: true
+           }, "show")
+        });
+        return false;
+      })
+
+      $('#loans').on('change', 'select.approveloan', function(){
+        var values = $(this).val();
+        var newvalue = values.split('-');
+       
+        
+        
+        if(newvalue[0] == '1') {
+          Swal.fire({
+            title: 'You About Approve Loan',
+            text: "",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, approve it!'
+            }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    url:'/admin/loanactions',
+                    type: 'POST',
+                    data: {data:values},
+                    success(res) {
+                      if(res.success == 'success') {
+                        Swal.fire(
+                          'Approved!',
+                          'Loan as been approved.',
+                          'success'
+                        )
+
+                        $('#loans').DataTable().ajax.reload();
+                      }
+                        
+                
+                    },
+                    error(err) {
+                        
+                    }
+                })
+                
+            }
+            })
+        }else if(newvalue[0] == '0') {
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, reject loan!'
+            }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    url:'/admin/loanactions',
+                    type: 'POST',
+                    data: {data:values},
+                    success(res) {
+                      if(res.success == 'success') {
+                              Swal.fire(
+                                'Rejected!',
+                                'Loan rejected.',
+                                'success'
+                          )
+
+                          $('#loans').DataTable().ajax.reload();
+
+                      }
+                        
+                    },
+                    error(err) {
+                        
+                    }
+                })
+                
+            }
+            })
+        }
+        
+      })
 });

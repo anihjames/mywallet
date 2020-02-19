@@ -95,6 +95,21 @@
             return false;
             });
 
+            $("#loan-datatable").on("click", "a.viewloan", function () {
+                
+                $("#loan_modal_body").load("/user/editloan/" + $(this).data("edit-id"),function(responseTxt, statusTxt, xh)
+                    {
+                         $("#loan_modal").modal({
+                                        backdrop: 'static',
+                                        keyboard: true
+                                    }, "show");
+                                   // bindForm(this);
+                    });
+                return false;
+                });
+    
+
+
             $('#loan-datatable').on('click', 'a.deleteloan', function() {
 
                 var id = $(this).data('edit-id');
@@ -110,15 +125,19 @@
                     }).then((result) => {
                     if (result.value) {
                         $.ajax({
-                            url:action,
+                            url:'/datatable/deleteloan',
                             type: 'POST',
-                            data: values,
+                            data: {data:id},
                             success(res) {
-                                Swal.fire(
+                                if(res.message == 'success') {
+                                    Swal.fire(
                                     'Deleted!',
                                     'Your file has been deleted.',
                                     'success'
-                        )
+                              )
+                              $('#loans-datatable').DataTable().ajax.reload();
+                                }
+                                
                             },
                             error(err) {
                                 

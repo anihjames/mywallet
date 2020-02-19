@@ -45,7 +45,16 @@
             <!-- Income-->
             <div class="card income text-center">
               <div class="icon"><i class="icon-line-chart"></i></div>
-              <div class="number">126,418</div><strong class="text-primary">Total Credits</strong>
+              <div class="number">NGN{{$total_credit}}</div><strong class="text-primary">Total Credits</strong>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <!-- Income-->
+            <div class="card income text-center">
+              <div class="icon"><i class="icon-line-chart"></i></div>
+              <div class="number">NGN{{$total_debit}}</div><strong class="text-primary">Total Debits</strong>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do.</p>
             </div>
           </div>
@@ -68,7 +77,31 @@
 
       </div>
 
+      <div class="modal fade" id="payloan_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog"  id="payloan_modal_body">
+         
+        </div>
+    </div>
+
     </section>
         
     </div>
 @endsection
+
+@push('scripts')
+<script>
+  $("#loan-datatable").on("click", "a.editloan", function () {
+                
+                $("#loan_modal_body").load("/user/editloan/" + $(this).data("edit-id"),function(responseTxt, statusTxt, xh)
+                    {
+                         $("#loan_modal").modal({
+                                        backdrop: 'static',
+                                        keyboard: true
+                                    }, "show");
+                                   // bindForm(this);
+                    });
+                return false;
+                });
+</script>
+    
+@endpush

@@ -32,7 +32,7 @@
         <h5 class="sidenav-heading">Main</h5>
         <ul id="side-main-menu" class="side-menu list-unstyled">                  
           <li class="{{ request()->segment(2) == 'home' ? 'active': ''}}"><a href="{{route('admin.index')}}"> <i class="icon-home"></i>Home</a></li>
-          <li><a href=""> <i class="icon-user"></i>Users</a></li>
+          <li class="{{ request()->segment(2) == 'users' ? 'active': ''}}"><a href="{{route('total.users')}}"> <i class="icon-user"></i>Users</a></li>
           <li class=" {{ request()->segment(2) == 'bills' ? 'active': ''}}"> <a href="{{route('total.bills')}}"> <i class="icon-form"></i>Bills</a></li>
           <li class="{{ request()->segment(2) == 'topups' ? 'active': ''}}"> <a href="{{route('total.topups')}}"> <i class="fa fa-mobile" aria-hidden="true" style="font-size:20px;"></i>Mobile Top-up</a></li>
           <li class="{{ request()->segment(2) == 'loans' ? 'active' : ''}}"><a href="{{route('total.loans')}}"> <i class="fa fa-money"></i>Take Loans</a></li>

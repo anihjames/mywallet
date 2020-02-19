@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('title')
-    Admin -- Bills
+    Admin -- Users
 @endsection
 
 @section('content')
@@ -12,40 +12,38 @@
             <div class="container-fluid">
               <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{route('home')}}">Dashboard</a></li>
-                <li class="breadcrumb-item active">Bills</li>
+                <li class="breadcrumb-item active">Users</li>
               </ul>
             </div>
           </div>
 
+
           <section>
               <div class="container-fluid">
                   <header>
-                      <h1 class="h3 display">Bill Transactions</h1>
+
                   </header>
+
                   <div class="row d-flex">
                       <div class="container">
-
-                        <div class="col-lg-12">
-                            <div class="card">
+                          <div class="col-lg-12">
+                              <div class="card">
                                 <div id="feeds-box" class="card-header d-flex justify-content-between align-items-center">
-                                    <h2 class="h5 display">Bills Payment</h4>
-
-                                     
+                                    <h2 class="h5 display">User</h4>
                                 </div>
 
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table" id="bills">
+                                        <table class="table" id="users">
                                             <thead>
                                                 <tr>
-                                                    <th>ID</th>
+                                                    {{-- <th>ID</th> --}}
                                                     <th>Fullname</th>
                                                     <th>Email</th>
-                                                    <th>Type</th>
-                                                    <th>Amount</th>
-                                                    <th>Card/Meter Number</th>
-                                                    <th>Date/Time</th>
-                                                    <th>Status</th> 
+                                                    <th>Mobile Number</th>
+                                                    <th>Email Verified</th>
+                                                    <th>status</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
 
@@ -54,11 +52,10 @@
                                     </div>
 
                                 </div>
-                                
 
-                            </div>
+                              </div>
 
-                        </div>
+                          </div>
 
                       </div>
 
@@ -66,20 +63,20 @@
 
               </div>
 
-              <div class="modal fade" id="bill_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog"  id="bill_modal_body">
+              <div class="modal fade" id="users_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog"  id="users_modal_body">
                  
                 </div>
             </div>
           </section>
 
-         
-
     </div>
     
 @endsection
+
 @push('scripts')
-    <script src="{{asset('js/total_bill.js')}}"></script>
+<script src="{{asset('js/totaluser.js')}}"></script>
+<script src="{{asset('js/handleactions.js')}}"></script>
 @endpush
 
 @push('styles')

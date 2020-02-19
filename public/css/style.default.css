@@ -848,12 +848,12 @@ nav.navbar a.menu-btn:hover {
 }
 
 .statistics .income .number {
-  font-size: 2.5em;
+  font-size: 1.5em;
   color: #555;
 }
 
 .statistics .income strong {
-  font-size: 1.5em;
+  font-size: 1.0em;
 }
 
 .statistics .data-usage canvas {

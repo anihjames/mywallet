@@ -18,7 +18,10 @@ class RestrictUser
     {
         if(Auth::user()->verified_email == 0) {
             Auth::logout();
-            return redirect('/login')->with('warning','Please Confirm Email to Login');
+            return redirect('/auth/login')->with('warning','Please Confirm Email to Login');
+        }elseif(Auth::user()->access == 0) {
+            Auth::logout();
+            return redirect('/auth/login')->with('danger','Account Has been blocked');
         }
         return $next($request);
     }

@@ -21,10 +21,29 @@ Route::get('/loans', [
     'as'=> 'total.loans'
 ]);
 
+Route::get('/users', [
+    'uses'=> 'AdminController@TotalUsers',
+    'as'=> 'total.users'
+]);
+
 Route::get('/getbills', 'AdminController@getBills');
 
 Route::get('/gettopups', 'AdminController@getTopups');
 
 Route::get('/viewtopup/{id}', 'AdminController@viewTops');
 
+Route::get('/viewbills/{id}', 'AdminController@viewBills');
+
 Route::get('/getloans', 'AdminController@getLoans');
+
+Route::get('/viewloans/{id}', 'AdminController@viewloans');
+
+Route::post('/loanactions', 'AdminController@loanActions');
+
+Route::get('/getusers', 'AdminController@getUsers');
+
+Route::get('/viewusers/{id}', 'AdminController@viewusers');
+
+Route::post('/useractions', 'AdminController@useractions');
+
+Route::get('/gettransactions', 'AdminController@gettransactions');

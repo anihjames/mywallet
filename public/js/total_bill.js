@@ -1,10 +1,6 @@
 var data, action;
 $(document).ready(function(){
-    $.ajaxSetup({
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-      });
+   
       
       $('#bills').DataTable({
         processing: true,
@@ -22,5 +18,16 @@ $(document).ready(function(){
         ],
         order: [[1, 'desc']],
     });
+
+    $('#bills').on('click', 'a.viewbill', function() {
+
+      $('#bill_modal_body').load('/admin/viewbills/' + $(this).data("edit-id"), function(responseTxt, statusTxt, xh) {
+        $('#bill_modal').modal({
+           backdrop: 'static',
+           keyboard: true
+        }, "show");
+      });
+      return false;
+    })
    
 })

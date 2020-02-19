@@ -74,4 +74,20 @@
 @push('scripts')
 <script src="{{asset('js/appliedloans.js')}}"></script>
 @endpush
-
+@push('styles')
+  .the-legend {
+    border-style: none;
+    border-width: 0;
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 0;
+    width: auto;
+    padding: 0 10px;
+    border: 1px solid #e0e0e0;
+  }
+  .the-fieldset {
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    margin-bottom:20px;
+  }
+@endpush

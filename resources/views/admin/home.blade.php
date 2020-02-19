@@ -23,15 +23,15 @@
 
                   </header>
 
-                  <div class="row">
+                  <div class="row d-flex">
                       {{-- total number of users --}}
                       <div class="col-lg-4">
                           <div class="card user-activity">
                             <h2 class="display h4">User Activity</h2>
-                            <div class="number">210</div>
+                            <div class="number">{{$users}}</div>
                             <h3 class="h4 display">Total Users</h3>
                             <div class="progress">
-                              <div role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar bg-primary"></div>
+                              <div role="progressbar" style="width:{{$users}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar bg-primary"></div>
                             </div>
                             
                           </div>
@@ -39,11 +39,85 @@
 
                       </div>
 
+                      <div class="col-lg-4">
+                        <div class="card user-activity">
+                          <h2 class="display h4">Transaction Activities</h2>
+                          <div class="input-group">
+                            <div class="form-group col-md-6">
+                              <div class="number">{{$transactions}}</div>
+                              <h3 class="h4 display">Loans</h3>
+                            </div>
+                            <div class="form-group">
+                              <div class="number">22</div>
+                              <h5 class="h5 display">Top-ups</h5>
+                            </div>  
+                          </div>
+                          
+                          <div class="progress">
+                            <div role="progressbar" style="width:{{$transactions}}%"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar bg-primary"></div>
+                          </div>
+                          
+                        </div>
+                        
+
+                    </div>
+
+                    
+
                   </div>
 
+
+                  <div class="row d-flex">
+                    <div class="container">
+                      <header>
+
+                      </header>
+
+                      <div class="col-lg-12">
+                        <div class="card">
+                          <div id="feeds-box" class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 display">Transactions</h4>
+                        </div>
+
+                        <div class="card-body">
+                          <div class="table-responsive">
+                            <table class="table" id="transaction">
+                              <thead>
+                                <tr>
+                                  <th>Transaction ID</th>
+                                  <th>Transaction Type</th>
+                                  <th>Transaction Name</th>
+                                  <th>Transaction Amount</th>
+                                  <th>Balance</th>
+                                  <th>Status</th>
+                                  <th>Date/time</th>
+                                </tr>
+                              </thead>
+
+                            </table>
+
+                          </div>
+
+                        </div>
+        
+                        </div>
+        
+                      </div>
+
+                    </div>
+                    
+      
+                  </div>
               </div>
 
           </section>
+
+          
     </div>
     
 @endsection
+
+@push('scripts')
+<script src="{{asset('js/trans.js')}}"></script>
+    
+@endpush

@@ -91,9 +91,14 @@ class LoanController extends Controller
         return redirect()->back()->with('message', 'Update maked successfully');
     }
 
-    public function get_pay_loan()
+    public function payloan()
     {
-        return view('dashboard.pay_loan');
+        $user = Auth::user()->wallet;
+        $wallet_key = $user->wallet_key;
+        $loans = DB::table('take_loans')->where('wallet_key', $wallet_key)->get();
+        
+        
+        return view('dashboard.payloan')->with('loans',$loans);
     }
 
     private function generate_pid() {

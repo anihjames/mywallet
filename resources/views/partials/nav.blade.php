@@ -23,7 +23,7 @@
                 @if (Session::get('owing') == 0)
                 <a href="" class="btn btn-primary"> Wallet top-up</a>
                 @else
-                <a href="{{route('get_pay_loan')}}" class="btn btn-primary"> Pay Loan</a>
+                <a href="{{route('get_payloan')}}" class="btn btn-primary"> Pay Loan</a>
                 @endif
                   
               @endif

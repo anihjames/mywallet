@@ -38,10 +38,14 @@ class DashboardController extends Controller
     {
         $id = Auth::user()->id;
         $wallet = User::find($id)->wallet;
+        $data = [
+            'total_credit'=> $wallet->credit_total,
+            'total_debit'=> $wallet->debit_total,
+        ];
         Cache::put('wallet',$wallet);
         Session::put('balance', $wallet->wallet_balance);
          Session::put('owing', $wallet->owing);
-        return view('dashboard.home');
+        return view('dashboard.home')->with($data);
     }
 
     public function viewmobile_topup()

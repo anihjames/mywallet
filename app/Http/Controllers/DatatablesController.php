@@ -123,7 +123,8 @@ class DatatablesController extends Controller
                     ->editColumn('action', function($loan) {
                         $buttons= '';
                         if($loan->verified == '2'){
-                            $buttons = '<a href="#" class="btn btn-xs btn-primary viewloan"> <i class="fa fa-eye"></i></a>';
+                            // $buttons = '<a href="#" class="btn btn-xs btn-primary viewloan" data-edit-id="'.$loan->id.'" data-toggle="modal"> <i class="fa fa-eye"></i></a>';
+                            $buttons = '<a href="#" class="btn btn-xs btn-danger deleteloan"  data-edit-id="'.$loan->id.'" data-toggle="modal"><i class="fa fa-trash"></i></a>';
                         }else{
                             $buttons = '<a href="#" class="btn btn-xs btn-primary editloan" id="editloan" data-edit-id="'.$loan->id.'" data-toggle="modal"><i class="fa fa-edit"></i></a>';
                         $buttons .= '&nbsp;&nbsp;<a href="#" class="btn btn-xs btn-danger deleteloan"  data-edit-id="'.$loan->id.'" data-toggle="modal"><i class="fa fa-trash"></i></a>';
@@ -135,5 +136,15 @@ class DatatablesController extends Controller
                     
                     ->rawColumns(['status'=>'status','action' => 'action'])
                     ->make(true);
+
+
+        
+    }
+
+    public function deleteloan(Request $request)
+    {
+       $loan = Take_loan::find($request['data']);
+       $loan->delete();
+       return response()->json(['message'=> 'success']);
     }
 }
