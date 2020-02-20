@@ -88,6 +88,8 @@ Route::get('/home', [
 
 Route::group(['prefix'=> 'user', 'middleware'=> ['auth', 'adminroutes']], function() {
 
+    Route::get('/notifications', 'UsersController@notifications');
+    
    Route::get('/paybills', [
     'uses'=> 'DashboardController@viewbills',
     'as'=> 'paybills',
@@ -120,7 +122,7 @@ Route::group(['prefix'=> 'user', 'middleware'=> ['auth', 'adminroutes']], functi
 
    Route::post('/topup', [
         'uses'=> 'DashboardController@TopUp',
-        'as'=> 'topup'
+        'as'=> 'topups'
    ]);
 
    Route::post('/applyforloan', [
@@ -145,6 +147,21 @@ Route::group(['prefix'=> 'user', 'middleware'=> ['auth', 'adminroutes']], functi
         'uses'=> 'LoanController@payloan',
         'as'=> 'get_payloan'
        ]);
+
+       Route::get('/wallettopup', [
+        'uses'=> 'DashboardController@wallet_topup',
+        'as'=> 'wallet_topup'
+   ]);
+
+   Route::post('/wallet_topup', [
+       'uses'=> 'PaymentController@topup',
+       'as'=> 'topup'
+   ]);
+
+   Route::post('/payloan', [
+       'uses'=> 'PaymentController@payloan',
+       'as'=>'payloan'
+   ]);
     
     
 
@@ -170,6 +187,8 @@ Route::group(['prefix'=> 'datatable', 'middleware'=> 'auth'], function() {
     Route::get('/loantaken', 'DatatablesController@Loans');
 
     Route::post('/deleteloan', 'DatatablesController@deleteloan');
+
+    Route::get('/getrecentloanpayment', 'DatatablesController@getrecent');
 
     
 });
@@ -215,7 +234,7 @@ Route::group(['prefix'=> 'payment', 'middleware'=>'auth'], function() {
 
     Route::post('/payloan', [
         'uses' => 'PaymentController@redirectToGateway',
-        'as' => 'payloan'
+        'as' => 'makepayments'
     ]);
 });
 

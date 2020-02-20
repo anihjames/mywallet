@@ -37,9 +37,10 @@
                                                     <label for="loan_pid">Enter Loan ID</label>
                                                     <input type="text" name="orderID" class="form-control">
                                                 </div> --}}
+                                                <input type="hidden" value="pay loan" name="tran_type">
                                                 <div class="form-group col-md-6">
                                                     <label>Loan ID</label>
-                                                    <select name="orderID" id="cable" class="form-control">
+                                                    <select name="orderID" id="cable" class="form-control"required>
                                                       <option value="" selected>Select...</option>
                                                       @foreach ($loans as $loan)
                                                         <option value="{{$loan->loan_pid}}">{{$loan->loan_pid}}</option>
@@ -47,14 +48,14 @@
                                                     </select>
                                                    
                                                   </div>
-                                                  <div class="form-group col-md-6">
+                                                  {{-- <div class="form-group col-md-6">
                                                       <label for="Loan Amount"></label>
 
-                                                  </div>
+                                                  </div> --}}
                                                 <div class="form-group">
                                                     <div class="col-sm-6">
                                                         <label for="amount">Amount</label>
-                                                        <input type="text" name="amount" class="form-control">
+                                                        <input type="text" name="amount" class="form-control" required>
 
                                                     </div>
 
@@ -86,8 +87,74 @@
 
                   </div>
 
+                  <div class="row d-flex">
+                    <div class="container">
+                      <header>
+          
+                      </header>
+          
+                      <div class="col-lg-12">
+                        <div class="card">
+                          <div id="feeds-box" class="card-header d-flex justify-content-between align-items-center">
+                            <h2 class="h5 display">Recent Payments</h4>
+                        </div>
+          
+                        <div class="card-body">
+                          <div class="table-responsive">
+                            <table class="table" id="tran-datatable">
+                              <thead>
+                                <tr>
+                                  <th>ID</th>
+                                  <th>Inital amount</th>
+                                  <th>Amount Paid</th>
+                                  <th>Amount Left</th>
+                                  <th>wallet Balance</th>
+                                  <th>Date/Time</th>
+                                  <th>Status</th>
+                                </tr>
+                              </thead>
+          
+                            </table>
+          
+                          </div>
+          
+                        </div>
+          
+                        </div>
+          
+                      </div>
+          
+                    </div>
+                    
+          
+                  </div>
+
               </div>
           </section>
 
     </div>
 @endsection
+
+@push('scripts')
+
+    <script>
+    $('#tran-datatable').DataTable( {
+                  processing: true,
+                  serverside:true,
+                  ajax: "/datatable/getrecentloanpayment",
+                  columns: [
+                      // {data: 'id', name:'Id', 'visiable': false},
+                      {data: 'loan_pid', name:'Transaction Type'},
+                      {data: 'loan_amount', name:'Name'},
+                      {data: 'amount_paid', name:'Amount Pid'},
+                      {data: 'amount_left', name: 'Balance'},
+                      {data:'wallet_balance', name:'Wallet Balance'},
+                      {data:'created_at', name:'Date/Time'},
+                      {data:'action', name:'Action',orderable: false, searchable: false}
+                  ],
+                  order: [[1 , 'desc']],
+                  
+              })
+        
+    </script>
+@endpush

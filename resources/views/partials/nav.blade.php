@@ -21,7 +21,7 @@
               @if (Session::has('owing'))
                 
                 @if (Session::get('owing') == 0)
-                <a href="" class="btn btn-primary"> Wallet top-up</a>
+                <a href="{{route('wallet_topup')}}" class="btn btn-primary"> Wallet top-up</a>
                 @else
                 <a href="{{route('get_payloan')}}" class="btn btn-primary"> Pay Loan</a>
                 @endif
@@ -47,7 +47,7 @@
           <li class="{{ request()->segment(2) == 'mobiletopup' ? 'active': ''}}"> <a href="{{route('getmobile_topup')}}"> <i class="fa fa-mobile" aria-hidden="true" style="font-size:20px;"></i>Mobile Top-up</a></li>
           <li class="{{ request()->segment(2) == 'takeloan' ? 'active' : ''}}"><a href="{{route('takeloan')}}"> <i class="fa fa-money"></i>Take Loans</a></li>
           @if (Auth::user()->role == 'user')
-          <li class="{{ request()->segment(2) == 'transactions' ? 'active': ''}}"><a href="{{route('transaction')}}"> <i class="icon-grid"></i>Transactions</a></li>
+          {{-- <li class="{{ request()->segment(2) == 'transactions' ? 'active': ''}}"><a href="{{route('transaction')}}"> <i class="icon-grid"></i>Transactions</a></li> --}}
           @endif
           
          
@@ -56,6 +56,7 @@
               <li class=""><a href="{{route('profile')}}">Edit Profile</a></li>
               <li><a href="{{route('changepassword')}}">Change password</a></li>
               <li><a href="{{route('deleteAccount')}}">Delete Account</a></li>
+              <li> <a href="{{route('wallet_topup')}}">Wallet Topup</a></li>
             </ul>
           </li>
         </ul>

@@ -41,8 +41,9 @@ class LoanController extends Controller
         'verified'=> 1,
     ]);
 
-    $newcredit = $wallet->credit_total + $request['loan_amount'];    
-    $newbalance = $wallet->wallet_balance + $request['loan_amount'];
+    $newcredit = $wallet->credit_total + $takeloan->loan_amount;    
+    $newbalance = $wallet->wallet_balance + $takeloan->loan_amount;
+    $amountowing = $wallet->loan_taken_amount + $takeloan->loan_amount;
     //dd($newcredit);
     $transaction = Transaction::create([
         'trans_type'=> 'credit',
@@ -50,7 +51,8 @@ class LoanController extends Controller
         'trans_status'=> $takeloan->verified,
         'trans_name'=> 'Applied For Loan',
         'trans_amount'=> $takeloan->loan_amount,
-        'balance'=> $wallet->wallet_balance,
+        'balance'=> $newbalance,
+        'trans_pid'=> $takeloan->loan_pid,
     ]);
     $loan['key'] = $takeloan->wallet_key;
     $loan['pid'] = $takeloan->loan_pid;
@@ -62,10 +64,10 @@ class LoanController extends Controller
         'wallet_balance'=> $newbalance,
         'credit_total'=> $newcredit,
         'owing'=> 1,
-        'loan_token_amount'=> $request['loan_amount'],
+        'loan_taken_amount'=> $amountowing,
     ]);
 
-    $notifyadmin = $this->notifyadmin($loan);
+    //$notifyadmin = $this->notifyadmin($loan);
 
    
 

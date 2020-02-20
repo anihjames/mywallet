@@ -44,17 +44,17 @@
                           <h2 class="display h4">Transaction Activities</h2>
                           <div class="input-group">
                             <div class="form-group col-md-6">
-                              <div class="number">{{$transactions}}</div>
+                              <div class="number">{{$loans}}</div>
                               <h3 class="h4 display">Loans</h3>
                             </div>
                             <div class="form-group">
-                              <div class="number">22</div>
+                              <div class="number">{{$topup}}</div>
                               <h5 class="h5 display">Top-ups</h5>
                             </div>  
                           </div>
                           
                           <div class="progress">
-                            <div role="progressbar" style="width:{{$transactions}}%"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar bg-primary"></div>
+                            <div role="progressbar" style="width:{{$total}} %"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar bg-primary"></div>
                           </div>
                           
                         </div>

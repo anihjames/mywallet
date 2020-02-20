@@ -14,6 +14,7 @@ use App\Models\Transaction;
 use App\Models\MobileTopup;
 use App\Models\Take_loan;
 use App\Models\Pay_loan_taken;
+use App\Notifications\usersnotify;
 
 class AdminController extends Controller
 {
@@ -28,9 +29,15 @@ class AdminController extends Controller
     {
         $users = User::all()->count();
         $transactions = Transaction::all()->count();
+        $topups = MobileTopup::all()->count();
+        $loan = Take_loan::all()->count();
+        $total = intVal($topups) + intVal($loan);
         $data = [
             'users'=> $users,
-            'transactions'=> $transactions
+            'transactions'=> $transactions,
+            'topup'=> $topups,
+            'loans'=> $loan,
+            'total'=> $total,
         ];
        // dd($transactions);
         return view('admin.home')->with($data);
@@ -287,13 +294,17 @@ class AdminController extends Controller
                                 ->make(true);
     }
 
-    public function loanActions(Request $request)
+    public function loanActions(Request $request, User $user)
     {
         $data = $request['data'];
         
         $newdata = explode('-',$data);
 
-        //dd($newdata[0]. " ". $newdata[1] );
+
+        $wallet_key = DB::table('take_loans')->where('loan_pid', $newdata[1])->value('wallet_key');
+        $userdata= Wallet::where('wallet_key', $wallet_key)->first()->user;
+        // $user->notify(new usersnotify($userdata));
+        // dd('$user');
 
         if($newdata[0] == '1') {
             $updateloan = DB::table('take_loans')->where('loan_pid', $newdata[1])->update([
@@ -312,6 +323,8 @@ class AdminController extends Controller
                 'trans_status'=> '0',
             ]) ;
         }
+
+        
 
         return response()->json(['success'=> 'success']);
     }

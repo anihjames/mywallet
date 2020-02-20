@@ -38,9 +38,12 @@ class DashboardController extends Controller
     {
         $id = Auth::user()->id;
         $wallet = User::find($id)->wallet;
+        $loans = Take_loan::where('wallet_key', $wallet->wallet_key)->count();
         $data = [
             'total_credit'=> $wallet->credit_total,
             'total_debit'=> $wallet->debit_total,
+            'aquired_loan'=> $wallet->loan_taken_amount,
+            'loans'=> $loans
         ];
         Cache::put('wallet',$wallet);
         Session::put('balance', $wallet->wallet_balance);
@@ -48,9 +51,15 @@ class DashboardController extends Controller
         return view('dashboard.home')->with($data);
     }
 
+
     public function viewmobile_topup()
     {
         return view('dashboard.mobile_topup');
+    }
+    
+    public function wallet_topup()
+    {
+        return view('dashboard.wallet_topup');
     }
 
     public function viewbills()

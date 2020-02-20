@@ -37,8 +37,8 @@
                                             <table class="table" id="topup-datatable">
                                                 <thead>
                                                     <tr>
-                                                        <th>Top-up ID</th>
-                                                        <th>Top-up Type</th>
+                                                        <th>Topup ID</th>
+                                                        <th>Top Type</th>
                                                         <th>Mobile Number</th>
                                                         <th>Network Provider</th>
                                                         <th>Amount</th>

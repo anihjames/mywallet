@@ -40,6 +40,17 @@
           }
           @stack('styles');
         </style>
+        <script>
+          window.Laravel = <?php echo json_encode([
+              'csrfToken' => csrf_token(),
+          ]); ?>
+      </script>
+
+      @if(!auth()->guest())
+        <script>
+            window.Laravel.userId = <?php echo auth()->user()->id; ?>
+        </script>
+    @endif
        
   </head>
   

@@ -69,7 +69,9 @@ class DatatablesController extends Controller
                     }
                 
                 })
-                
+                // ->orderColumn('created_at', function ($query, $tran) {
+                //     $query->orderBy('trans_name', $tran);
+                // })
                 ->make(true);
     }
 
@@ -139,6 +141,34 @@ class DatatablesController extends Controller
 
 
         
+    }
+
+    public function getrecent()
+    {
+        $id = Auth::user()->id;
+        $wallet = User::find($id)->wallet;
+        $topups = DB::table('pay_loan_takens')
+                    ->join('wallets', 'wallets.wallet_key', '=', 'pay_loan_takens.wallet_key')
+                    ->join('take_loans', 'take_loans.loan_pid', '=', 'pay_loan_takens.loan_pid')
+                    ->where('pay_loan_takens.wallet_key', '=', $wallet->wallet_key)
+                    ->select('pay_loan_takens.loan_pid', 'pay_loan_takens.amount_paid','pay_loan_takens.amount_left','pay_loan_takens.verified', 'take_loans.loan_amount','wallets.wallet_balance', 'pay_loan_takens.created_at');
+
+    return Datatables::of($topups)
+                ->editColumn('pay_loan_takens.created_at', '{!! $created_at !!}')
+                
+                
+                ->addColumn('action', function($topup) {
+                    $buttons = '';
+                    if($topup->verified == '1'){
+                        $buttons = '<button class="btn btn-xs btn-primary">'.'successfull'.'</button>';
+                        //$buttons .= '&nbsp;&nbsp;<a href="#" class="btn btn-xs btn-primary viewtopup" data-edit-id="'.$topup->id.'" data-toggle="modal"> <i class="fa fa-eye"></i></a>';
+                    }else {
+                        $buttons =  '<button class="btn btn-xs btn-danger">'.'Failed'.'</button>';
+                        //$buttons .= '&nbsp;&nbsp;<a href="#" class="btn btn-xs btn-primary viewtopup" data-edit-id="'.$topup->id.'" data-toggle="modal"> <i class="fa fa-eye"></i></a>';
+                    }
+                    return $buttons;
+                })
+                ->make(true);
     }
 
     public function deleteloan(Request $request)

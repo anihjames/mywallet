@@ -46,6 +46,13 @@ class UserController extends Controller
         return view('auth.passwordrestform');
     }
 
+
+    public function notifications()
+    {
+        return auth()->user()->unreadNotifications()->limit(5)->get()->toArray();
+    }
+
+
     public function getref_code() {
         $characters='ABCDEFHJKLMNPQRSTUVWXYZ';  
        $pin=mt_rand(100000,999999).mt_rand(100000,999999).$characters[rand(0,strlen($characters)-3)];
@@ -154,6 +161,7 @@ class UserController extends Controller
         $newtoken = sha1(time());
         $createToken = VerifyUser::where('user_id', $user->id)->first();
         $createToken->token = $newtoken;
+        
         $createToken->save();
 
         Mail::to($user->email)->send(new VerifyMail($user));

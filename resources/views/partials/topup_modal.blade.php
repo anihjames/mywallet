@@ -9,7 +9,7 @@
                   <h5 id="exampleModalLabel" class="modal-title">Mobile Top-Up </h5>
                   <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
                 </div>
-                <form action="{{route('topup')}}" method="POST" id="mobile-topup">
+                <form action="{{route('topups')}}" method="POST" id="mobile-topup">
                 <div class="modal-body">
                     <div class="alert alert-danger print-error-msg" style="display:none;">
                         <ul></ul>

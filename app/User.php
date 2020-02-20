@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Notifications\userRegistered;
 
 class User extends Authenticatable
 {
@@ -45,5 +46,19 @@ class User extends Authenticatable
     public function wallet()
     {
         return $this->hasOne('App\Models\Wallet');
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function($model){
+             $user = User::where('role', 'admin')->first();
+             $user->notify(new userRegistered($model));
+
+            //Notification::send($admin, new userRegistered($model));
+
+
+        });
     }
 }

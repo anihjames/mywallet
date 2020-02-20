@@ -6,11 +6,11 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use App\Models\User;
+use App\User;
 
 class userRegistered extends Notification
 {
-    use Queueable;
+    use Queueable; 
     public $newUser;
 
     /**
@@ -18,9 +18,9 @@ class userRegistered extends Notification
      *
      * @return void
      */
-    public function __construct($newusers)
+    public function __construct(User $user)
     {
-        $this->newUser = $newusers;
+        $this->newUser = $user;
     }
 
     /**
@@ -31,7 +31,7 @@ class userRegistered extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
@@ -61,7 +61,8 @@ class userRegistered extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'createdUser'=> $this->newUser,
+            'admin'=> $notifiable
         ];
     }
 }

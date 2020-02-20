@@ -14,7 +14,7 @@
               <p class="alert alert-success" id="loanMsg" style="display:none;">
             <div class="form-group ">
                 <label for="" id="label">Loan amount</label>
-                <input type="number" name="loan_amount" class="form-control col-sm-9" placeholder="270 000" >
+                <input type="number" name="loan_amount" class="form-control col-sm-9" placeholder="270 000" required>
             </div>
 
             {{-- <div class="form-group">
@@ -24,8 +24,8 @@
             <div class="form-group">
                 <label for="Mobile_number">Loan</label>
                 <div class="input-group">
-                    <input type="number"class="form-control col-sm-6"  name="loan_tenure" placeholder="7">
-                    <input type="text"  class="col-sm-3 form-control" placeholder="months" name="months">
+                    <input type="number"class="form-control col-sm-6"  name="loan_tenure" placeholder="7" required>
+                    <input type="text"  class="col-sm-3 form-control" placeholder="months" name="months" required>
                     
                 </div>
                 
