@@ -34,15 +34,15 @@
           <li class="{{ request()->segment(2) == 'home' ? 'active': ''}}"><a href="{{route('admin.index')}}"> <i class="icon-home"></i>Home</a></li>
           <li class="{{ request()->segment(2) == 'users' ? 'active': ''}}"><a href="{{route('total.users')}}"> <i class="icon-user"></i>Users</a></li>
           <li class=" {{ request()->segment(2) == 'bills' ? 'active': ''}}"> <a href="{{route('total.bills')}}"> <i class="icon-form"></i>Bills</a></li>
-          <li class="{{ request()->segment(2) == 'topups' ? 'active': ''}}"> <a href="{{route('total.topups')}}"> <i class="fa fa-mobile" aria-hidden="true" style="font-size:20px;"></i>Mobile Top-up</a></li>
-          <li class="{{ request()->segment(2) == 'loans' ? 'active' : ''}}"><a href="{{route('total.loans')}}"> <i class="fa fa-money"></i>Take Loans</a></li>
+          <li class="{{ request()->segment(2) == 'topups' ? 'active': ''}}"> <a href="{{route('total.topups')}}"> <i class="fa fa-mobile" aria-hidden="true" style="font-size:20px;"></i>Top-up</a></li>
+          <li class="{{ request()->segment(2) == 'loans' ? 'active' : ''}}"><a href="{{route('total.loans')}}"> <i class="fa fa-money"></i>Loans</a></li>
           
           {{-- <li > <a href="{{route('setting')}}"> <i class="fa fa-cog" aria-hidden="true"></i>Settings</a></li> --}}
           <li class="{{ request()->segment(1) == 'setting' ? 'active': ''}}"><a href="#settingdropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-cog" aria-hidden="true"></i>Settings</a>
             <ul id="settingdropdown" class="collapse list-unstyled ">
               <li class=""><a href="{{route('profile')}}">Edit Profile</a></li>
               <li><a href="{{route('changepassword')}}">Change password</a></li>
-              <li><a href="{{route('deleteAccount')}}">Delete Account</a></li>
+              {{-- <li><a href="{{route('deleteAccount')}}">Delete Account</a></li> --}}
             </ul>
           </li>
         </ul>

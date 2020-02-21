@@ -11,11 +11,16 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Bootstrap CSS-->
     <link rel="stylesheet" href="{{asset('vendor/bootstrap/css/bootstrap.min.css')}}">
+
+
+    {{-- <link href="{{ asset('css/jquery-ui.min.css') }}" rel="stylesheet"  media="all"> --}}
+
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
     <!-- Font Awesome CSS-->
     <link rel="stylesheet" href="{{asset('vendor/font-awesome/css/font-awesome.min.css')}}">
     <!-- Fontastic Custom icon font-->
     <link rel="stylesheet" href="{{asset('css/fontastic.css')}}">
+    
     <!-- Google fonts - Roboto -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
     <!-- jQuery Circle-->
@@ -61,6 +66,7 @@
   <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('vendor/popper.js/umd/popper.min.js')}}"> </script>
     <script src="{{asset('vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+   {{-- <script src="{{ asset('js/jquery-ui.min.js') }}"></script> --}}
     <script src="{{asset('js/grasp_mobile_progress_circle-1.0.0.min.js')}}"></script>
     <script src="{{asset('vendor/jquery.cookie/jquery.cookie.js')}}"> </script>
     <script src="{{asset('vendor/chart.js/Chart.min.js')}}"></script>
@@ -70,9 +76,9 @@
     <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    
+ 
     <!-- Main File-->
-    <script src="{{asset('js/front.js')}}"></script>
+    {{-- <script src="{{asset('js/front.js')}}"></script>--}}
     {{-- <script src="{{asset('js/auth.js')}}"></script> --}}
 
     @stack('scripts')

@@ -19,7 +19,7 @@ $(document).ready(function(){
                         type: 'POST',
                         data: {data:values},
                         success(res) {
-                          if(res.success == 'success') {
+                          if(res.msg == true) {
                             Swal.fire(
                               'Approved!',
                               'user blocked.',
@@ -54,14 +54,20 @@ $(document).ready(function(){
                         type: 'POST',
                         data: {data:values},
                         success(res) {
-                          if(res.success == 'success') {
+                          if(res.msg == true) {
                             Swal.fire(
-                              'Approved!',
-                              'user blocked.',
+                              'Deleted!',
+                              'user deleted.',
                               'success'
                             )
     
                             $('#users').DataTable().ajax.reload();
+                          }else {
+                            Swal.fire(
+                              'cancalled!',
+                              'user has pending loans.',
+                              'warning'
+                            )
                           }
                             
                     
@@ -89,7 +95,7 @@ $(document).ready(function(){
                     type: 'POST',
                     data: {data:values},
                     success(res) {
-                      if(res.success == 'success') {
+                      if(res.msg == true) {
                         Swal.fire(
                           'Approved!',
                           'user activated.',
@@ -108,6 +114,16 @@ $(document).ready(function(){
                 
             }
             })
+        }else if(newvalue[0] == '4'){
+          
+
+          $('#users_modal_body').load(`/admin/viewusertrans/${newvalue[1]}`, function(responseTxt, statusTxt, xh) {
+            $('#users_modal').modal({
+               backdrop: 'static',
+               keyboard: true
+            }, "show");
+          });
+          return false;
         }
         
     })

@@ -8,7 +8,7 @@
             <div class="container-fluid">
               <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{route('home')}}">Dashboard</a></li>
-                <li class="breadcrumb-item active">Pay Laon</li>
+                <li class="breadcrumb-item active">wallet topup</li>
               </ul>
             </div>
           </div>
@@ -24,7 +24,7 @@
                         <div class="col-lg-8">
                             <div class="card">
                                 <div class="card-header">
-                                      Pay Loan
+                                      Wallet Topup
                                 </div>
 
                                 <form action="{{route('topup')}}" method="post">

@@ -27,20 +27,27 @@ class AdminController extends Controller
 
     public function index()
     {
+
+        
         $users = User::all()->count();
         $transactions = Transaction::all()->count();
         $topups = MobileTopup::all()->count();
         $loan = Take_loan::all()->count();
         $total = intVal($topups) + intVal($loan);
-        $data = [
-            'users'=> $users,
-            'transactions'=> $transactions,
-            'topup'=> $topups,
-            'loans'=> $loan,
-            'total'=> $total,
-        ];
-       // dd($transactions);
-        return view('admin.home')->with($data);
+        
+        
+        // $trans = Transaction::select(['trans_type', 'trans_name','trans_pid', 'trans_amount', 'balance', 'trans_status','balance', 'created_at'])
+        //                 ->orderBy('created_at', 'desc')->paginate(3);
+
+        return view('admin.home', [
+                'users'=> $users,
+                'transactions'=> $transactions,
+                'topup'=> $topups,
+                'loans'=> $loan,
+                'total'=> $total,
+                
+            ]);
+        
     }
 
     public function Totalbills()
@@ -63,11 +70,22 @@ class AdminController extends Controller
         return view('admin.total_user');
     }
 
-    public function gettransactions()
+    public function gettransactions(Request $request)
     {
-        $trans = DB::table('transactions')->select(['trans_pid', 'trans_type', 'trans_name', 'balance', 'trans_status', 'created_at']);
+
+       
+        
+        $trans = DB::table('transactions')->select(['trans_pid', 'trans_type', 'trans_name', 'trans_amount','balance', 'trans_status', 'created_at'])
+                                ->orderBy('created_at', 'desc');
+
+                
 
         return Datatables::of($trans)
+                            ->filter(function($query) use ($request) {
+                                    if($request->has('sort')){
+                                        $query->where('trans_type', 'like', "%{$request->get('sort')}%");
+                                    }
+                            })
                             ->addcolumn('status', function($tran) {
                                 if($tran->trans_status == '0') {
                                     return 'Failed';
@@ -77,9 +95,7 @@ class AdminController extends Controller
                                     return 'successful';
                                 }
                             })
-                            // ->editColumn('created_at', function($trans) {
-                            //     return $trans->created_at->diffForHumans();
-                            // })
+                            
                             ->make(true);
     }
 
@@ -240,12 +256,18 @@ class AdminController extends Controller
 
     }
 
-    public function getUsers()
+    public function getUsers(Request $request)
     {
         $users = DB::table('users')
                     ->join('wallets', 'wallets.user_id', '=', 'users.id')
-                    ->select('users.id','users.fname', 'users.lname', 'users.phone','users.email', 'users.verified_email', 'users.state', 'users.country', 'users.address','users.access', 'wallets.wallet_key', 'wallets.wallet_balance');
+                    ->select('users.id','users.fname', 'users.lname', 'users.phone','users.email', 'users.verified_email', 'users.state', 'users.country', 'users.address','users.access','users.created_at', 'wallets.wallet_key', 'wallets.wallet_balance')
+                    ->orderBy('users.created_at', 'desc');
             return Datatables::of($users)
+                                ->filter(function($query) use ($request) {
+                                        if($request->has('sort')){
+                                            $query->where('users.access', 'like', "%{$request->get('sort')}%");
+                                        }
+                                })
                                 ->addColumn('fullname', function($user){
                                     return $user->fname. ' ' .$user->lname;
                                 })
@@ -275,6 +297,7 @@ class AdminController extends Controller
                                         $buttons .= '<option value="" selected>'. 'choose action' . '</option>';
                                         $buttons .= '<option value="0'. '-' .$userid . ' ">Block user </option>';
                                         $buttons .= '<option value="3'. '-' .$userid . ' ">Delete user </option>';
+                                        $buttons .= '<option value="4'. '-' .$userid. '">recent activites </option>';
                                         $buttons .= '</select>';
 
                                         $buttons .= '&nbsp;<a href="#" class="btn btn-xs btn-primary viewuser" data-edit-id="'.$user->id.'" data-toggle="modal"> <i class="fa fa-eye"></i></a>';
@@ -284,6 +307,7 @@ class AdminController extends Controller
                                             $buttons .= '<option value="" selected>'. 'choose action' . '</option>';
                                             $buttons .= '<option value="1'. '-' .$userid . ' ">Reactivate user </option>';
                                             $buttons .= '<option value="3'. '-' .$userid . ' ">Delete user </option>';
+                                            $buttons .= '<option value="4'. '-' .$userid. '">recent activites </option>';
                                             $buttons .= '</select>';
     
                                             $buttons .= '&nbsp;&nbsp;<a href="#" class="btn btn-xs btn-primary viewuser" data-edit-id="'.$user->id.'" data-toggle="modal"> <i class="fa fa-eye"></i></a>';
@@ -341,6 +365,9 @@ class AdminController extends Controller
            
         }elseif($newdata[0] == '3') {
             $user = User::find($newdata[1])->wallet;
+            if($user->owing == 1){
+                return response()->json(['msg'=> false]);
+            }
             $user_trans = Transaction::where('wallet_key', $user->wallet_key)->delete();
             $user_bills = Bill_payment::where('wallet_key', $user->wallet_key)->delete();
             $user_loans = Take_loan::where('wallet_key', $user->wallet_key)->delete();
@@ -356,6 +383,7 @@ class AdminController extends Controller
             $user->save();
         }
 
-        return response()->json(['success'=> 'success']);
+        return response()->json(['msg'=> true]);
     }
+
 }

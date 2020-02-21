@@ -42,6 +42,7 @@
                       <div class="col-lg-4">
                         <div class="card user-activity">
                           <h2 class="display h4">Transaction Activities</h2>
+                         
                           <div class="input-group">
                             <div class="form-group col-md-6">
                               <div class="number">{{$loans}}</div>
@@ -77,6 +78,14 @@
                         <div class="card">
                           <div id="feeds-box" class="card-header d-flex justify-content-between align-items-center">
                             <h2 class="h5 display">Transactions</h4>
+
+                              <div class="right-column">
+                                <select name="sort" id="sort" class="form-control">
+                                  <option value="" selected>All Transactions</option>
+                                  <option value="credit">Credit</option>
+                                  <option value="debit">Debit</option>
+                                </select>
+                              </div>
                         </div>
 
                         <div class="card-body">
@@ -84,7 +93,7 @@
                             <table class="table" id="transaction">
                               <thead>
                                 <tr>
-                                  <th>Transaction ID</th>
+                                  <th>ID</th>
                                   <th>Transaction Type</th>
                                   <th>Transaction Name</th>
                                   <th>Transaction Amount</th>
@@ -92,10 +101,9 @@
                                   <th>Status</th>
                                   <th>Date/time</th>
                                 </tr>
+                                
                               </thead>
-
-                            </table>
-
+                              
                           </div>
 
                         </div>

@@ -5,18 +5,45 @@ $(document).ready(function(){
         }
       });
 
-      $('#transaction').DataTable({
+
+      var table = $('#transaction').DataTable({
           processing: true,
           serverside: true,
-          ajax: '/admin/gettransactions',
+          ajax: {
+            url:'/admin/gettransactions',
+            data: function(d) {
+              d.sort = $('#sort').val();
+              
+            }
+          },
           columns: [
               {data: 'trans_pid', name: 'transaction pid'},
               {data: 'trans_type', name: 'transaction type'},
-              {data: 'trans_type', name: 'transaction type'},
-              {data: 'trans_name', name: 'transaction name'},
+              {data: 'trans_name', name: 'transaction type'},
+              {data: 'trans_amount', name: 'transaction name'},
               {data: 'balance', name:'Balance'},
               {data: 'status', name: 'Status'},
               {data:'created_at',  name:'Date/time'}
-          ]
+          ],
+         
+          searching:false,
+          ordering:false,
       })
+
+      $('#sort').on('change',function(){
+        table.ajax.reload();
+      })
+
+    
 })
+
+function getTable(url){
+
+  $.ajax({
+      url : url
+    }).done(function (data) {
+      $('#trans_body').html(data);
+    }).fail(function () {
+      alert('Articles could not be loaded.');
+});
+} 

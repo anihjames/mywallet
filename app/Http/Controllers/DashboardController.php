@@ -415,7 +415,7 @@ public function Destory(Request $request)
 
 
 private function generate_pid() {
-    $pin=mt_rand(100000,999999);
+    $pin=mt_rand(1000,9999);
     $user_no=str_shuffle($pin);
     return $user_no;
 }

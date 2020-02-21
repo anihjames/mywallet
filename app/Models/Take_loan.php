@@ -12,4 +12,9 @@ class Take_loan extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function wallet()
+    {
+        return $this->belongTo('App\Models\Wallet', 'wallet_key');
+    }
 }

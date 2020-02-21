@@ -10,7 +10,7 @@ $(document).ready(function() {
             {data: 'trans_amount', name:'Amount'},
             {data: 'balance', name: 'Balance'},
             {data:'created_at', name:'Date/Time'},
-            {data:'action', name:'Action',orderable: false, searchable: false}
+            {data:'action', name:'Action'}
         ],
         //order: [[1 , 'desc']],
         

@@ -47,3 +47,7 @@ Route::get('/viewusers/{id}', 'AdminController@viewusers');
 Route::post('/useractions', 'AdminController@useractions');
 
 Route::get('/gettransactions', 'AdminController@gettransactions');
+
+Route::get('/getTrans', 'AdminController@getTrans');
+
+Route::get('/viewusertrans/{id}', 'SortController@getusertrans');
