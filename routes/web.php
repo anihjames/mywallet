@@ -85,6 +85,12 @@ Route::get('/home', [
     'as'=> 'home',
     'middleware'=> 'adminroutes',
 ]);
+Route::get('/notify', [
+    'uses'=> 'DashboardController@notificationlist',
+    'as'=> 'notify',
+    'middleware'=> 'auth'
+   ]);
+    
 
 Route::group(['prefix'=> 'user', 'middleware'=> ['auth', 'adminroutes']], function() {
 
@@ -162,7 +168,8 @@ Route::group(['prefix'=> 'user', 'middleware'=> ['auth', 'adminroutes']], functi
        'uses'=> 'PaymentController@payloan',
        'as'=>'payloan'
    ]);
-    
+
+   
     
 
        

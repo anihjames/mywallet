@@ -15,22 +15,22 @@ class Wallet extends Model
 
     public function billpayment()
     {
-        return $this->hasMany('App\Models\Bill_payment', 'wallet_key');
+        return $this->hasMany('App\Models\Bill_payment', 'wallet_key', 'wallet_key')->orderBy('created_at', 'desc');
     }
 
     public function transactions()
     {
-        return $this->hasMany('App\Models\Transaction', 'wallet_key');
+        return $this->hasMany('App\Models\Transaction', 'wallet_key','wallet_key')->orderBy('created_at', 'desc');
     }
-
+ 
     public function topups()
     {
-        return $this->hasMany('App\Mobels\MobileTopup','wallet_key');
+        return $this->hasMany('App\Models\MobileTopup','wallet_key','wallet_key')->orderBy('created_at', 'desc');
     }
 
     public function loans()
     {
-        return $this->hasMany('App\Models\Take_loan', 'wallet_key');
+        return $this->hasMany('App\Models\Take_loan', 'wallet_key', 'wallet_key');
     }
 
 }

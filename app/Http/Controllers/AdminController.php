@@ -15,13 +15,18 @@ use App\Models\MobileTopup;
 use App\Models\Take_loan;
 use App\Models\Pay_loan_taken;
 use App\Notifications\usersnotify;
+use App\Services\BillService;
+use App\Services\AdminServices;
 
 class AdminController extends Controller
 {
     public $status, $action, $created_at;
-    public function __construct() 
+    protected $admin;
+    public function __construct(AdminServices $adminservices)
     {
         $this->middleware(['auth']);
+        $this->admin = $adminservices;
+
         
     }
 
@@ -35,10 +40,6 @@ class AdminController extends Controller
         $loan = Take_loan::all()->count();
         $total = intVal($topups) + intVal($loan);
         
-        
-        // $trans = Transaction::select(['trans_type', 'trans_name','trans_pid', 'trans_amount', 'balance', 'trans_status','balance', 'created_at'])
-        //                 ->orderBy('created_at', 'desc')->paginate(3);
-
         return view('admin.home', [
                 'users'=> $users,
                 'transactions'=> $transactions,
@@ -73,12 +74,7 @@ class AdminController extends Controller
     public function gettransactions(Request $request)
     {
 
-       
-        
-        $trans = DB::table('transactions')->select(['trans_pid', 'trans_type', 'trans_name', 'trans_amount','balance', 'trans_status', 'created_at'])
-                                ->orderBy('created_at', 'desc');
-
-                
+        $trans = $this->admin->getTransactions();
 
         return Datatables::of($trans)
                             ->filter(function($query) use ($request) {
@@ -151,16 +147,17 @@ class AdminController extends Controller
         return view('modals.viewtopup')->with('topups', $topups);
     }
 
-    public function getBills()
+    public function getBills(Request $request)
     {
         
-        $bills = DB::table('bill_payments')
-                    ->join('wallets', 'wallets.wallet_key', '=', 'bill_payments.wallet_key')
-                    ->join('users', 'users.id', '=', 'wallets.user_id')
-                    ->select('bill_payments.id','bill_payments.payment_pid', 'bill_payments.bills_type', 'bill_payments.bills_amount', 'bill_payments.type_code', 'bill_payments.created_at', 'bill_payments.status', 'users.fname', 'users.lname', 'users.email', 'users.phone');
-                   
+        $bills = $this->admin->getbills();
 
         return Datatables::of($bills)
+                    ->filter(function($query) use ($request) {
+                        if($request->has('sort')){
+                            $query->where('status', 'like', "%{$request->get('sort')}%");
+                        }
+                    })
                     ->editColumn('bill_payments.created_at', '{!! $created_at !!}')
                     ->addColumn('fullname',  function($bill) {
                         return $bill->fname. ' '. $bill->lname;
@@ -182,14 +179,16 @@ class AdminController extends Controller
             
     }
 
-    public function getTopups()
+    public function getTopups(Request $request)
     {
-        $topups = DB::table('mobile_topups')
-                ->join('wallets', 'wallets.wallet_key', '=', 'mobile_topups.wallet_key')
-                ->join('users', 'users.id', '=', 'wallets.user_id')
-                ->select('mobile_topups.id','mobile_topups.toptype','mobile_topups.mobile_number','mobile_topups.network_provider', 'mobile_topups.amount', 'mobile_topups.status','mobile_topups.mobile_pid', 'mobile_topups.created_at', 'users.fname', 'users.lname');
-
+        $topups = $this->admin->gettopups();
+        
             return Datatables::of($topups)
+                        ->filter(function($query) use ($request) {
+                            if($request->has('sort')){
+                                $query->where('status', 'like', "%{$request->get('sort')}%");
+                            }
+                        })
                         ->editColumn('mobile_topups.created_at', '{!! $created_at !!}')
                         ->addColumn('mobile_number', function($topup) {
                             return '0'.$topup->mobile_number;
@@ -211,14 +210,16 @@ class AdminController extends Controller
                         ->make(true);
     }
 
-    public function getLoans()
+    public function getLoans(Request $request)
     {
-        $loans = DB::table('take_loans')
-                    ->join('wallets', 'wallets.wallet_key', '=', 'take_loans.wallet_key')
-                    ->join('users', 'users.id', '=', 'wallets.user_id')
-                    ->select('take_loans.id','take_loans.loan_pid','take_loans.loan_amount','take_loans.loan_length', 'take_loans.verified', 'take_loans.created_at', 'users.fname', 'users.lname');
+        $loans = $this->admin->getloans();
 
         return Datatables::of($loans)
+                        ->filter(function($query) use ($request) {
+                            if($request->has('sort')){
+                                $query->where('verified', 'like', "%{$request->get('sort')}%");
+                            }
+                        })
                         ->editColumn('take_loans.created_at', '{!! $created_at !!}')
                         ->addColumn('fullname', function($loan){
                             return $loan->fname. ' ' .$loan->lname;

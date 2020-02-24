@@ -6,10 +6,15 @@ $(document).ready(function(){
       });
 
 
-      $('#topups').DataTable({
+      var table = $('#topups').DataTable({
           processing: true,
           serverside: true,
-          ajax: '/admin/gettopups',
+          ajax: {
+            url:'/admin/gettopups',
+            data: function(d) { 
+              d.sort = $('#sort').val();
+            }
+          },
           columns: [
             //   {data: 'mobile_pid', name:'Payment ID'},
               {data:'fullname', name:'Fullname'},
@@ -20,8 +25,11 @@ $(document).ready(function(){
               {data:'created_at', name:'Date'},
               {data:'action', name:'Status'}
           ],
-          order: [[1, 'desc']]
+          searching:false,
+          ordering:false,
       })
+
+      // 
 
 
       $('#topups').on('click', 'a.viewtopup', function() {
@@ -35,6 +43,10 @@ $(document).ready(function(){
         return false;
        
       })
+
+      $('#sort').on('change',function(){
+          table.ajax.reload();
+       })
 
      
 

@@ -13,26 +13,31 @@ use App\Models\Take_loan;
 use Auth;
 use DB;
 use Carbon\Carbon;
+use App\Services\UserServices;
 
 class DatatablesController extends Controller
 {
-    public function getrecentTopups()
+    protected $user;
+    public function __construct(UserServices $user)
+    {
+        $this->user = $user;
+    }
+    public function getrecentTopups(Request $request)
     {
         $id = Auth::user()->id;
         $wallet = User::find($id)->wallet;
-        $topups = DB::table('mobile_topups')->where('wallet_key', $wallet->wallet_key)->select([ 'id', 'mobile_pid','toptype', 'mobile_number', 'network_provider', 'amount', 'status', 'created_at', 'updated_at']);
-       
+        $topups = $this->user->topups($wallet->wallet_key);
         
         return Datatables::of($topups)
                 ->editColumn('created_at', '{!! $created_at !!}')
-                
+                 
                 ->addColumn('action', function($topup) {
                     if($topup->status == '0') {
                         return '<a href="javascript:void(0)" class="btn btn-xs btn-danger">'.'failed'.'</a>';
                     }elseif($topup->status == '1') {
                         return '<a href="javascript:void(0)" class="btn btn-xs btn-info">'.'awaiting confirmation'.'</a>'; 
                     }elseif($topup->status == '2') {
-                        return '<a href="javascript:void(0)" class="btn btn-xs btn-primary">'.'successfull'.'</a>';
+                        return '<a href="javascript:void(0)" class="btn btn-xs btn-primary">'.'successful'.'</a>';
                     }
                     
                 })
@@ -49,29 +54,26 @@ class DatatablesController extends Controller
         return view('dashboard.transaction');
     }
 
-    public function gettrans()
+    public function gettrans(Request $request)
     {
-        $id = Auth::user()->id;
+         $id = Auth::user()->id;
         $wallet = User::find($id)->wallet;
-        $trans = DB::table('transactions')->where('wallet_key', $wallet->wallet_key)->select([ 'id', 'trans_type', 'trans_status', 'trans_name', 'trans_amount', 'balance', 'created_at', 'updated_at']);
-        //dd($trans->get());
+        $trans = $this->user->getTransactions($wallet->wallet_key);
         
         return Datatables::of($trans)
-                ->editColumn('created_at', '{!! $created_at !!}')
+                            ->editColumn('created_at', '{!! $created_at !!}')
                
-                ->addColumn('action', function($tran) {
-                    if($tran->trans_status == '0') {
-                        return '<a href="javascript:void(0)" class="btn btn-xs btn-danger">'.'failed'.'</a>';
-                    }elseif($tran->trans_status == '1') {
-                        return '<a href="javascript:void(0)" class="btn btn-xs btn-info">'.'awaiting approval'.'</a>';
-                    }elseif($tran->trans_status == '2') {
-                        return '<a href="javascript:void(0)" class="btn btn-xs btn-primary">'.'successfull'.'</a>';
-                    }
+                            ->addColumn('action', function($tran) {
+                                if($tran->trans_status == '0') {
+                                    return '<a href="javascript:void(0)" class="btn btn-xs btn-danger">'.'failed'.'</a>';
+                                }elseif($tran->trans_status == '1') {
+                                    return '<a href="javascript:void(0)" class="btn btn-xs btn-info">'.'awaiting approval'.'</a>';
+                                }elseif($tran->trans_status == '2') {
+                                    return '<a href="javascript:void(0)" class="btn btn-xs btn-primary">'.'successfull'.'</a>';
+                                }
+                            
+                            })
                 
-                })
-                // ->orderColumn('created_at', function ($query, $tran) {
-                //     $query->orderBy('trans_name', $tran);
-                // })
                 ->make(true);
     }
 
@@ -79,8 +81,10 @@ class DatatablesController extends Controller
     {
         $id = Auth::user()->id;
         $wallet = User::find($id)->wallet;
-        $bills = Bill_payment::where('wallet_key', $wallet->wallet_key)
-                    ->select(['id','payment_pid','bills_type', 'bills_amount', 'type_code', 'status', 'created_at', 'bill_type_id']);
+        // $bills = Bill_payment::where('wallet_key', $wallet->wallet_key)
+        //             ->select(['id','payment_pid','bills_type', 'bills_amount', 'type_code', 'status', 'created_at', 'bill_type_id']);
+
+        $bills = $this->user->bills($wallet->wallet_key);
                     
 
         return Datatables::of($bills)

@@ -2,10 +2,16 @@ var data, action;
 $(document).ready(function(){
    
       
-      $('#bills').DataTable({
+     var table =  $('#bills').DataTable({
         processing: true,
         serverside: true,
-        ajax: '/admin/getbills',
+        ajax: {
+          url: '/admin/getbills',
+          data: function(d) {
+            d.sort = $('#sort').val();
+          }
+          
+        },
         columns: [
             {data:'payment_pid', name:'Payment ID'},
             {data:'fullname', name: 'fullname'},
@@ -16,8 +22,15 @@ $(document).ready(function(){
             {data:'created_at', name: 'created_at'},
             {data:'action', name: 'status', orderable: false,}
         ],
-        order: [[1, 'desc']],
+
+        searching: false,
+        ordering:false,
     });
+
+    $('#sort').on('change',function(){
+      table.ajax.reload();
+    })
+
 
     $('#bills').on('click', 'a.viewbill', function() {
 

@@ -28,8 +28,15 @@
 
                         <div class="col-lg-12">
                             <div class="card">
-                                <div id="feeds-box" class="card-header">
+                                <div id="feeds-box" class="card-header d-flex justify-content-between align-items-center">
                                     <h2 class="h5 display">Mobile Top-up</h2>
+                                    <div class="right-column">
+                                        <select name="sort" id="sort" class="form-control">
+                                          <option value="" selected>All Top-up</option>
+                                          <option value="2">completed</option>
+                                          <option value="0">failed</option>
+                                        </select>
+                                      </div>
                                 </div>
 
                                 <div class="card-body">

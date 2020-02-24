@@ -29,8 +29,17 @@
                             
                               <div class="col-lg-12">
                                 <div class="card">
-                                    <div class="card-header">
+                                    <div id="feeds-box" class="card-header d-flex justify-content-between align-items-center">
                                         <h4>Recents Top-up</h4>
+
+                                        {{-- <div class="right-column">
+                                            <select name="sort" id="sort" class="form-control">
+                                              <option value="" selected>Actions</option>
+                                              <option value="2">successfull</option>
+                                              <option value="0">failed</option>
+                                             
+                                            </select>
+                                          </div> --}}
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
@@ -45,7 +54,7 @@
                                                         <th>Status</th>
                                                         <th>Date</th>
                                                         
-                                                        
+                                                         
                                                     </tr>
                                                 </thead>
                                                 

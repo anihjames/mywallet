@@ -23,13 +23,16 @@ use App\Http\Requests\MobileTopUpRequest as TopupRequest;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
 use App\Traits\sendingMails;
+use App\Services\UserServices;
 
 class DashboardController extends Controller
 {
     use sendingMails;
+    protected $user;
 
-    public function __construct() 
+    public function __construct(UserServices $user) 
     {
+        $this->user = $user;
         $this->middleware(['auth', 'verifyaccount' ]);
         
         
@@ -51,7 +54,7 @@ class DashboardController extends Controller
         return view('dashboard.home')->with($data);
     }
 
-
+ 
     public function viewmobile_topup()
     {
         return view('dashboard.mobile_topup');
@@ -81,6 +84,14 @@ class DashboardController extends Controller
         }
        
         return $output;
+    }
+
+    public function notificationlist()
+    {
+      
+        //$notify = $this->user->notifications();
+        $user = auth()->user()->notifications()->orderBy('created_at','desc')->get()->toArray();
+        dd($user);
     }
 
     
@@ -388,13 +399,12 @@ public function Destory(Request $request)
 {
     $this->validate($request,[
         'email'=>'email|required',
-        'wallet_key'=> 'required|max:40'
     ]);
     
     $user = User::where('email', $request['email'])->exists();
-    $wallet = Wallet::where('wallet_key', $request['wallet_key'])->exists();
+    // $wallet = Wallet::where('wallet_key', $request['wallet_key'])->exists();
     //dd($email);
-    if($user && $wallet){
+    if($user){
         $user_trans = Transaction::where('wallet_key', $request['wallet_key'])->delete();
         $user_bills = Bill_payment::where('wallet_key', $request['wallet_key'])->delete();
         $user_loans = Take_loan::where('wallet_key', $request['wallet_key'])->delete();

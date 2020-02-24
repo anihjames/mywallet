@@ -41,7 +41,7 @@
                               @endif
                             <div class="form-group">
 
-                              <fieldset class="the-fieldset">
+                              {{-- <fieldset class="the-fieldset">
                                 <legend class="the-legend">Wallet Key</legend>
                                   <div class="input-group">
                                     <div class="col-sm-6">
@@ -53,7 +53,7 @@
 
                                   </div>
                                 
-                              </fieldset>
+                              </fieldset> --}}
                               <fieldset class="the-fieldset">
                                   <legend class="the-legend">User Details</legend>
                                   <div class="input-group">

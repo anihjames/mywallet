@@ -106,6 +106,13 @@
               <div class="card">
                 <div id="feeds-box" class="card-header d-flex justify-content-between align-items-center">
                   <h2 class="h5 display">Transactions</h4>
+                    {{-- <div class="right-column">
+                      <select name="sort" id="sort" class="form-control">
+                        <option value="" selected>All Transactions</option>
+                        <option value="credit">Credit</option>
+                        <option value="debit">Debit</option>
+                      </select>
+                    </div> --}}
               </div>
 
               <div class="card-body">
@@ -165,10 +172,15 @@
                 return false;
                 });
 
-                $('#tran-datatable').DataTable( {
+                var table = $('#tran-datatable').DataTable( {
                   processing: true,
                   serverside:true,
-                  ajax: "/datatable/trans",
+                  ajax: {
+                    url: "/datatable/trans",
+                    data: function(d) {
+                      d.sort = $('#sort').val();
+                    }
+                  },
                   columns: [
                       // {data: 'id', name:'Id', 'visiable': false},
                       {data: 'trans_type', name:'Transaction Type'},
@@ -178,8 +190,13 @@
                       {data:'created_at', name:'Date/Time'},
                       {data:'action', name:'Action',orderable: false, searchable: false}
                   ],
-                  order: [[1 , 'desc']],
+                  searching: false,
+                  ordering:false,
                   
+              })
+
+              $('#sort').on('change',function(){
+                 table.ajax.reload();
               })
 </script>
     

@@ -1,5 +1,5 @@
 <header class="header">
-    <nav class="navbar">
+    <nav class="navbar"> 
       <div class="container-fluid">
         <div class="navbar-holder d-flex align-items-center justify-content-between">
           <div class="navbar-header"><a id="toggle-btn" href="#" class="menu-btn"><i class="icon-bars"> </i></a><a href="index.html" class="navbar-brand">

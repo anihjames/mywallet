@@ -52,10 +52,10 @@
                                             </div>
                                             @csrf
 
-                                            <div class="col-sm-8">
+                                            {{-- <div class="col-sm-8">
                                                 <label for="wallet_key">Wallet Key</label>
                                                 <input type="text" class="form-control" name="wallet_key" required>
-                                            </div>
+                                            </div> --}}
 
                                         </div>
                                     </div>

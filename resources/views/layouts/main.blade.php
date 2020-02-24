@@ -78,7 +78,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
  
     <!-- Main File-->
-    {{-- <script src="{{asset('js/front.js')}}"></script>--}}
+     <script src="{{asset('js/front.js')}}"></script>
     {{-- <script src="{{asset('js/auth.js')}}"></script> --}}
 
     @stack('scripts')

@@ -27,8 +27,16 @@
                       <div class="container">
                           <div class="col-lg-12">
                               <div class="card">
-                                <div id="feeds-box" class="card-header">
+                                <div id="feeds-box" class="card-header d-flex justify-content-between align-items-center">
                                     <h2 class="h5 display">Mobile Top-up</h2>
+                                    <div class="right-column">
+                                      <select name="sort" id="sort" class="form-control">
+                                        <option value="" selected>All Loans</option>
+                                        <option value="1">pending</option>
+                                        <option value="2">approved</option>
+                                        <option value="0">rejected</option>
+                                      </select>
+                                    </div>
                                 </div>
 
                                 <div class="card-body">

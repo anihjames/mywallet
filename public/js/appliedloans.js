@@ -5,10 +5,15 @@ $(document).ready(function() {
         }
       });
 
-      $('#loans').DataTable({
+      var table = $('#loans').DataTable({
           processing: true,
           serverside: true,
-          ajax: '/admin/getloans',
+          ajax: {
+            url:'/admin/getloans',
+            data: function(d) {
+              d.sort = $('#sort').val();
+            }
+          },
           columns: [
               {data: 'fullname', name:'Fullname'},
               {data: 'loan_amount', name:'Loan Amount'},
@@ -17,9 +22,13 @@ $(document).ready(function() {
               {data:'status', name: 'Status'},
               {data:'action' , name: 'action'}
           ],
-          order: [[1, 'desc']]
+          searching: false,
+          ordering:false,
       })
 
+      $('#sort').on('change',function(){
+        table.ajax.reload();
+      })
 
       $('#loans').on('click', 'a.viewloan', function() {
 

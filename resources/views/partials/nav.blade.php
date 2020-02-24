@@ -9,6 +9,7 @@
             Hi {{Auth::user()->fname}}
           </h2>
             
+          @if (Auth::user()->role != 'admin')
           <div class="row">
               <div class="container">
                 @if (Session::has('balance'))
@@ -18,18 +19,23 @@
           </div>
           <div class="row">
             <div class="container">
-              @if (Session::has('owing'))
+             
+              <a href="{{route('wallet_topup')}}" class="btn btn-primary"> Wallet top-up</a>
+              
+             
+              {{-- @if (Session::has('owing'))
                 
                 @if (Session::get('owing') == 0)
-                <a href="{{route('wallet_topup')}}" class="btn btn-primary"> Wallet top-up</a>
+               
                 @else
                 <a href="{{route('get_payloan')}}" class="btn btn-primary"> Pay Loan</a>
                 @endif
                   
-              @endif
+              @endif --}}
             
             </div>
           </div>
+          @endif
            
            
             

@@ -29,7 +29,13 @@
                             <div class="card">
                                 <div id="feeds-box" class="card-header d-flex justify-content-between align-items-center">
                                     <h2 class="h5 display">Bills Payment</h4>
-
+                                        <div class="right-column">
+                                            <select name="sort" id="sort" class="form-control">
+                                              <option value="" selected>All Bills</option>
+                                              <option value="2">completed</option>
+                                              <option value="0">failed</option>
+                                            </select>
+                                          </div>
                                      
                                 </div>
 

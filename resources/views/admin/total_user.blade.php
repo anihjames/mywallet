@@ -90,54 +90,8 @@
 @endpush
 
 @push('styles')
-  .the-legend {
-    border-style: none;
-    border-width: 0;
-    font-size: 14px;
-    line-height: 20px;
-    margin-bottom: 0;
-    width: auto;
-    padding: 0 10px;
-    border: 1px solid #e0e0e0;
-  }
-  .the-fieldset {
-    border: 1px solid #e0e0e0;
-    padding: 10px;
-    margin-bottom:20px;
-  }
+ 
 
   /* Tabs*/
-section {
-    padding: 60px 0;
-}
 
-section .section-title {
-    text-align: center;
-    color: #007b5e;
-    margin-bottom: 50px;
-    text-transform: uppercase;
-}
-#tabs{
-	background: #007b5e;
-    color: #eee;
-}
-#tabs h6.section-title{
-    color: #eee;
-}
-
-#tabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-    color: #f3f3f3;
-    background-color: transparent;
-    border-color: transparent transparent #f3f3f3;
-    border-bottom: 4px solid !important;
-    font-size: 20px;
-    font-weight: bold;
-}
-#tabs .nav-tabs .nav-link {
-    border: 1px solid transparent;
-    border-top-left-radius: .25rem;
-    border-top-right-radius: .25rem;
-    color: #eee;
-    font-size: 20px;
-}
 @endpush

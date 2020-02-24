@@ -36,14 +36,3 @@ $(document).ready(function(){
 
     
 })
-
-function getTable(url){
-
-  $.ajax({
-      url : url
-    }).done(function (data) {
-      $('#trans_body').html(data);
-    }).fail(function () {
-      alert('Articles could not be loaded.');
-});
-} 

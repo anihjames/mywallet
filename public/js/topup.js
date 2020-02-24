@@ -61,6 +61,9 @@ $(document).ready(function() {
           ajax:{
               url: "/datatable/recentTopups",
               type: 'GET',
+              data: function(d) {
+                d.sort = $('#sort').val();
+              }
           },
           columns: [
             {data: 'mobile_pid', name: 'id'},
@@ -77,6 +80,11 @@ $(document).ready(function() {
           ],
           order: [[1, 'desc']]
       })
+
+      $('#sort').on('change',function(){
+        $('#users').DataTable().ajax.reload();
+      })
+
 
       function printErrorMsg (msg) {
         
