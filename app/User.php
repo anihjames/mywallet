@@ -48,6 +48,18 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\Wallet');
     }
 
+    // public function format()
+    // {
+    //     return [
+    //       'user_id'=> $this->id,
+    //       'user_fname'=> $this->fname,
+    //       'user_lname'=> $this->lname,
+    //       'phone'=> $this->phone,
+    //       'state'=> $this->state,
+    //       'address'=> $  
+    //     ];
+    // }
+
     public static function boot()
     {
         parent::boot();

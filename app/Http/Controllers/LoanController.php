@@ -9,15 +9,33 @@ use App\Http\Requests\ApplyLoanRequest as ApplyLoan;
 use Auth;
 use App\User;
 use App\Models\Transaction;
-use App\Mobels\Wallet;
+//use App\Models\Wallet;
+use App\Models\Loan;
 use DB;
 use App\Traits\sendingMails;
+use App\Services\UserServices;
+// use App\Interfaces\Loaninterface;
+// use App\Interfaces\Userinterface;
 
 
-class LoanController extends Controller
+class LoanController extends Controller 
 {
     use sendingMails;
+    protected $userRepo, $loanRepo, $userService;
 
+
+    public function __construct(UserServices $userservice)
+    {
+        $this->userService = $userservice;
+    }
+
+    public function getloanview()
+    {
+        $user = $this->userService->logUser();
+        $userlevel = $this->userService->userlevel();
+        $loan_rate = $this->userService->loanrate();
+        return view('dashboard.loan', ['user'=> $user, 'rate'=> $loan_rate, 'level'=> $userlevel]);
+    }
     public function editloan($id)
     {
         $loan = Take_loan::find($id);
@@ -25,7 +43,8 @@ class LoanController extends Controller
     }
 
     public function ApplyforLoan(ApplyLoan $request)
-{
+    {
+        dd($request->all());
         $id = Auth::user()->id;
         $wallet = User::find($id)->wallet;
         $key = $wallet->wallet_key;

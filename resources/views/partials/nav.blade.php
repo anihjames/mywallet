@@ -51,7 +51,16 @@
           <li class="{{ request()->segment(1) == 'home' ? 'active': ''}}"><a href="{{route('home')}}"> <i class="icon-home"></i>Home</a></li>
           <li class=" {{ request()->segment(2) == 'paybills' ? 'active': ''}}"> <a href="{{route('paybills')}}"> <i class="icon-form"></i>Pay Bills</a></li>
           <li class="{{ request()->segment(2) == 'mobiletopup' ? 'active': ''}}"> <a href="{{route('getmobile_topup')}}"> <i class="fa fa-mobile" aria-hidden="true" style="font-size:20px;"></i>Mobile Top-up</a></li>
-          <li class="{{ request()->segment(2) == 'takeloan' ? 'active' : ''}}"><a href="{{route('takeloan')}}"> <i class="fa fa-money"></i>Take Loans</a></li>
+          {{-- <li class="{{ request()->segment(2) == 'takeloan' ? 'active' : ''}}"><a href="{{route('takeloan')}}"> <i class="fa fa-money"></i>Take Loans</a></li> --}}
+
+          <li class="{{ request()->segment(2) == 'takeloan' ? 'active': ''}}"><a href="#loandropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-money" aria-hidden="true"></i>Loans</a>
+            <ul id="loandropdown" class="collapse list-unstyled">
+              <li><a href="{{route('takeloan')}}">Take Loan</a></li>
+              <li><a href="">Pay Loans</a></li>
+              <li><a href="">Statement</a></li>
+            </ul>
+
+          </li>
           @if (Auth::user()->role == 'user')
           {{-- <li class="{{ request()->segment(2) == 'transactions' ? 'active': ''}}"><a href="{{route('transaction')}}"> <i class="icon-grid"></i>Transactions</a></li> --}}
           @endif

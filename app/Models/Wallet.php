@@ -33,4 +33,9 @@ class Wallet extends Model
         return $this->hasMany('App\Models\Take_loan', 'wallet_key', 'wallet_key');
     }
 
+    public function notifications()
+    {
+        return $this->hasMany('App\Models\Notification', 'wallet_key', 'wallet_key')->limit(5)->orderBy('created_at','desc');
+    }
+
 }

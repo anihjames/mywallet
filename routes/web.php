@@ -101,9 +101,14 @@ Route::group(['prefix'=> 'user', 'middleware'=> ['auth', 'adminroutes']], functi
     'as'=> 'paybills',
    ]);
 
-   Route::get('/takeloan', function() {
-        return view('dashboard.loan');
-   })->name('takeloan');
+//    Route::get('/takeloan', function() {
+//         return view('dashboard.loan');
+//    })->name('takeloan');
+
+   Route::get('/takeloan', [
+    'uses'=> 'LoanController@getloanview',
+    'as'=> 'takeloan'
+   ]);
 
    
    Route::get('/billtype/{bill_id}', [

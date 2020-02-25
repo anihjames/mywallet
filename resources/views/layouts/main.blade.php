@@ -12,7 +12,7 @@
     <!-- Bootstrap CSS-->
     <link rel="stylesheet" href="{{asset('vendor/bootstrap/css/bootstrap.min.css')}}">
 
-
+    {{-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"> --}}
     {{-- <link href="{{ asset('css/jquery-ui.min.css') }}" rel="stylesheet"  media="all"> --}}
 
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
@@ -66,6 +66,7 @@
   <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('vendor/popper.js/umd/popper.min.js')}}"> </script>
     <script src="{{asset('vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
    {{-- <script src="{{ asset('js/jquery-ui.min.js') }}"></script> --}}
     <script src="{{asset('js/grasp_mobile_progress_circle-1.0.0.min.js')}}"></script>
     <script src="{{asset('vendor/jquery.cookie/jquery.cookie.js')}}"> </script>

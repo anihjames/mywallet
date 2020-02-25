@@ -2,17 +2,24 @@
 
 namespace App\Services;
 
+use App\Repositories\LoanRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Auth;
+use App\Interfaces\Loaninterface;
+use App\Interfaces\Userinterface;
 
 class UserServices
 {
-    protected $user;
+    protected $user, $loan, $userlevel;
+    
 
-    public function __construct(UserRepository $userRepo)
+    public function __construct(Loaninterface $loanRepo, Userinterface $userRepo)
     {
         $this->user = $userRepo;
+        $this->loan = $loanRepo;
+        //$this->loan = new LoanRepository();
+
     }
 
     public function getTransactions($key)
@@ -34,6 +41,38 @@ class UserServices
     {
         $notifications = auth()->user()->notifications()->orderBy('created_at','desc')->get()->toArray();
     }
+
+    
+    public function logUser()
+    {
+        return $this->user->logUser();
+    }
+
+    
+
+    public function loanrate()
+    {
+        $userlevel = $this->logUser()->level;
+       //dd($userlevel);
+        return $this->loan->rate($userlevel);
+    }
+
+    public function userlevel()
+    {
+        $level = $this->user->userlevel();
+        if($level == 1) {
+            $this->userlevel = "beginner";
+        }elseif($level == 2) {
+            $this->userlevel = "intermediate";
+        }elseif($level == 3) {
+            $this->userlevel = "advance";
+        }
+
+        return $this->userlevel;
+    }
+
+
+    
 
     
 }

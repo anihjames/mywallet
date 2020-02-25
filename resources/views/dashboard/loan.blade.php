@@ -12,48 +12,148 @@
             <div class="container-fluid">
               <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{route('home')}}">Dashboard</a></li>
-                <li class="breadcrumb-item active">Loans</li>
+                <li class="breadcrumb-item active">Apply for Loan</li>
               </ul>
             </div>
           </div>
 
           <section>
              <div class="container-fluid">
-                <header class="container"> 
+                {{-- <header class="container"> 
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#takeloan">Apply for a Loan</button>
-                  </header>
+                  </header> --}}
 
                   <div class="row d-flex">
                         <div class="container">
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4>Recents Loans</h4>
+                                        <h4>Application Process</h4>
                                     </div>
                                     <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table" id="loan-datatable">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Loan ID</th>
-                                                        <th>Loan Amount</th>
-                                                        <th>Loan tenure</th>
-                                                        <th>Date Applied</th>
-                                                    
-                                                        {{-- <th>#</th> --}}
-                                                        <th>Status</th>
-                                                        <th>Action</th>
-                                                       
-                                                        
-                                                    </tr>
-                                                </thead>
+                                        
+                                        {{-- <form action="" method=""> --}}
+                                         <nav>
+                                            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                                <a class="nav-item nav-link active" id="laon-step-1"  href="#step-1" role="tab" aria-controls="nav-home" aria-selected="true">Step 1</a>
+                                                <a class="disabled nav-item nav-link" id="loan-step-2"  href="#step-2" role="tab" aria-controls="nav-profile" aria-selected="false">Step 2</a>   
+                                                <a class="nav-item nav-link" id="loan-step-3"   href="#step-3" role="tab" data-toggle="tab" aria-controls="nav-contact" aria-selected="false">Step 3</a>
                                                 
+                                            </div>
+                                           
+                                            <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                                                <div class="tab-pane fade show active" id="step-1">
+                                                    
+                                                   <p class="alert alert-danger col-md-4" style="display:none;">
+                                                   </p>
+                                                    <div class="form-group">
+                                                        <label for="loan_amount"> Loan amount  
+                                                            
+                                                            @if($level == 'beginner')
+                                                            <span style="font-size:10px;">max of 30,000</span>
+                                                            @elseif($level == 'intermediate')
+                                                            <span style="font-size:10px;">max of 100,000</span>
+                                                            @elseif($level == 'advance')
+                                                            <span style="font-size:10px;">max of 300,000</span>
+                                                            @endif
+                                                          
+                                                        </label>
+                                                        <input type="number" name="loan_amount" class="form-control col-sm-4" placeholder="270 000" id="loan_amount" required>
+                                                        
+                                                    </div>
 
-                                            </table>
+                                                    <div class="form-group">
+                                                        <label for="loan_tenure">Loan tenure <span style="font-size:10px;">max of 7 months</span></label>
+                                                        <input type="number" name="loan_tenure" class="form-control col-sm-4" placeholder="7 months" id="loan_tenure"  required>
+                                                    </div>
 
-                                        </div>
+                                                    <div class="form-group">
+                                                        <button class="btn btn-md btn-primary" id="next1">Next</button>
 
-                                        @include('partials.takeloan_modal')
+                                                    </div>
+                                                    
+                                                </div>
+
+                                                <div class="tab-pane fade" id="step-2">
+                                                    <p class="alert alert-danger col-md-4" style="display:none;"></p>
+                                                        <div class="form-group">
+                                                            <label for="state">National ID number</label>
+                                                            <input type="text" name="national_id" id="national_id" class="form-control col-md-4" required>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="country">Monthly income</label>
+                                                            <input type="text"  name="monthly_income" id="income" class="form-control col-md-4" required>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="employment_details">Employment Status</label>
+                                                            <select name="employment_status" id="employment_status" class="form-control col-md-4">
+                                                                <option value="employed">Employed</option>
+                                                                <option value="unemployed">Unemployed</option>
+                                                            </select>
+
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="phone">Mobile number</label>
+                                                            <input type="text" value="+234{{$user->phone}}" id="phone" name="phone" class="form-control col-md-4">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="address">Address</label>
+                                                            <textarea name="address" id="address" cols="5" class="form-control col-md-4">{{$user->address}}</textarea>
+                                                           
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <button class="btn btn-md btn-primary" id="prev1">Previous</button>
+                                                            <button class="btn btn-md btn-primary" id="next2">Next</button>
+
+                                                        </div>
+                                                    </div>
+                                                    
+                                               
+
+                                                <div class="tab-pane fade" id="step-3">
+                                                    
+                                                    <div class="form-group">
+                                                        <label for="loan_amount">Loan Amount:</label>
+                                                        <span id="amount"> &#8358;3000</span>
+                                                    </div>
+                                                    
+                                                    <div class="form-group">
+                                                        <label for="loan_tenure">Loan Tenure:</label>
+                                                        <span id="tenure">3 months</span>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="rate">Interest Rate:</label>
+                                                        <span id="rate">{{$rate}}%</span>
+                                                    </div>
+
+                                                   <div class="form-group">
+                                                       <label for="rate">Payment Amount:</label>
+                                                       <span id="payment_amount">&#8358;3000</span>
+                                                   </div>
+
+                                                   <div class="form-group">
+                                                       <button class="btn btn-sm btn-primary" id="prev2">Previous</button>
+                                                       <button class="btn btn-sm btn-primary">Apply</button>
+
+                                                   </div>
+
+                                                   {{-- <div class="form-group">
+                                                       
+                                                        <em></em>
+
+                                                   </div> --}}
+
+                                                </div>
+                                            </div>
+                                        </nav> 
+                                    {{-- </form> --}}
+
+                                        
 
                                     </div>
 
@@ -64,93 +164,12 @@
                   </div>
             </div> 
  
-            <div class="modal fade" id="loan_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog"  id="loan_modal_body">
-                 
-                </div>
-            </div>
-           
+            
           </section>
 
     </div>
 @endsection
+
 @push('scripts')
-    <script>
-       $(function() {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $("#loan-datatable").on("click", "a.editloan", function () {
-                
-            $("#loan_modal_body").load("/user/editloan/" + $(this).data("edit-id"),function(responseTxt, statusTxt, xh)
-                {
-                     $("#loan_modal").modal({
-                                    backdrop: 'static',
-                                    keyboard: true
-                                }, "show");
-                               // bindForm(this);
-                });
-            return false;
-            });
-
-            $("#loan-datatable").on("click", "a.viewloan", function () {
-                
-                $("#loan_modal_body").load("/user/editloan/" + $(this).data("edit-id"),function(responseTxt, statusTxt, xh)
-                    {
-                         $("#loan_modal").modal({
-                                        backdrop: 'static',
-                                        keyboard: true
-                                    }, "show");
-                                   // bindForm(this);
-                    });
-                return false;
-                });
-    
-
-
-            $('#loan-datatable').on('click', 'a.deleteloan', function() {
-
-                var id = $(this).data('edit-id');
-               
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                    if (result.value) {
-                        $.ajax({
-                            url:'/datatable/deleteloan',
-                            type: 'POST',
-                            data: {data:id},
-                            success(res) {
-                                if(res.message == 'success') {
-                                    Swal.fire(
-                                    'Deleted!',
-                                    'Your file has been deleted.',
-                                    'success'
-                              )
-                              $('#loans-datatable').DataTable().ajax.reload();
-                                }
-                                
-                            },
-                            error(err) {
-                                
-                            }
-                        })
-                        
-                    }
-                    })
-            })
-
-            
-           
-
-       })
-    </script>
+<script src="{{asset('js/loan.js')}}"></script>
 @endpush
