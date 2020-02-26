@@ -18,10 +18,6 @@
 
           <section>
               <div class="container-fluid">
-                  <header class="container">
-
-
-                  </header>
                   <div class="row d-flex">
                       <div class="container">
                           <div class="col-lg-8">
@@ -38,9 +34,10 @@
                                                     <input type="text" name="orderID" class="form-control">
                                                 </div> --}}
                                                 <input type="hidden" value="pay loan" name="tran_type">
-                                                <div class="form-group col-md-6">
+                                                <div class="input-group">
+                                                  <div class="form-group col-md-6">
                                                     <label>Loan ID</label>
-                                                    <select name="orderID" id="cable" class="form-control"required>
+                                                    <select name="orderID" id="loanpid" class="form-control"required>
                                                       <option value="" selected>Select...</option>
                                                       @foreach ($loans as $loan)
                                                         <option value="{{$loan->loan_pid}}">{{$loan->loan_pid}}</option>
@@ -48,18 +45,46 @@
                                                     </select>
                                                    
                                                   </div>
-                                                  {{-- <div class="form-group col-md-6">
-                                                      <label for="Loan Amount"></label>
-
-                                                  </div> --}}
-                                                <div class="form-group">
-                                                    <div class="col-sm-6">
-                                                        <label for="amount">Amount</label>
-                                                        <input type="text" name="amount" class="form-control" required>
-
-                                                    </div>
-
+                                                  
+                                                <div class="form-group col-md-6">
+                                                  <label for="amount">Amount</label>
+                                                      <input type="text" name="amount" class="form-control" required>
                                                 </div>
+                                                </div>
+                                                
+                                                <div id="loandetails" style="display:none;">
+                                                    <div class="input-group">
+                                                      <div class="form-group col-md-6">
+                                                        <label for="">Loan amount</label><br>
+                                                        
+                                                        <input type="text" value="" id="loan_amount" class="form-control" readonly>
+                                                      </div>
+    
+                                                      <div class="form-group col-md-6" >
+                                                        <label for="">Repayment amount</label>
+                                                      
+                                                        <input type="text" value="" id="repayment_amount" class="form-control" readonly>
+    
+                                                      </div>
+    
+                                                    </div>
+                                                    
+                                                    <div class="input-group">
+                                                      <div class="form-group col-md-6">
+                                                        <label for="">Tenure</label>
+                                                        <input type="text" value="" id="loan_tenure" class="form-control" readonly >
+      
+                                                      </div>
+
+                                                      <div class="form-group col-md-6">
+                                                        <label for="">Expiration date</label>
+                                                        <input type="text" value="" class="form-control" id="loan_expiration" readonly >
+      
+                                                      </div>
+                                                    </div>
+                                                   
+                                                </div>
+                                               
 
                                                 @csrf
 
@@ -87,7 +112,7 @@
 
                   </div>
 
-                  <div class="row d-flex">
+                  {{-- <div class="row d-flex">
                     <div class="container">
                       <header>
           
@@ -127,7 +152,7 @@
                     </div>
                     
           
-                  </div>
+                  </div> --}}
 
               </div>
           </section>
@@ -136,6 +161,7 @@
 @endsection
 
 @push('scripts')
+<script src="{{asset('js/handlepayloans.js')}}"></script>
 
     <script>
     $('#tran-datatable').DataTable( {

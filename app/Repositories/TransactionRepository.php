@@ -3,40 +3,44 @@
 namespace App\Repositories;
 
 use App\Models\Transaction;
+use App\Interfaces\Transactioninterface;
 
-class TransactionRepository
+class TransactionRepository implements Transactioninterface 
 {
-    protected $transactions;
-
-    public function __construct(Transaction $transaction)
+    
+    public function create($attributes)
     {
-        $this->transactions = $transaction;
+       
+        return Transaction::create([
+            'trans_type'=> $attributes['trans_type'],
+            'wallet_key'=> $attributes['loans']['wallet_key'],
+            'trans_status'=> $attributes['loans']['verified'],
+            'trans_name'=> $attributes['trans_name'],
+            'trans_amount'=> $attributes['loans']['loan_amount'],
+            'balance'=> $attributes['newbalance'],
+            'trans_pid'=> $attributes['loans']['loan_pid'],
+        ]);
     }
 
-    public function create($data)
-    {
+    // public function find($id)
+    // {
+    //    return $this->transactions->find($id);
+    // }
 
-    }
+    // public function findbykey($key)
+    // {
+    //     return $this->transactions->where('wallet_key', $key)->limit(5)->orderBy('created_at', 'desc')->get();
+    // }
 
-    public function find($id)
-    {
-       return $this->transactions->find($id);
-    }
+    // public function update($id, array $data)
+    // {
+    //     return $this->transactions->find($id)->update($data);
+    // }
 
-    public function findbykey($key)
-    {
-        return $this->transactions->where('wallet_key', $key)->limit(5)->orderBy('created_at', 'desc')->get();
-    }
-
-    public function update($id, array $data)
-    {
-        return $this->transactions->find($id)->update($data);
-    }
-
-    public function delete($id)
-    {
-        return $this->transactions->find($id)->delete();
-    }
+    // public function delete($id)
+    // {
+    //     return $this->transactions->find($id)->delete();
+    // }
 
 
 

@@ -7,6 +7,8 @@ use App\Repositories\LoanRepository;
 use App\Interfaces\Loaninterface;
 use App\Repositories\UserRepository;
 use App\Interfaces\Userinterface;
+use App\Interfaces\Transactioninterface;
+use App\Repositories\TransactionRepository;
 
 class RepositoriesServiceProvider extends ServiceProvider
 {
@@ -29,6 +31,7 @@ class RepositoriesServiceProvider extends ServiceProvider
     {
         $this->registerLoanRepo();
         $this->registerUserRepo();
+        $this->registerTransaction();
 
        
     }
@@ -41,5 +44,10 @@ class RepositoriesServiceProvider extends ServiceProvider
     public function registerUserRepo()
     {
         $this->app->bind(Userinterface::class, UserRepository::class);
+    }
+
+    public function registerTransaction()
+    {
+        $this->app->bind(Transactioninterface::class, TransactionRepository::class);
     }
 }

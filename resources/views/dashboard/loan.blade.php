@@ -31,13 +31,18 @@
                                         <h4>Application Process</h4>
                                     </div>
                                     <div class="card-body">
+                                        <div class="alert alert-success col-md-6" style="display:none;" id="succMsg">
+
+                                        </div>
+                                        
+                                       
                                         
                                         {{-- <form action="" method=""> --}}
                                          <nav>
                                             <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
                                                 <a class="nav-item nav-link active" id="laon-step-1"  href="#step-1" role="tab" aria-controls="nav-home" aria-selected="true">Step 1</a>
                                                 <a class="disabled nav-item nav-link" id="loan-step-2"  href="#step-2" role="tab" aria-controls="nav-profile" aria-selected="false">Step 2</a>   
-                                                <a class="nav-item nav-link" id="loan-step-3"   href="#step-3" role="tab" data-toggle="tab" aria-controls="nav-contact" aria-selected="false">Step 3</a>
+                                                <a class="disabled nav-item nav-link" id="loan-step-3"   href="#step-3" role="tab"  aria-controls="nav-contact" aria-selected="false">Step 3</a>
                                                 
                                             </div>
                                            
@@ -59,11 +64,13 @@
                                                           
                                                         </label>
                                                         <input type="number" name="loan_amount" class="form-control col-sm-4" placeholder="270 000" id="loan_amount" required>
-                                                        
+                                                        <input type="hidden" value="{{$rate->interest_rate}}" name="rate" id="rate">
+                                                        <input type="hidden" value="{{$rate->tenure}}" name="tenure" id="loantenure">
+                                                        <input type="hidden" value="{{$rate->loan_amount}}" name="levelamount" id="levelamount">
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="loan_tenure">Loan tenure <span style="font-size:10px;">max of 7 months</span></label>
+                                                        <label for="loan_tenure">Loan tenure <span style="font-size:10px;">max of {{$rate->tenure}} months</span></label>
                                                         <input type="number" name="loan_tenure" class="form-control col-sm-4" placeholder="7 months" id="loan_tenure"  required>
                                                     </div>
 
@@ -118,35 +125,31 @@
                                                     
                                                     <div class="form-group">
                                                         <label for="loan_amount">Loan Amount:</label>
-                                                        <span id="amount"> &#8358;3000</span>
+                                                        <span id="amount"> </span>
                                                     </div>
                                                     
                                                     <div class="form-group">
                                                         <label for="loan_tenure">Loan Tenure:</label>
-                                                        <span id="tenure">3 months</span>
+                                                        <span id="tenure"></span>
                                                     </div>
 
                                                     <div class="form-group">
                                                         <label for="rate">Interest Rate:</label>
-                                                        <span id="rate">{{$rate}}%</span>
+                                                        <span id="rate">{{$rate->interest_rate}}%</span>
                                                     </div>
 
                                                    <div class="form-group">
                                                        <label for="rate">Payment Amount:</label>
-                                                       <span id="payment_amount">&#8358;3000</span>
+                                                       <span id="payment_amount"></span>
                                                    </div>
 
                                                    <div class="form-group">
                                                        <button class="btn btn-sm btn-primary" id="prev2">Previous</button>
-                                                       <button class="btn btn-sm btn-primary">Apply</button>
+                                                       <button class="btn btn-sm btn-primary" id="apply">Apply</button>
 
                                                    </div>
 
-                                                   {{-- <div class="form-group">
-                                                       
-                                                        <em></em>
-
-                                                   </div> --}}
+                                                   
 
                                                 </div>
                                             </div>

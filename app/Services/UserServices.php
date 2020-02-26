@@ -2,23 +2,25 @@
 
 namespace App\Services;
 
-use App\Repositories\LoanRepository;
-use App\Repositories\UserRepository;
+// use App\Repositories\LoanRepository;
+// use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Auth;
 use App\Interfaces\Loaninterface;
 use App\Interfaces\Userinterface;
+use App\Interfaces\Transactioninterface;
+
 
 class UserServices
 {
-    protected $user, $loan, $userlevel;
+    protected $user, $loan, $userlevel, $transaction;
     
 
-    public function __construct(Loaninterface $loanRepo, Userinterface $userRepo)
+    public function __construct(Loaninterface $loanRepo, Userinterface $userRepo, Transactioninterface $transRepo)
     {
         $this->user = $userRepo;
         $this->loan = $loanRepo;
-        //$this->loan = new LoanRepository();
+        $this->transaction = $transRepo;
 
     }
 
@@ -70,6 +72,90 @@ class UserServices
 
         return $this->userlevel;
     }
+
+    public function applyforloan($loanrequests)
+    {
+        $walletdetails = $this->user->walletdetails();
+        $data = [
+            'wallet_key'=> $walletdetails->wallet_key,
+            'loanrequest'=> $loanrequests,
+            'loan_pid'=> $this->generate_pid(),
+        ];
+        $loan = $this->loan->create($data);
+        $newcredit = $walletdetails->credit_total + $loan->loan_amount;    
+        $newbalance = $walletdetails->wallet_balance + $loan->loan_amount;
+        $amountowing = $walletdetails->loan_taken_amount + $loan->loan_amount;
+        $transdata = [
+            'loans'=>$loan,
+            'trans_name'=> 'Applied For Loan',
+            'trans_type'=> 'credit',
+            'newbalance'=> $newbalance,
+        ];
+        $walletupdate = [
+            'wallet_balance'=> $newbalance,
+            'credit_total'=> $newcredit,
+            'owing'=> 1,
+            'loan_taken_amount'=> $amountowing,
+        ];
+        $transaction =  $this->transaction->create($transdata);
+        $updatewallet = $this->user->updateWallet($walletdetails->wallet_key, $walletupdate);
+
+       return $updatewallet;
+
+    }
+
+    public function payloan($loanrequests)
+    {
+        $stillowing = '';
+        $walletdetails = $this->user->walletdetails();
+        $amountleft = intVal($walletdetails->loan_taken_amount - $loanrequests['amount']);
+        $newbalance = $walletdetails->wallet_balance - $loanrequests['amount'];
+        if($newbalance > 0) {
+            $stillowing = 1;
+        }else{
+            $stillowing = 0;
+        }
+
+        $data = [
+            'wallet_key'=> $walletdetails->walllet_key,
+            'loanrequest'=>$loanrequests,
+        ];
+    }
+
+    public function notifyuser($mesasge)
+    {
+        //$user = $this->logUser()->role;
+        $key = $this->user->walletdetails()->wallet_key;
+        return $this->user->notify($key, $mesasge);
+    }
+
+
+    public function admin_notify(array $message)
+    {
+        return $this->user->notifyadmin($message);
+        
+    }
+
+    public function walletdetails()
+    {
+        return $this->user->walletdetails();
+    }
+
+    
+
+    public function getloandetails($pid)
+    {
+        return $this->loan->getloan($pid);
+    }
+
+
+    
+
+    private function generate_pid() {
+        $pin=mt_rand(1000,9999);
+        $user_no=str_shuffle($pin);
+        return $user_no;
+     }
 
 
     

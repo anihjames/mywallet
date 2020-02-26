@@ -10,10 +10,17 @@ use Auth;
 use App\User;
 use DB;
 use Carbon\Carbon;
+use App\Services\UserServices;
 
 class PaymentController extends Controller
 {
    //public $status;
+   protected $userservice;
+
+   public function __construct(UserServices $userservice)
+   {
+    $this->userServices = $userservice;
+   }
     public function redirectToGateway(Request $request)
     {
         $id = $request['orderID'];
@@ -80,7 +87,7 @@ class PaymentController extends Controller
         $pay = DB::table('pay_loan_takens')->insert([
             'wallet_key'=> $wallet->wallet_key,
             'loan_pid'=> $request['orderID'],
-            'payment_method'=> 'card',
+            // 'payment_method'=> 'card',
             'amount_paid'=> $request['amount'],
             'amount_left'=> $newbalance,
             'verified'=> '1',

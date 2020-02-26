@@ -174,6 +174,8 @@ Route::group(['prefix'=> 'user', 'middleware'=> ['auth', 'adminroutes']], functi
        'as'=>'payloan'
    ]);
 
+   Route::get('/getloandetails/{id}','LoanController@getloandetails');
+
    
     
 

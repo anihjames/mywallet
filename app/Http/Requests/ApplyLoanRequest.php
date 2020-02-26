@@ -26,6 +26,7 @@ class ApplyLoanRequest extends FormRequest
         return [
             'loan_amount'=> 'required',
             'loan_tenure'=> 'required',
+            'userincome'=> 'required',
         ];
     }
 }

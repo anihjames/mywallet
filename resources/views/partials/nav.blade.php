@@ -56,7 +56,7 @@
           <li class="{{ request()->segment(2) == 'takeloan' ? 'active': ''}}"><a href="#loandropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-money" aria-hidden="true"></i>Loans</a>
             <ul id="loandropdown" class="collapse list-unstyled">
               <li><a href="{{route('takeloan')}}">Take Loan</a></li>
-              <li><a href="">Pay Loans</a></li>
+              <li><a href="{{route('get_payloan')}}">Pay Loans</a></li>
               <li><a href="">Statement</a></li>
             </ul>
 
