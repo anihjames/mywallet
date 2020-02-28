@@ -21,10 +21,7 @@
 
           <section>
               <div class="container-fluid">
-                  <header>
-
-                  </header>
-
+                 
                   <div class="row d-flex">
                       <div class="container">
                           <div class="col-lg-12">

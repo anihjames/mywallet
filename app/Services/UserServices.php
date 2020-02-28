@@ -99,16 +99,22 @@ class UserServices
         ];
         $transaction =  $this->transaction->create($transdata);
         $updatewallet = $this->user->updateWallet($walletdetails->wallet_key, $walletupdate);
+        $data = [
+            'updatewallet'=> $updatewallet,
+            'transaction'=> $transaction,
+        ];
 
-       return $updatewallet;
+       return $data;
 
     }
 
     public function payloan($loanrequests)
     {
+       
         $stillowing = '';
         $walletdetails = $this->user->walletdetails();
-        $amountleft = intVal($walletdetails->loan_taken_amount - $loanrequests['amount']);
+        $userloan = $this->loan->getloan($loanrequests['orderID']);
+        $amountleft = intVal($userloan->repayment_amount - $loanrequests['amount']);
         $newbalance = $walletdetails->wallet_balance - $loanrequests['amount'];
         if($newbalance > 0) {
             $stillowing = 1;
@@ -151,7 +157,7 @@ class UserServices
 
     
 
-    private function generate_pid() {
+    public function generate_pid() {
         $pin=mt_rand(1000,9999);
         $user_no=str_shuffle($pin);
         return $user_no;

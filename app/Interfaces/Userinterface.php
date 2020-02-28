@@ -18,5 +18,7 @@ interface Userinterface
     public function getunreadnotifiy($key);
     public function updatenotify($id);
     public function notifyadmin($data);
+    public function applyforloan();
+    public function payloan($loanpid);
     
 }

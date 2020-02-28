@@ -1,6 +1,5 @@
 <?php
 
-
 Route::get('/home', [
     'uses'=> 'AdminController@index',
     'as'=> 'admin.index'
@@ -51,3 +50,5 @@ Route::get('/gettransactions', 'AdminController@gettransactions');
 Route::get('/getTrans', 'AdminController@getTrans');
 
 Route::get('/viewusertrans/{id}', 'SortController@getusertrans');
+
+Route::get('/notify/{id}', 'AdminController@shownotification');

@@ -7,7 +7,48 @@
 @section('content')
     @include('partials.nav')
     <div class="page">
-        @include('partials.header')
+      <header class="header">
+        <nav class="navbar"> 
+          <div class="container-fluid">
+            <div class="navbar-holder d-flex align-items-center justify-content-between">
+              <div class="navbar-header"><a id="toggle-btn" href="#" class="menu-btn"><i class="icon-bars"> </i></a><a href="index.html" class="navbar-brand">
+                  <div class="brand-text d-none d-md-inline-block"><strong class="text-primary">Dashboard</strong></div></a></div>
+              <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                <!-- Notifications dropdown-->
+                <li class="nav-item dropdown"> <a id="notifications" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link">
+                  @if (count($user_notify) != 0)
+                  <i class="fa fa-bell"></i><span class="badge badge-warning" id="notifications">{{count($user_notify)}}</span></a>
+                  <ul aria-labelledby="notifications" class="dropdown-menu" id="notificationsMenu">
+                   
+                    @foreach ($user_notify as $item)
+                    <li><a rel="nofollow" href="/admin/notify/{{$item->notify_id}}" class="dropdown-item"> 
+                      <div class="notification d-flex justify-content-between">
+                        <div class="notification-content"><i class="fa fa-envelope"></i>{{$item->message}} </div>
+                        <div class="notification-time"><small>{{\Carbon\Carbon::parse($item->created_at)->diffForHumans()}} </small></div>
+                      </div></a></li>
+                    
+                    {{-- <li><a rel="nofollow" href="" class="dropdown-item all-notifications text-center"> <strong> <i class="fa fa-bell"></i> </strong></a></li> --}}
+                    @endforeach
+                  </ul>
+
+                  @else 
+                  <i class="fa fa-bell"></i><span class="badge badge-warning" id="notifications"></span></a>
+
+                  @endif
+                  
+                </li>
+               
+                
+                <!-- Log out-->
+                <li class="nav-item"><a href="{{route('logout')}}" class="nav-link logout"> <span class="d-none d-sm-inline-block">Logout</span><i class="fa fa-sign-out"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </header>
+    
+      
+    
         <div class="breadcrumb-holder">
           <div class="container-fluid">
             <ul class="breadcrumb">
@@ -16,29 +57,14 @@
             </ul>
           </div>
         </div>
-    {{-- <section class="dashboard-counts section-padding">
-        <div class="container-fluid">
-        <div class="row">
-            <!-- Count item widget-->
-            <div class="col-xl-2 col-md-4 col-6">
-                <div class="wrapper count-title d-flex">
-                  <div class="icon"><i class="icon-user"></i></div>
-                  <div class="name"><strong class="text-uppercase">New Clients</strong><span>Last 7 days</span>
-                    <div class="count-number">25</div>
-                  </div>
-                </div>
-              </div>
-            
-        </div>
-            
-        </div>
 
-    </section> --}}
+        
+  
 
     <section class="statistics">
       <div class="container-fluid">
         <header class="container">
-
+         
         </header>
         <div class="row d-flex">
           <div class="col-lg-4">
@@ -59,14 +85,7 @@
             </div>
           </div>
 
-          {{-- <div class="col-lg-4">
-            <!-- acquired-->
-            <div class="card income text-center">
-              <div class="icon"><i class="icon-line-chart"></i></div>
-              <div class="number" >{{$aquired_loan}}</div><strong class="text-primary">Acquired Loans</strong>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do.</p>
-            </div>
-          </div> --}}
+         
 
           <div class="col-lg-4">
             <div class="card income text-center">
@@ -85,9 +104,7 @@
 
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do.</p>
               
-              {{-- <div class="progress">
-                <div role="progressbar" style="width:{{$transactions}}%"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar bg-primary"></div>
-              </div> --}}
+              
               
             </div>
             
@@ -120,6 +137,7 @@
                   <table class="table" id="tran-datatable">
                     <thead>
                       <tr>
+                        <th>ID</th>
                         <th>Type</th>
                         <th>Name</th>
                         <th>Amount</th>
@@ -159,6 +177,12 @@
 
 @push('scripts')
 <script>
+
+  // $('#admin_notify').on('click', function(){
+
+  // })
+
+
   $("#loan-datatable").on("click", "a.editloan", function () {
                 
                 $("#loan_modal_body").load("/user/editloan/" + $(this).data("edit-id"),function(responseTxt, statusTxt, xh)
@@ -171,7 +195,7 @@
                     });
                 return false;
                 });
-
+ 
                 var table = $('#tran-datatable').DataTable( {
                   processing: true,
                   serverside:true,
@@ -179,10 +203,10 @@
                     url: "/datatable/trans",
                     data: function(d) {
                       d.sort = $('#sort').val();
-                    }
+                    } 
                   },
                   columns: [
-                      // {data: 'id', name:'Id', 'visiable': false},
+                      {data: 'trans_pid', name:'Id', 'visiable': false},
                       {data: 'trans_type', name:'Transaction Type'},
                       {data: 'trans_name', name:'Name'},
                       {data: 'trans_amount', name:'Amount'},
@@ -190,7 +214,7 @@
                       {data:'created_at', name:'Date/Time'},
                       {data:'action', name:'Action',orderable: false, searchable: false}
                   ],
-                  searching: false,
+                  // searching: false,
                   ordering:false,
                   
               })

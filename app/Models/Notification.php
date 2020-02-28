@@ -1,13 +1,13 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Notification extends Model
 {
     protected $fillable = [
-        'wallet_key','message','read'
+        'wallet_key','message','notify_id'
     ];
 
     public function wallet()

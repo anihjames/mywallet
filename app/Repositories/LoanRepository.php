@@ -20,7 +20,6 @@ class LoanRepository implements Loaninterface
                 'wallet_key'=> $attributes['wallet_key'],
                 'loan_pid'=> $attributes['loan_pid'],
                 'loan_amount'=> $attributes['loanrequest']['loan_amount'],
-                'loan_app_date'=> $dt->isoFormat('dddd D, Y'),
                 'loan_length'=> $attributes['loanrequest']['loan_tenure'] .' '.'months',
                 'userincome'=> $attributes['loanrequest']['userincome'],
                 'repayment_amount'=> $attributes['loanrequest']['repayment_amount'],
@@ -46,7 +45,7 @@ class LoanRepository implements Loaninterface
 
     public function getloan($pid)
     {
-        return Take_loan::where('loan_pid', $pid)->select('loan_amount', 'loan_length', 'repayment_amount', 'expiration_date')->first();
+        return Take_loan::where('loan_pid', $pid)->select('loan_amount', 'loan_length', 'repayment_amount', 'expiration_date', 'amount_left', 'amount_paid')->first();
     }
 
     public function delete($id)

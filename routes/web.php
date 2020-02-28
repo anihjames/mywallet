@@ -101,13 +101,14 @@ Route::group(['prefix'=> 'user', 'middleware'=> ['auth', 'adminroutes']], functi
     'as'=> 'paybills',
    ]);
 
-//    Route::get('/takeloan', function() {
-//         return view('dashboard.loan');
-//    })->name('takeloan');
-
    Route::get('/takeloan', [
     'uses'=> 'LoanController@getloanview',
     'as'=> 'takeloan'
+   ]);
+
+   Route::get('/loanstatement', [
+    'uses'=> 'LoanController@loanstatement',
+    'as'=> 'loanstatement',
    ]);
 
    
@@ -177,6 +178,7 @@ Route::group(['prefix'=> 'user', 'middleware'=> ['auth', 'adminroutes']], functi
    Route::get('/getloandetails/{id}','LoanController@getloandetails');
 
    
+   Route::get('/notify/{id}', 'DashboardController@shownotification');
     
 
        
@@ -251,6 +253,7 @@ Route::group(['prefix'=> 'payment', 'middleware'=>'auth'], function() {
         'as' => 'makepayments'
     ]);
 });
+
 
 
 

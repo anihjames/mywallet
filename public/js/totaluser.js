@@ -22,7 +22,7 @@ $(document).ready(function() {
               {data:'status', name: 'user access'},
               {data: 'action', name: 'Action'},
           ],
-          searching: false,
+          // searching: false,
           ordering:false,
       })
 

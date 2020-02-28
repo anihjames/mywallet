@@ -115,7 +115,7 @@ $(document).ready(function() {
 
           $.ajax({
             url: action,
-            type: 'POST',
+            type: 'POST', 
             data: values,
             success(res) {
               $(".print-error-msg").find("ul").html('');
@@ -134,13 +134,19 @@ $(document).ready(function() {
                 }
             }
     
-          })
+          }) 
     });
 
-    $('#billpay').DataTable({
+    var table = $('#billpay').DataTable({
       processing: true,
       serverside:true,
-      ajax: "/datatable/bills",
+      ajax: {
+        url:"/datatable/bills",
+        data: function(d) {
+          d.sort = $('#sort').val();
+          
+        }
+      },
       columns: [
           // {data:'id', name:'Id'},
           {data:'payment_pid', name:'Payment ID'},
@@ -150,6 +156,10 @@ $(document).ready(function() {
           {data:'created_at', name: 'Date/Time'},
           {data:'action', name: 'Status', orderable: false,}
       ],
-      order: [[1,'desc']],
+      ordering:false,
+  })
+
+  $('#sort').on('change',function(){
+    table.ajax.reload();
   })
 })

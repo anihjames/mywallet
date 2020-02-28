@@ -47,7 +47,7 @@ class DatatablesController extends Controller
                
                 ->make(true);
     }
-
+ 
     public function getTransaction()
     {
         
@@ -62,7 +62,6 @@ class DatatablesController extends Controller
         
         return Datatables::of($trans)
                             ->editColumn('created_at', '{!! $created_at !!}')
-               
                             ->addColumn('action', function($tran) {
                                 if($tran->trans_status == '0') {
                                     return '<a href="javascript:void(0)" class="btn btn-xs btn-danger">'.'failed'.'</a>';
@@ -77,16 +76,14 @@ class DatatablesController extends Controller
                 ->make(true);
     }
 
-    public function Bill()
+    public function Bill(Request $request)
     {
         $id = Auth::user()->id;
         $wallet = User::find($id)->wallet;
-        // $bills = Bill_payment::where('wallet_key', $wallet->wallet_key)
-        //             ->select(['id','payment_pid','bills_type', 'bills_amount', 'type_code', 'status', 'created_at', 'bill_type_id']);
 
         $bills = $this->user->bills($wallet->wallet_key);
                     
-
+        
         return Datatables::of($bills)
                 ->editColumn('created_at', '{!! $created_at !!}')
                 
@@ -106,34 +103,41 @@ class DatatablesController extends Controller
         $id = Auth::user()->id;
         $wallet = User::find($id)->wallet;
         $loans = Take_loan::where('wallet_key', $wallet->wallet_key)
-                        ->select(['id','loan_pid','loan_amount','loan_app_date', 'loan_length', 'verified', 'created_at']);
+                        ->select(['id','loan_pid','loan_amount','loan_length', 'verified', 'created_at', 'repayment_amount', 'amount_left', 'amount_paid', 'expiration_date', 'payment_status']);
                         
 
         return Datatables::of($loans)
                     ->editColumn('created_at', function($loan) {
-                        return $loan->created_at->diffForHumans();
+                        return $loan->created_at->isoFormat('MMM Do YYYY');
                         
                     })
-                    ->addColumn('status', function($loan) {
+                    ->editColumn('expiration_date', function($loan) {
+                        return $loan->expiration_date->isoFormat('MMM Do YYYY');
+                    })
+                    ->addColumn('payment_status', function($loan) {
+                        if($loan->payment_status == '1') {
+                            return 'Paid';
+                        }elseif($loan->payment_status == '0'){
+                            return 'on going';
+                        }
+                    })
+                    ->addColumn('loan_status', function($loan) {
                         if($loan->verified == '2'){
-                            //2 approved
-                            return '<button class="btn btn-xs btn-primary">'.'Approved'.'</button>';
-                        }elseif($loan->verified == '1') {
-                            //1 awaiting approval
-                            return '<button class="btn btn-xs btn-info">'.'Pending'.'</button>';
-                        }elseif($loan->verified == '0') {
-                            //0 not approved
-                            return '<button class="btn btn-xs btn-danger">'.'Rejected'.'</button>';
+                            return 'Approved';
+                        }elseif($loan->verified == '1'){
+                            return 'Pending';
+                        }else{
+                            return 'Rejected';
                         }
                     })
                     ->editColumn('action', function($loan) {
                         $buttons= '';
                         if($loan->verified == '2'){
-                            // $buttons = '<a href="#" class="btn btn-xs btn-primary viewloan" data-edit-id="'.$loan->id.'" data-toggle="modal"> <i class="fa fa-eye"></i></a>';
-                            $buttons = '<a href="#" class="btn btn-xs btn-danger deleteloan"  data-edit-id="'.$loan->id.'" data-toggle="modal"><i class="fa fa-trash"></i></a>';
+                            $buttons = '<a href="#" class="btn btn-xs btn-primary viewloan" data-edit-id="'.$loan->id.'" data-toggle="modal"> <i class="fa fa-eye"></i></a>';
+                            // $buttons .= '<a href="#" class="btn btn-xs btn-danger deleteloan"  data-edit-id="'.$loan->id.'" data-toggle="modal"><i class="fa fa-trash"></i></a>';
                         }else{
                             $buttons = '<a href="#" class="btn btn-xs btn-primary editloan" id="editloan" data-edit-id="'.$loan->id.'" data-toggle="modal"><i class="fa fa-edit"></i></a>';
-                        $buttons .= '&nbsp;&nbsp;<a href="#" class="btn btn-xs btn-danger deleteloan"  data-edit-id="'.$loan->id.'" data-toggle="modal"><i class="fa fa-trash"></i></a>';
+                            $buttons .= '&nbsp;&nbsp;<a href="#" class="btn btn-xs btn-danger deleteloan"  data-edit-id="'.$loan->id.'" data-toggle="modal"><i class="fa fa-trash"></i></a>';
                         }
                         
                         return $buttons;

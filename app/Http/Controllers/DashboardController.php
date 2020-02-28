@@ -42,12 +42,20 @@ class DashboardController extends Controller
         $id = Auth::user()->id;
         $wallet = User::find($id)->wallet;
         $loans = Take_loan::where('wallet_key', $wallet->wallet_key)->count();
+        
+        $usernotify = DB::table('notifications')->where('wallet_key', $wallet->wallet_key)
+                                 ->where('read', 0)->get();
+        
         $data = [
             'total_credit'=> $wallet->credit_total,
             'total_debit'=> $wallet->debit_total,
             'aquired_loan'=> $wallet->loan_taken_amount,
-            'loans'=> $loans
+            'loans'=> $loans,
+           
+            'user_notify'=> $usernotify
         ];
+        
+       
         Cache::put('wallet',$wallet);
         Session::put('balance', $wallet->wallet_balance);
          Session::put('owing', $wallet->owing);
@@ -57,21 +65,43 @@ class DashboardController extends Controller
  
     public function viewmobile_topup()
     {
-        return view('dashboard.mobile_topup');
+        $wallet = $this->user->walletdetails();
+        $loans = Take_loan::where('wallet_key', $wallet->wallet_key)->count();
+        
+        $usernotify = DB::table('notifications')->where('wallet_key', $wallet->wallet_key)
+                                 ->where('read', 0)->get();
+        $data = [
+            'user_notify'=> $usernotify,
+            'loans'=> $loans
+        ];
+        return view('dashboard.mobile_topup')->with($data);
     }
     
     public function wallet_topup()
     {
-        return view('dashboard.wallet_topup');
+        $wallet = $this->user->walletdetails();
+        $loans = Take_loan::where('wallet_key', $wallet->wallet_key)->count();
+        
+        $usernotify = DB::table('notifications')->where('wallet_key', $wallet->wallet_key)
+                                 ->where('read', 0)->get();
+        $data = [
+            'usernotify'=> $usernotify,
+            'loans'=> $loans
+        ];
+        return view('dashboard.wallet_topup')->with($data);
     }
 
     public function viewbills()
     {
-        $bills = Cache::get('bills', function () {
-            return DB::table('bills')->get();
-        });
+        $wallet = $this->user->walletdetails();
+        $usernotify = DB::table('notifications')->where('wallet_key', $wallet->wallet_key)
+                                 ->where('read', 0)->get();
+        $bills = DB::table('bills')->get();
+        // $bills = Cache::get('bills', function () {
+        //     return DB::table('bills')->get();
+        // });
         //dd($bills);
-        return view('dashboard.payBills', ['bills'=> $bills]);
+        return view('dashboard.payBills', ['bills'=> $bills, 'user_notify'=> $usernotify]);
     }
 
     public function getbilltype($bill_id)
@@ -110,6 +140,7 @@ class DashboardController extends Controller
         $pid = $this->generate_pid();
         $msg = '';
         $status = '';
+        $message;
         
        
         $wallet_id = User::find($user_id)->wallet;
@@ -186,6 +217,15 @@ class DashboardController extends Controller
             $changewallet->save();
     
             //send a mail to the user
+            $data = [
+                'message'=> 'A '. $paybill->bills_type . ' payment was made',
+                'read'=>0,
+                'userwallet_key'=> $this->user->walletdetails()->wallet_key,
+                'notify_id'=> $paybill->payment_pid,
+                'created_at'=> Carbon::now(),
+                'updated_at'=> Carbon::now(),
+            ];
+            $notifyadmin = $this->user->admin_notify($data);
     
             return response()->json(['message'=> $msg]);
         }
@@ -239,7 +279,7 @@ class DashboardController extends Controller
         }else {
             $newbalance = $wallet->wallet_balance - $data['amount']; // substract bill amount from the wallet amount
             $msg = 'Transaction made successfully';
-            $status = 1;
+            $status = 2;
             $paybill = Bill_payment::create([
                 'payment_pid' => $pid,
                 'wallet_key'=> $wallet->wallet_key,
@@ -266,7 +306,16 @@ class DashboardController extends Controller
             $newdebitTotal = $olddebitTotal + $data['amount'];
             $changewallet->debit_total = $newdebitTotal;
             $changewallet->save();
-    
+                
+            $data = [
+                'message'=> 'A '. $paybill->bills_type . ' payment was made',
+                'read'=>0,
+                'userwallet_key'=> $this->user->walletdetails()->wallet_key,
+                'notify_id'=> $paybill->payment_pid,
+                'created_at'=> Carbon::now(),
+                'updated_at'=> Carbon::now(),
+            ];
+            $notifyadmin = $this->user->admin_notify($data);
             //send a mail to the user
     
             return response()->json(['message'=> 'EEDC Bill Paid Successfully']);
@@ -343,6 +392,16 @@ public function Topup(TopupRequest $request)
         $wallet->debit_total = $newdebitTotal;
         $wallet->save();
 
+        $data = [
+            'message'=> 'A '. $this->user->logUser()->fname . 'was made',
+            'read'=>0,
+            'userwallet_key'=> $this->user->walletdetails()->wallet_key,
+            'notify_id'=> $topup->mobile_pid,
+            'created_at'=> Carbon::now(),
+            'updated_at'=> Carbon::now(),
+        ];
+        $notifyadmin = $this->user->admin_notify($data);
+
         return response()->json(['message'=> $msg]);
 
     
@@ -393,6 +452,7 @@ public function changePassword(changePassword $request)
     }else {
         return redirect()->back()->withErrors("Old password doesn't match.")->withInput();
     }
+
 }
 
 public function Destory(Request $request)
@@ -402,24 +462,43 @@ public function Destory(Request $request)
     ]);
     
     $user = User::where('email', $request['email'])->exists();
-    // $wallet = Wallet::where('wallet_key', $request['wallet_key'])->exists();
+     $wallet = Wallet::where('wallet_key', $request['wallet_key'])->value('owing');
     //dd($email);
     if($user){
-        $user_trans = Transaction::where('wallet_key', $request['wallet_key'])->delete();
-        $user_bills = Bill_payment::where('wallet_key', $request['wallet_key'])->delete();
-        $user_loans = Take_loan::where('wallet_key', $request['wallet_key'])->delete();
-        $user_paylaons = Pay_loan_taken::where('wallet_key', $request['wallet_key'])->delete();
-        $user_mobiletopup = MobileTopup::where('wallet_key', $request['wallet_key'])->delete();
-        $deleteuser = User::where('email', $request['email'])->delete();
-        $deletewallet = Wallet::where('wallet_key', $request['wallet_key'])->delete();
-
-        Auth::logout();
-        return redirect('/auth/login');
+        if($wallet != 1){
+            $user_trans = Transaction::where('wallet_key', $request['wallet_key'])->delete();
+            $user_bills = Bill_payment::where('wallet_key', $request['wallet_key'])->delete();
+            $user_loans = Take_loan::where('wallet_key', $request['wallet_key'])->delete();
+            $user_paylaons = Pay_loan_taken::where('wallet_key', $request['wallet_key'])->delete();
+            $user_mobiletopup = MobileTopup::where('wallet_key', $request['wallet_key'])->delete();
+            $deleteuser = User::where('email', $request['email'])->delete();
+            $deletewallet = Wallet::where('wallet_key', $request['wallet_key'])->delete();
+    
+            Auth::logout();
+            return redirect('/auth/login');
+        }else{
+            return redirect()->back()->withErrors('Account cannot be deleted, still have unpaid loans')->withInput();
+        }
+       
 
     }else {
         return redirect()->back()->withErrors('Invaild Input Values')->withInput();
     }
 
+}
+
+public function shownotification($id)
+{
+    $removenotify = DB::table('notifications')->where('notify_id', $id)->update([
+        'read'=> 1
+    ]);
+    $usernotify = DB::table('notifications')->where('wallet_key', $wallet->wallet_key)
+                        ->where('read', 0)->get();
+    $trans = Transaction::where('trans_pid', $id)->first();
+    return view('dashboard.viewapprovedloan', [
+        'usernotify'=>$usernotify,
+        'trans'=> $trans
+    ]);
 }
 
 

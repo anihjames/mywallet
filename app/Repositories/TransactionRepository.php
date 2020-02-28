@@ -22,25 +22,25 @@ class TransactionRepository implements Transactioninterface
         ]);
     }
 
-    // public function find($id)
-    // {
-    //    return $this->transactions->find($id);
-    // }
+    public function find($id)
+    {
+       return Transaction::find($id);
+    }
 
-    // public function findbykey($key)
-    // {
-    //     return $this->transactions->where('wallet_key', $key)->limit(5)->orderBy('created_at', 'desc')->get();
-    // }
+    public function findbykey($key)
+    {
+        return Transaction::where('wallet_key', $key)->limit(5)->orderBy('created_at', 'desc')->get();
+    }
 
-    // public function update($id, array $data)
-    // {
-    //     return $this->transactions->find($id)->update($data);
-    // }
+    public function update($id, array $data)
+    {
+        return Transaction::find($id)->update($data);
+    }
 
-    // public function delete($id)
-    // {
-    //     return $this->transactions->find($id)->delete();
-    // }
+    public function delete($id)
+    {
+        return Transaction::find($id)->delete();
+    }
 
 
 

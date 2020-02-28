@@ -6,7 +6,39 @@
 @section('content')
     @include('partials.nav')
     <div class="page">
-        @include('partials.header')
+      <header class="header">
+        <nav class="navbar"> 
+          <div class="container-fluid">
+            <div class="navbar-holder d-flex align-items-center justify-content-between">
+              <div class="navbar-header"><a id="toggle-btn" href="#" class="menu-btn"><i class="icon-bars"> </i></a><a href="index.html" class="navbar-brand">
+                  <div class="brand-text d-none d-md-inline-block"><strong class="text-primary">Dashboard</strong></div></a></div>
+              <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                <!-- Notifications dropdown-->
+                <li class="nav-item dropdown"> <a id="notifications" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link">
+                  @if (count($user_notify) != 0)
+                  <i class="fa fa-bell"></i><span class="badge badge-warning" id="notifications">{{count($user_notify)}}</span></a>
+                  <ul aria-labelledby="notifications" class="dropdown-menu" id="notificationsMenu">
+                   
+                    @foreach ($user_notify as $item)
+                    <li><a rel="nofollow" href="{{$item->id}}" class="dropdown-item all-notifications text-center"> <strong> <i class="fa fa-bell"></i>{{$item->message}}</strong></a></li>
+                    @endforeach
+                  </ul>
+
+                  @else 
+                  <i class="fa fa-bell"></i><span class="badge badge-warning" id="notifications"></span></a>
+
+                  @endif
+                  
+                </li>
+               
+                
+                <!-- Log out-->
+                <li class="nav-item"><a href="{{route('logout')}}" class="nav-link logout"> <span class="d-none d-sm-inline-block">Logout</span><i class="fa fa-sign-out"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </header>  
         <div class="breadcrumb-holder">
             <div class="container-fluid">
               <ul class="breadcrumb">
@@ -20,6 +52,11 @@
               <div class="container-fluid">
                   <div class="row d-flex">
                       <div class="container">
+                        @if (session('status'))
+                        <div class="alert alert-success col-md-6">
+                          {{ session('status') }}
+                        </div>
+                        @endif
                           <div class="col-lg-8">
                               <div class="card">
                                   <div class="card-header">
@@ -81,6 +118,13 @@
                                                         <input type="text" value="" class="form-control" id="loan_expiration" readonly >
       
                                                       </div>
+
+                                                      
+                                                    </div>
+
+                                                    <div class="form-group col-md-6">
+                                                      <label for="">Loan Amount left</label>
+                                                      <input type="text" value="" class="form-control" id="loan_left" readonly>
                                                     </div>
                                                    
                                                 </div>

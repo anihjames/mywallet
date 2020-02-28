@@ -25,7 +25,7 @@ $(document).ready(function(){
               {data:'created_at', name:'Date'},
               {data:'action', name:'Status'}
           ],
-          searching:false,
+          // searching:false,
           ordering:false,
       })
 

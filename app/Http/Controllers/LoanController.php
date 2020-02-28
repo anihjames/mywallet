@@ -33,7 +33,12 @@ class LoanController extends Controller
         $user = $this->userService->logUser();
         $userlevel = $this->userService->userlevel();
         $loan_rate = $this->userService->loanrate();
-        return view('dashboard.loan', ['user'=> $user, 'rate'=> $loan_rate, 'level'=> $userlevel]);
+        $wallet = $this->userService->walletdetails();
+        $loans = Take_loan::where('wallet_key', $wallet->wallet_key)->count();
+        
+        $usernotify = DB::table('notifications')->where('wallet_key', $wallet->wallet_key)
+                                 ->where('read', 0)->get();
+        return view('dashboard.loan', ['user'=> $user, 'rate'=> $loan_rate, 'level'=> $userlevel, 'user_notify'=> $usernotify, 'loans'=> $loans]);
     }
 
     
@@ -47,11 +52,15 @@ class LoanController extends Controller
     {
         
         $applyloan = $this->userService->applyforloan($request->all());
-        if($applyloan == 1){
+        // dd($applyloan['updatewallet']);
+        if($applyloan['updatewallet'] == 1){
             $data = [
-                'message'=> 'Loan Application was made',
+                'message'=> 'Loan Application ',
                 'read'=>0,
                 'userwallet_key'=> $this->userService->walletdetails()->wallet_key,
+                'notify_id'=> $applyloan['transaction']['trans_pid'],
+                'created_at'=> Carbon::now(),
+                'updated_at'=> Carbon::now(),
             ];
             $notifyadmin = $this->userService->admin_notify($data);
             //notify admin
@@ -83,10 +92,17 @@ class LoanController extends Controller
     {
         $user = Auth::user()->wallet;
         $wallet_key = $user->wallet_key;
-        $loans = DB::table('take_loans')->where('wallet_key', $wallet_key)->get();
+        $loans = DB::table('take_loans')->where('wallet_key', $wallet_key)
+                        ->where('payment_status',0)
+                        ->get();
+        
+        //$loans = Take_loan::where('wallet_key', $wallet->wallet_key)->count();
+
+        $usernotify = DB::table('notifications')->where('wallet_key', $wallet_key)
+                                    ->where('read', 0)->get();
         
         
-        return view('dashboard.payloan')->with('loans',$loans);
+        return view('dashboard.payloan', ['loans'=> $loans, 'user_notify'=> $usernotify])->with('loans',$loans);
     }
 
     public function getloandetails($id)
@@ -101,6 +117,14 @@ class LoanController extends Controller
         ];
 
        return $data;
+    }
+
+    public function loanstatement()
+    {   $wallet_key = $this->userService->walletdetails()->wallet_key;
+        $usernotify = DB::table('notifications')->where('wallet_key', $wallet_key)
+                             ->where('read', 0)->get();
+
+        return view('dashboard.loanstatement',['user_notify'=> $usernotify]);
     }
 
     private function generate_pid() {

@@ -57,7 +57,7 @@
             <ul id="loandropdown" class="collapse list-unstyled">
               <li><a href="{{route('takeloan')}}">Take Loan</a></li>
               <li><a href="{{route('get_payloan')}}">Pay Loans</a></li>
-              <li><a href="">Statement</a></li>
+              <li><a href="{{route('loanstatement')}}">Statement</a></li>
             </ul>
 
           </li>

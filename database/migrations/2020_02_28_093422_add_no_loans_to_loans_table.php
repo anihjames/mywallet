@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddExpirationDateToTakeLoanTable extends Migration
+class AddNoLoansToLoansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddExpirationDateToTakeLoanTable extends Migration
      */
     public function up()
     {
-        Schema::table('take_loans', function (Blueprint $table) {
-            $table->date('expiration_date');
+        Schema::table('loans', function (Blueprint $table) {
+            $table->integer('no_loans')->default(3);
         });
     }
 
@@ -25,8 +25,8 @@ class AddExpirationDateToTakeLoanTable extends Migration
      */
     public function down()
     {
-        Schema::table('take_loans', function (Blueprint $table) {
-            $table->dropIfExists('expiration_date');
+        Schema::table('loans', function (Blueprint $table) {
+            $table->dropIfExists('no_loans');
         });
     }
 }

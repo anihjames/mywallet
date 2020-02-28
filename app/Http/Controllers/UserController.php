@@ -54,8 +54,8 @@ class UserController extends Controller
 
 
     public function getref_code() {
-        $characters='ABCDEFHJKLMNPQRSTUVWXYZ';  
-       $pin=mt_rand(100000,999999).mt_rand(100000,999999).$characters[rand(0,strlen($characters)-3)];
+        $characters='ABCDEFHJKLMN';  
+       $pin=mt_rand(1000,9999).mt_rand(1000,9999).$characters[rand(0,strlen($characters)-3)];
        $ref_no=str_shuffle($pin);
  
        return $ref_no;

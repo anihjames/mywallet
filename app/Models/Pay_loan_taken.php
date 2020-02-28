@@ -6,6 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pay_loan_taken extends Model
 {
+    protected $fillable = [
+            'wallet_key',
+            'loan_pid',
+            'amount_paid',
+            'amount_left',
+            'verified',
+            // 'still_owing',
+            'created_at',
+            'updated_at',
+    ];
     
     public function wallet()
     {

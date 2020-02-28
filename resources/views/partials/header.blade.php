@@ -6,20 +6,38 @@
               <div class="brand-text d-none d-md-inline-block"><strong class="text-primary">Dashboard</strong></div></a></div>
           <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
             <!-- Notifications dropdown-->
-            <li class="nav-item dropdown"> <a id="notifications" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link">
-              <i class="fa fa-bell"></i><span class="badge badge-warning" id="notifications">12</span></a>
-              <ul aria-labelledby="notifications" class="dropdown-menu" id="notificationsMenu">
-               
-                <li><a rel="nofollow" href="#" class="dropdown-item all-notifications text-center"> <strong> <i class="fa fa-bell"></i>view all notifications</strong></a></li>
-              </ul>
+            @if (Auth::user()->role == 'admin')
+            <li class="nav-item dropdown"> <a id="admin_notify" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link">
+              <i class="fa fa-bell"></i>
+              @if (Session::has('admin_notify'))
+                @if (Session::get('admin_notify') != 0)
+                <span class="badge badge-warning" id="notifications">{{Session::get('admin_notify')}}</span></a>
+                <ul aria-labelledby="notifications" class="dropdown-menu" id="notificationsMenu">
+                  <li><a rel="nofollow" href="" class="dropdown-item all-notifications text-center"> <strong> <i class="fa fa-bell"></i>view notification</strong></a></li>
+                </ul>
+                @endif
+              </li>
+              @endif
+              
+            @else 
+
+            <li class="nav-item dropdown"> <a id="user_notify" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link">
+              <i class="fa fa-bell"></i>
+              @if (Session::has('usernotify'))
+                @if (Session::get('usernotify') != 0)
+                <span class="badge badge-warning" id="notifications">{{Session::get('usernotify')}}</span></a>
+                <ul aria-labelledby="notifications" class="dropdown-menu" id="notificationsMenu">
+                  <li><a rel="nofollow" href="#" class="dropdown-item all-notifications text-center"> <strong> <i class="fa fa-bell"></i>view all notifications</strong></a></li>
+                </ul>
+                @endif
+              @endif
+              
+              
             </li>
-            <!-- Messages dropdown-->
-            <li class="nav-item dropdown"> <a id="messages" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link"><i class="fa fa-envelope"></i><span class="badge badge-info">10</span></a>
-              <ul aria-labelledby="notifications" class="dropdown-menu">
-                
-                <li><a rel="nofollow" href="#" class="dropdown-item all-notifications text-center"> <strong> <i class="fa fa-envelope"></i>Read all messages</strong></a></li>
-              </ul>
-            </li>
+
+            @endif
+           
+           
             <!-- Languages dropdown    -->
             
             <!-- Log out-->

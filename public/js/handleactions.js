@@ -65,7 +65,7 @@ $(document).ready(function(){
                           }else {
                             Swal.fire(
                               'cancalled!',
-                              'user has pending loans.',
+                              'user has unpaid loans.',
                               'warning'
                             )
                           }

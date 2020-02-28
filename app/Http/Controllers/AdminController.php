@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use App\User;
 use App\Models\Bill_payment;
 use App\Models\Bill_type;
+use App\Models\Notification;
 use App\Models\Wallet;
 use App\Models\Transaction;
 use App\Models\MobileTopup;
@@ -17,6 +18,8 @@ use App\Models\Pay_loan_taken;
 use App\Notifications\usersnotify;
 use App\Services\BillService;
 use App\Services\AdminServices;
+use Auth;
+
 
 class AdminController extends Controller
 {
@@ -39,6 +42,7 @@ class AdminController extends Controller
         $topups = MobileTopup::all()->count();
         $loan = Take_loan::all()->count();
         $total = intVal($topups) + intVal($loan);
+        $getadminnotify = DB::table('adminnotifications')->where('read', 0)->get();
         
         return view('admin.home', [
                 'users'=> $users,
@@ -46,6 +50,7 @@ class AdminController extends Controller
                 'topup'=> $topups,
                 'loans'=> $loan,
                 'total'=> $total,
+                'admin_notify'=> $getadminnotify,
                 
             ]);
         
@@ -53,7 +58,10 @@ class AdminController extends Controller
 
     public function Totalbills()
     {
-        return view('admin.total_bill');
+        $getadminnotify = DB::table('adminnotifications')->where('read', 0)->get();
+        return view('admin.total_bill', [
+            'admin_notify'=> $getadminnotify
+        ]);
     }
 
     public function Toptops()
@@ -63,7 +71,10 @@ class AdminController extends Controller
 
     public function TotalLoans()
     {
-        return view('admin.applied_loans');
+        $getadminnotify = DB::table('adminnotifications')->where('read', 0)->get();
+        return view('admin.applied_loans', [
+            'admin_notify'=> $getadminnotify
+        ]);
     }
 
     public function TotalUsers()
@@ -321,16 +332,17 @@ class AdminController extends Controller
 
     public function loanActions(Request $request, User $user)
     {
+        
         $data = $request['data'];
         
         $newdata = explode('-',$data);
-
+        $message;
+       
 
         $wallet_key = DB::table('take_loans')->where('loan_pid', $newdata[1])->value('wallet_key');
         $userdata= Wallet::where('wallet_key', $wallet_key)->first()->user;
-        // $user->notify(new usersnotify($userdata));
-        // dd('$user');
-
+       
+        //accept loan
         if($newdata[0] == '1') {
             $updateloan = DB::table('take_loans')->where('loan_pid', $newdata[1])->update([
                 'verified'=> 2,
@@ -338,20 +350,48 @@ class AdminController extends Controller
             $updatetransaction = DB::table('transactions')->where('trans_pid', $newdata[1])->update([
                 'trans_status'=> '2',
             ]) ;
-
+            $message = "Loan has been approved";
+        //reject loan
         }elseif($newdata[0] == '0') {
-            //dd($newdata[0]);
             $loan = DB::table('take_loans')->where('loan_pid', $newdata[1])->update([
                 'verified'=> 0,
             ]);
+
+            
             $updatetransaction = DB::table('transactions')->where('trans_pid', $newdata[1])->update([
                 'trans_status'=> '0',
             ]) ;
+            $message = "Loan was not approved";
         }
+
+        $notifyuser = Notification::create([
+            'wallet_key'=> $wallet_key,
+            'message'=> $message,
+            'notify_id'=> $newdata[1],
+
+        ]);
 
         
 
         return response()->json(['success'=> 'success']);
+    }
+
+    public function shownotification($id)
+    {
+        $trans_id = $id;
+        //dd($trans_id);
+        $removenotify = DB::table('adminnotifications')->where('notify_id', $id)->update([
+            'read'=> 1
+        ]);
+        $id = Auth::user()->id;
+        $wallet_key = Wallet::where('user_id', $id)->value('wallet_key');
+        $adminnotify = DB::table('adminnotifications')->where('read', 0)->get();
+        $trans = Transaction::where('trans_pid', $trans_id)->first();
+        
+        return view('dashboard.viewapprovedloan', [
+            'admin_notify'=>$adminnotify,
+            'trans'=> $trans
+        ]);
     }
 
     public function useractions(Request $request)
@@ -359,11 +399,14 @@ class AdminController extends Controller
         $data = $request['data']; 
         $newdata = explode('-',$data);
 
+        //block user
         if($newdata[0] == '0') {
             $user = User::find($newdata[1]);
             $user->access = 0;
             $user->save();
+            
            
+            //delete user
         }elseif($newdata[0] == '3') {
             $user = User::find($newdata[1])->wallet;
             if($user->owing == 1){
@@ -378,11 +421,14 @@ class AdminController extends Controller
             $deletewallet = Wallet::where('wallet_key', $user->wallet_key)->delete();
             
             
+            //activate user
         }elseif($newdata[0] == '1') {
             $user = User::find($newdata[1]);
             $user->access = 1;
             $user->save();
         }
+
+
 
         return response()->json(['msg'=> true]);
     }

@@ -26,7 +26,7 @@ $(document).ready(function(){
               {data:'created_at',  name:'Date/time'}
           ],
          
-          searching:false,
+          // searching:false,
           ordering:false,
       })
 

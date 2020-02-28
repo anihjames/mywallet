@@ -15,6 +15,7 @@ $(document).ready(function() {
             }
           },
           columns: [
+              {data: 'loan_pid', name:'ID'},
               {data: 'fullname', name:'Fullname'},
               {data: 'loan_amount', name:'Loan Amount'},
               {data:'loan_length', name:'Loan tenure'},
@@ -22,7 +23,6 @@ $(document).ready(function() {
               {data:'status', name: 'Status'},
               {data:'action' , name: 'action'}
           ],
-          searching: false,
           ordering:false,
       })
 

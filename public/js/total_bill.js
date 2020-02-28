@@ -23,7 +23,7 @@ $(document).ready(function(){
             {data:'action', name: 'status', orderable: false,}
         ],
 
-        searching: false,
+        // searching: false,
         ordering:false,
     });
 

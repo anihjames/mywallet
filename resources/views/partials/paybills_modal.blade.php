@@ -55,7 +55,7 @@
         </div>
       </div>
 
-      @push('scripts')
+      {{-- @push('scripts')
           <script src="{{asset('js/paybill.js')}}"></script>
-      @endpush
+      @endpush --}}
     

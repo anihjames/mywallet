@@ -60,6 +60,7 @@
             
             <div class="form-group-material {{ $errors->has('password' ? ' is-invalid ': '')}}">
               <input id="register-password" type="password" name="password" required data-msg="Please enter your password" class="input-material">
+              
               <label for="register-password" class="label-material">Password </label>
                 @if ($errors->has('password'))
                     <span class="is-invalid">

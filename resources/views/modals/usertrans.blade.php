@@ -46,7 +46,7 @@
                     @endif
 
                 </table>
-                @if (count($trans) > 0)
+                @if (count($trans) > == 5)
                     <div class="row">
                         <div class="container">
                             <a href="" style="text-decoration:none;">view more...</a>

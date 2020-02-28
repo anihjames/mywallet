@@ -5,6 +5,8 @@ namespace App\Repositories;
 
 use App\User;
 use App\Models\Wallet;
+use App\Models\Transaction;
+use App\Models\Bill_payment;
 use DB;
 use Auth;
 use App\Interfaces\Userinterface;
@@ -47,7 +49,8 @@ class UserRepository implements Userinterface
 
     public function getBills($key)
     {
-        return Wallet::where('wallet_key', $key)->first()->billpayments;
+        return DB::table('bill_payments')->where('wallet_key', $key)->get();
+        //return Bill_payment::where('wallet_key', $key)->first();
        
     }
 
@@ -100,6 +103,20 @@ class UserRepository implements Userinterface
             'read'=> 1,
         ]);
     }
+
+    public function applyforloan()
+    {
+
+    }
+
+    public function payloan($details)
+    {
+        dd($details);
+       $loan = Take_loan::where('loan_pid', $details['orderID'])->select(['repayment_amount', 'amount_paid', 'amount_left'])->first();
+        $amount_left = $loan->repayment_amount - $details['amount'];
+    }
+
+
 
     
 }
