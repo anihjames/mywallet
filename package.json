@@ -21,7 +21,7 @@
     },
     "dependencies": {
         "bootstrap-sass": "^3.4.1",
-        "jquery": "^3.4.1",
+        "jquery": "^3.5.0",
         "laravel-echo": "^1.6.1",
         "pusher-js": "^5.1.1"
     }
